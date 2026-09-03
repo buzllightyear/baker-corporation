@@ -12,4 +12,9 @@ export const T = {
   tutWatson: { en: "Tutorial: Watson's turn — paste the sentence into the chat.", ko: '튜토리얼: 왓슨 차례입니다. 문장을 채팅에 붙여넣으세요.' }, tutAccuse: { en: 'Tutorial: press Accuse.', ko: '튜토리얼: 기소 버튼을 누르세요.' },
   tutLocked: { en: 'Finish the tutorial episode first.', ko: '튜토리얼 에피소드를 먼저 끝내세요.' }, tutDone: { en: 'Tutorial complete.', ko: '튜토리얼 완료.' },
   hearing: { en: 'Preliminary hearing', ko: '예비 심리' }, missing: { en: 'missing', ko: '부족한 근거' }, hearingNote: { en: 'The page grades the logic of the theory, never the truth. A proven theory can still accuse the wrong person.', ko: '페이지는 가설의 논리만 채점합니다. 진실은 판정하지 않습니다. 입증된 가설도 엉뚱한 사람을 가리킬 수 있습니다.' },
+  caseFile: { en: 'Case file', ko: '사건 파일' }, crew: { en: 'Crew', ko: '승무원' }, crewManifest: { en: 'Crew manifest', ko: '승무원 명부' },
+  next: { en: 'Next', ko: '다음' }, skip: { en: 'Skip', ko: '건너뛰기' }, startCase: { en: 'Start', ko: '시작' }, close: { en: 'Close', ko: '닫기' },
+  lastSeen: { en: 'last seen', ko: '마지막 목격' }, notLogged: { en: 'not logged', ko: '기록 없음' },
+  statementsOn: { en: 'statements on the notebook', ko: '수첩의 진술' }, noStatements: { en: 'No statements collected yet.', ko: '아직 수집한 진술이 없습니다.' },
+  briefing: { en: 'Briefing', ko: '브리핑' },
 } as const;

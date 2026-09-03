@@ -3,7 +3,7 @@ export type Minute = number;                       // 판 시작 기준 경과 �
 
 export interface Place { id: string; name: Text; description: Text; adjacent: string[] }
 export interface Presence { personId: string; placeId: string; from: Minute; to: Minute }   // [from, to) 동안 그 장소
-export interface Person { id: string; name: Text; role: Text; portrait: string /* 이모지 한 글자 */; truthful: boolean }
+export interface Person { id: string; name: Text; role: Text; portrait: string /* 이모지 한 글자 */; truthful: boolean; blurb?: Text /* 명부 한 줄. 공개, 스포일러 없음 */ }
 export interface Topic { id: string; label: Text; keywords: string[] }                      // keywords는 영어 소문자
 export interface Statement {
   id: string; personId: string; topicId: string;
@@ -30,6 +30,10 @@ export interface Episode {
   places: Place[]; people: Person[]; presence: Presence[]; topics: Topic[]; statements: Statement[];
   evidence: Evidence[]; records: Record_[]; propositions: Proposition[]; methods: Method[]; truth: Truth;
   tutorial?: TutorialStep[];
+  intro?: Intro;                                   // 챕터 타이틀 카드 뒤에 오는 콜드 오픈 카드들
 }
+// 콜드 오픈. 카드 0(타이틀)은 UI가 만들고, 여기 카드들이 1..n으로 이어진다.
+export interface IntroCard { title: Text; body: Text; image?: string; showCrew?: boolean }
+export interface Intro { cards: IntroCard[] }
 export interface TutorialStep { id: string; when: TutorialTrigger; say: Text; chip?: Text }
 export type TutorialTrigger = { kind: 'start' } | { kind: 'watson_read' } | { kind: 'card', cardId: string } | { kind: 'moved', placeId: string } | { kind: 'theory' } | { kind: 'accused' };

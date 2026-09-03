@@ -1,0 +1,79 @@
+/* Narrative layer — chapter title card, cold-open cards, crew dossier, dialogue view.
+   Owns only `.nv-*` class names so it never collides with theme.css. */
+
+/* ---------- shared: portrait with an emoji underneath ---------- */
+.nv-portrait { position: relative; display: inline-grid; place-items: center; flex: none; width: 56px; height: 56px; border-radius: 4px; overflow: hidden; background: var(--paper-2, #151a20); border: 1px solid var(--line, #2a323b); }
+.nv-portrait.sm { width: 44px; height: 44px; }
+.nv-portrait.lg { width: 132px; height: 132px; border-radius: 6px; }
+.nv-portrait img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.nv-portrait-emoji { font-size: 20px; line-height: 1; }
+.nv-portrait.lg .nv-portrait-emoji { font-size: 46px; }
+
+/* ---------- cold open ---------- */
+.nv-intro { position: fixed; inset: 0; z-index: 60; display: grid; place-items: center; background: #05070a; overflow-y: auto; }
+.nv-intro-art { position: absolute; inset: 0; background-size: cover; background-position: center; filter: saturate(.55) brightness(.42); }
+.nv-intro-scrim { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 45%, rgba(5,7,10,.35) 0%, rgba(5,7,10,.9) 78%); }
+.nv-intro-inner { position: relative; width: min(760px, 92vw); padding: 40px 0; display: flex; flex-direction: column; gap: 26px; }
+
+.nv-kicker { font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: var(--warn, #f0c060); }
+.nv-title-card { text-align: center; padding: 40px 0 24px; }
+.nv-title { font-size: clamp(30px, 6vw, 54px); letter-spacing: .01em; margin: 14px 0 12px; text-wrap: balance; }
+.nv-series { font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: .3em; text-transform: uppercase; color: var(--muted, #8b9199); }
+
+.nv-card { background: rgba(10,13,17,.72); border: 1px solid var(--line, #2a323b); border-radius: 6px; padding: 22px 24px; backdrop-filter: blur(3px); }
+.nv-card-title { font-size: 22px; margin: 10px 0 12px; }
+.nv-card-body { margin: 0; font-size: 16px; line-height: 1.65; color: var(--ink, #e8e4d8); text-wrap: pretty; }
+
+.nv-crew { margin-top: 20px; border-top: 1px solid var(--line, #2a323b); padding-top: 16px; }
+.nv-crew-photo { display: block; width: 100%; max-height: 190px; object-fit: cover; border-radius: 4px; margin-bottom: 14px; filter: saturate(.7) contrast(1.05); }
+.nv-crew-head { font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: var(--muted, #8b9199); margin-bottom: 10px; }
+.nv-crew-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.nv-crew-row { display: flex; gap: 12px; align-items: flex-start; }
+.nv-crew-text { min-width: 0; }
+.nv-crew-name { font-weight: 600; letter-spacing: .02em; }
+.nv-crew-name small { font-weight: 400; color: var(--warn, #f0c060); margin-left: 8px; font-size: 12px; }
+.nv-crew-blurb { color: var(--muted, #8b9199); font-size: 13px; line-height: 1.5; margin-top: 2px; }
+
+.nv-intro-actions { display: flex; align-items: center; gap: 14px; }
+.nv-intro-actions .nv-skip { color: var(--muted, #8b9199); border-color: transparent; }
+.nv-intro-actions .nv-next { margin-left: auto; }
+.nv-intro-actions .nv-next.primary { border-color: var(--warn, #f0c060); color: var(--warn, #f0c060); font-weight: 600; }
+.nv-dots { display: flex; gap: 6px; }
+.nv-dot { width: 6px; height: 6px; border-radius: 999px; background: var(--line, #2a323b); }
+.nv-dot.on { background: var(--warn, #f0c060); }
+
+/* ---------- crew dossier drawer ---------- */
+.nv-dossier { position: fixed; top: 0; right: 0; bottom: 0; z-index: 55; width: min(400px, 92vw); background: var(--panel, #11161c); border-left: 1px solid var(--line, #2a323b); box-shadow: -18px 0 40px rgba(0,0,0,.5); display: flex; flex-direction: column; }
+.nv-dossier-head { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-bottom: 1px solid var(--line, #2a323b); }
+.nv-dossier-head h2 { font-size: 13px; letter-spacing: .22em; text-transform: uppercase; color: var(--warn, #f0c060); flex: 1; }
+.nv-dossier-list { list-style: none; margin: 0; padding: 8px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; }
+.nv-dossier-row { border: 1px solid transparent; border-radius: 5px; }
+.nv-dossier-row.on { border-color: var(--line, #2a323b); background: var(--paper-2, #151a20); }
+.nv-dossier-person { display: flex; gap: 11px; align-items: flex-start; width: 100%; text-align: left; border: 0; padding: 9px; border-radius: 5px; }
+.nv-dossier-text { min-width: 0; }
+.nv-dossier-meta { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 5px; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 11px; color: var(--muted, #8b9199); }
+.nv-dossier-cards { padding: 0 10px 10px 10px; display: flex; flex-direction: column; gap: 8px; }
+.nv-dossier-card { border-left: 2px solid var(--holmes, #5aa0ff); padding-left: 9px; }
+.nv-dossier-card h4 { margin: 0 0 2px; font-size: 12px; color: var(--muted, #8b9199); font-weight: 600; }
+.nv-dossier-card p { margin: 0; font-size: 13px; line-height: 1.5; }
+.nv-dim { color: var(--muted, #8b9199); font-size: 13px; margin: 0; }
+
+/* ---------- dialogue view ---------- */
+.nv-dialogue { position: absolute; left: 0; right: 0; bottom: 0; z-index: 20; display: flex; gap: 16px; align-items: flex-end; padding: 16px 18px 18px; cursor: pointer; background: linear-gradient(rgba(5,7,10,0), rgba(5,7,10,.88) 34%); text-align: left; }
+.nv-dialogue-body { flex: 1; min-width: 0; }
+.nv-dialogue-who { display: flex; align-items: baseline; gap: 9px; flex-wrap: wrap; margin-bottom: 6px; }
+.nv-dialogue-who b { font-size: 17px; letter-spacing: .02em; }
+.nv-dialogue-who small { color: var(--warn, #f0c060); font-size: 12px; }
+.nv-dialogue-topic { font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 11px; color: var(--muted, #8b9199); border: 1px solid var(--line, #2a323b); border-radius: 999px; padding: 1px 8px; }
+.nv-dialogue-line { margin: 0; font-size: 16px; line-height: 1.6; max-width: 68ch; min-height: 1.6em; text-wrap: pretty; }
+.nv-caret { color: var(--warn, #f0c060); animation: nv-blink 1s steps(2, start) infinite; }
+.nv-caret.off { opacity: 0; animation: none; }
+.nv-dialogue-next { text-align: right; color: var(--warn, #f0c060); font-size: 13px; margin-top: 4px; }
+.nv-dialogue-next.dim { opacity: .25; }
+@keyframes nv-blink { 50% { opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) { .nv-caret { animation: none; } }
+@media (max-width: 700px) {
+  .nv-portrait.lg { width: 84px; height: 84px; }
+  .nv-dialogue { gap: 12px; padding: 12px 12px 14px; }
+}
