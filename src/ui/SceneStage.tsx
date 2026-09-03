@@ -23,6 +23,8 @@ const EXIT_POS: Record<'left' | 'right' | 'ahead' | 'back', React.CSSProperties>
 const ARROW = { left: '◀', right: '▶', ahead: '▲', back: '▼' } as const;
 const TOPICS_SHOWN = 4;        // the rest fold behind a "+N more" chip — episode 1 gives every witness 13
 const ZOOM = 2.2;              // close-up magnification
+const ZOOM_EDGE = 1.7;         // gentler when the prop sits near the frame edge, so it stays in view
+const zoomFor = (h: { x: number; y: number }) => (h.x < 15 || h.x > 85 || h.y < 12 || h.y > 88 ? ZOOM_EDGE : ZOOM);
 const ZOOM_MS = 450;
 const ROOM_FX_MS = 500;        // crossfade between rooms
 const WATSON_EYE_MS = 2000;    // how long a hotspot stays lit after Watson's tool call named it
@@ -99,7 +101,7 @@ export function SceneStage() {
 
   const artStyle: React.CSSProperties | undefined = img === 'ok' && art
     ? closeup
-      ? { backgroundImage: `url(${art.image})`, transformOrigin: `${closeup.at.x}% ${closeup.at.y}%`, transform: `scale(${ZOOM})`, transition: `transform ${ZOOM_MS}ms ease` }
+      ? { backgroundImage: `url(${art.image})`, transformOrigin: `${closeup.at.x}% ${closeup.at.y}%`, transform: `scale(${zoomFor(closeup.at)})`, transition: `transform ${ZOOM_MS}ms ease` }
       : { backgroundImage: `url(${art.image})`, transform: `scale(1.06) translate(${-par.x * 14}px, ${-par.y * 10}px)`, ...(zooming ? { transition: `transform ${ZOOM_MS}ms ease` } : null) }
     : undefined;
 
@@ -119,7 +121,7 @@ export function SceneStage() {
     <div ref={stageRef} className={'stage' + (img === 'ok' ? ' has-art' : '') + (leaving !== null ? ' fx-transition' : '') + (closeup ? ' closeup-on' : '')} onMouseMove={onMove} onMouseLeave={() => setPar({ x: 0, y: 0 })}>
       {leaving && <div className="stage-art fx-out" style={{ backgroundImage: `url(${leaving})` }} />}
       {img === 'ok' && art && gl
-        ? <StageArt3D key={st.pos.holmes} image={art.image} depth={depthUrl(art.image)} parallax={par} zoom={closeup ? { x: closeup.at.x / 100, y: closeup.at.y / 100, scale: ZOOM } : null} />
+        ? <StageArt3D key={st.pos.holmes} image={art.image} depth={depthUrl(art.image)} parallax={par} zoom={closeup ? { x: closeup.at.x / 100, y: closeup.at.y / 100, scale: zoomFor(closeup.at) } : null} />
         : <div key={st.pos.holmes} className={'stage-art' + (leaving !== null ? ' fx-in' : '')} style={artStyle} />}
       {img !== 'ok' && <div className="stage-placeholder"><div className="ph-name">{pick(sc.place.name, lang)}</div><div className="ph-desc">{pick(sc.place.description, lang)}</div></div>}
       <div className="stage-caption"><b>{pick(sc.place.name, lang)}</b> {img === 'ok' && <span>{pick(sc.place.description, lang)}</span>}</div>
