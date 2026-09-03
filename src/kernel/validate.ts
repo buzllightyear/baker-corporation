@@ -1,8 +1,8 @@
 // src/kernel/validate.ts
 import type { Episode } from '../../content/types';
 import { COST } from './clock';
-export function validateCase(ep: Episode): { ok: boolean; problems: string[] } {
-  const P: string[] = [];
+export function validateCase(ep: Episode): { ok: boolean; problems: string[]; warnings: string[] } {
+  const P: string[] = []; const W: string[] = [];
   const ids = new Set<string>([...ep.places, ...ep.people, ...ep.statements, ...ep.evidence, ...ep.records, ...ep.topics, ...ep.methods, ...ep.propositions].map((x) => x.id));
   const need = (id: string, where: string) => { if (!ids.has(id)) P.push(`REF ${where}: ${id} does not exist`); };
   ep.places.forEach((pl) => pl.adjacent.forEach((a) => need(a, `place ${pl.id}.adjacent`)));
@@ -34,6 +34,6 @@ export function validateCase(ep: Episode): { ok: boolean; problems: string[] } {
   if (loudest && loudest[0] === ep.truth.culpritId) P.push(`R6 loudest liar ${loudest[0]} is the culprit`);
   // R7 exhaustive time ≥ 1.6 × budget
   const exhaustive = ep.statements.length * COST.talk + ep.evidence.length * COST.examine + ep.places.length * COST.move * 2 + ep.people.length * COST.cross_check + COST.search_records * 3;
-  if (exhaustive < ep.budgetMinutes * 1.6) P.push(`R7 exhaustive ${exhaustive} min < 1.6 × budget ${ep.budgetMinutes}`);
-  return { ok: P.length === 0, problems: P };
+  if (exhaustive < ep.budgetMinutes * 1.6) W.push(`R7 exhaustive ${exhaustive} min < 1.6 × budget ${ep.budgetMinutes} (deadline currently off — informational)`);
+  return { ok: P.length === 0, problems: P, warnings: W };
 }

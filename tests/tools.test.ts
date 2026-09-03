@@ -18,7 +18,7 @@ describe('watson tools', () => {
   it('move accepts a JSON string (legacy host) and reports errors as ok:false with a code', async () => {
     const t = watsonTools(deps()).find((x) => x.name === 'move')!;
     const r = (await t.execute(JSON.stringify({ place_id: 'galley' }))) as Record<string, unknown>; expect(r.ok).toBe(true); expect(useGame.getState().state!.pos.watson).toBe('galley');
-    const far = (await t.execute({ place_id: 'engine' })) as Record<string, unknown>; expect(far.ok).toBe(true); expect(far.route).toEqual(['hall', 'engine']); expect(useGame.getState().state!.clock).toBe(30);
+    const far = (await t.execute({ place_id: 'engine' })) as Record<string, unknown>; expect(far.ok).toBe(true); expect(far.route).toEqual(['hall', 'engine']); expect(useGame.getState().state!.clock).toBe(0);
     const bad = (await t.execute({ place_id: 'nowhere' })) as Record<string, unknown>; expect(bad.ok).toBe(false); expect(bad.code).toBe('UNKNOWN_ID');
   });
   it('every tool result is language-projected: card bodies are strings, not {en,ko}', async () => {

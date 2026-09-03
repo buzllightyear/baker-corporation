@@ -90,7 +90,17 @@ h1, h2, h3 { margin: 0; font-weight: 600; }
 .card form input { flex: 1; font-size: 12px; }
 .empty { color: var(--muted); font-style: italic; }
 /* tutorial chips */
-.tut { position: fixed; right: 354px; top: 100px; max-width: 380px; background: rgba(12,15,18,.95); border: 1px solid var(--watson); border-radius: 8px; padding: 10px 12px; box-shadow: 0 6px 24px rgba(0,0,0,.6), 0 0 12px var(--glow); z-index: 10; font-size: 13px; }
+.tut { position: fixed; right: 354px; top: 100px; max-width: 440px; background: rgba(12,15,18,.96); border: 2px solid var(--watson); border-radius: 10px; padding: 14px 16px; box-shadow: 0 8px 32px rgba(0,0,0,.7), 0 0 24px var(--glow); z-index: 10; font-size: 15px; animation: tut-in .5s ease-out; }
+@keyframes tut-in { 0% { transform: translateY(-8px) scale(.98); box-shadow: 0 0 0 rgba(255,166,64,0); } 50% { box-shadow: 0 0 40px var(--glow), 0 0 0 6px rgba(255,166,64,.25); } 100% { transform: none; } }
+.tut .say { font-size: 15px; line-height: 1.5; }
+.goal { animation: goal-pulse 1.2s ease-in-out infinite; }
+@keyframes goal-pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(255,166,64,.0); } 50% { box-shadow: 0 0 0 6px rgba(255,166,64,.45), 0 0 24px var(--glow); } }
+.exit.goal { background: rgba(255,166,64,.3); }
+.hot.person.goal .face { border-color: var(--watson); }
+.hot.evidence.goal .ring { border-color: #fff; box-shadow: 0 0 0 6px rgba(255,166,64,.4), 0 0 24px var(--glow); }
+.hot.goal .lbl { opacity: 1; }
+.chip.topic.goal { border-color: var(--watson); color: var(--watson); }
+.room.goal { border-color: var(--watson); }
 @media (max-width: 900px) { .tut { right: 14px; top: auto; bottom: 14px; } .talk-rail { left: 14px; } }
 .tut .say { margin: 0 0 8px; }
 .tut .chipline { display: flex; gap: 6px; align-items: center; }

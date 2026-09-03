@@ -17,10 +17,11 @@ describe('guided tutorial', () => {
   it('advances linearly and gates human actions to the current goal', () => {
     let s = newRun('mini', 'hall', 'hall');
     let g = guide(EP, s, 0)!; expect(g.index).toBe(0); expect(g.goal).toEqual({ kind: 'watson_read' });
-    expect(allowed(EP, s, g.goal, { kind: 'move', placeId: 'galley' })).toBe(false);          // Watson's turn
+    expect(allowed(EP, s, g.goal, { kind: 'move', placeId: 'galley' })).toBe(true);           // walking is always free
+    expect(allowed(EP, s, g.goal, { kind: 'examine', evidenceId: 'e_hook' })).toBe(false);   // Watson's turn
     g = guide(EP, s, 1)!; expect(g.index).toBe(1); expect(g.goal).toEqual({ kind: 'moved', placeId: 'galley' });
-    expect(allowed(EP, s, g.goal, { kind: 'move', placeId: 'engine' })).toBe(false);
-    expect(allowed(EP, s, g.goal, { kind: 'move', placeId: 'galley' })).toBe(true);
+    expect(allowed(EP, s, g.goal, { kind: 'move', placeId: 'engine' })).toBe(true);
+    expect(allowed(EP, s, g.goal, { kind: 'talk', personId: 'bo', topicId: 'night' })).toBe(false);
     expect(hint(EP, s, g.goal, 'en')).toMatch(/Galley/);
     s = (invoke(EP, s, 'holmes', { kind: 'move', placeId: 'galley' }) as { state: typeof s }).state;
     g = guide(EP, s, 1)!; expect(g.index).toBe(2);
@@ -30,12 +31,13 @@ describe('guided tutorial', () => {
     s = (invoke(EP, s, 'holmes', { kind: 'talk', personId: 'bo', topicId: 'night' }) as { state: typeof s }).state;
     g = guide(EP, s, 1)!; expect(g.index).toBe(3); expect(allowed(EP, s, g.goal, { kind: 'examine', evidenceId: 'e_hook' })).toBe(true);
     s = (invoke(EP, s, 'holmes', { kind: 'examine', evidenceId: 'e_hook' }) as { state: typeof s }).state;
-    g = guide(EP, s, 1)!; expect(g.goal).toEqual({ kind: 'accused' }); expect(allowed(EP, s, g.goal, { kind: 'move', placeId: 'hall' })).toBe(false);
+    g = guide(EP, s, 1)!; expect(g.goal).toEqual({ kind: 'accused' }); expect(allowed(EP, s, g.goal, { kind: 'talk', personId: 'bo', topicId: 'wrench' })).toBe(false);
     s = (invoke(EP, s, 'holmes', { kind: 'accuse', who: 'ada', how: 'm_took', evidence: 'e_print' }) as { state: typeof s }).state;
     expect(guide(EP, s, 1)!.complete).toBe(true);
   });
-  it('a moved goal allows the first step of the shortest route', () => {
+  it('moving is allowed under every goal', () => {
     const s = { ...newRun('mini', 'hall', 'hall'), pos: { holmes: 'engine', watson: 'hall' } };
     expect(allowed(EP, s, { kind: 'moved', placeId: 'galley' }, { kind: 'move', placeId: 'hall' })).toBe(true);
+    expect(allowed(EP, s, { kind: 'card', cardId: 'r_manifest' }, { kind: 'move', placeId: 'hall' })).toBe(true);
   });
 });

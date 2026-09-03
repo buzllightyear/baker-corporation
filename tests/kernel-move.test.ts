@@ -4,9 +4,9 @@ import { newRun } from '../src/kernel/model';
 import { MINI_CASE as ep } from './fixtures/mini-case';
 const start = () => newRun('mini', 'hall', 'hall');
 describe('move', () => {
-  it('moves along adjacency, costs 10, returns the scene', () => {
+  it('moves along adjacency, is free, returns the scene', () => {
     const r = invoke(ep, start(), 'holmes', { kind: 'move', placeId: 'galley' });
-    expect(r.ok && r.state.pos.holmes).toBe('galley'); expect(r.ok && r.state.clock).toBe(10);
+    expect(r.ok && r.state.pos.holmes).toBe('galley'); expect(r.ok && r.state.clock).toBe(0);
     expect(r.ok && (r.result as any).people.map((p: any) => p.id)).toEqual(['bo']);
     expect(r.ok && (r.result as any).evidence.map((e: any) => e.id)).toEqual(['e_hook', 'e_print']);
   });
@@ -34,8 +34,8 @@ describe('examine', () => {
     const late = { ...start(), clock: 95, pos: { holmes: 'engine', watson: 'hall' } };
     r = invoke(ep, late, 'holmes', { kind: 'examine', evidenceId: 'e_log' }); expect(!r.ok && r.code).toBe('NOT_NOW');
   });
-  it('closes the case at the budget', () => {
+  it('does not close at the budget while the deadline is off', () => {
     const s = { ...start(), clock: 120 };
-    const r = invoke(ep, s, 'holmes', { kind: 'move', placeId: 'galley' }); expect(!r.ok && r.code).toBe('CASE_CLOSED');
+    const r = invoke(ep, s, 'holmes', { kind: 'move', placeId: 'galley' }); expect(r.ok).toBe(true);
   });
 });

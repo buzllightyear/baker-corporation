@@ -20,7 +20,7 @@ function run<T>(deps: Deps, raw: unknown, busy: string, toCmd: (a: T) => Cmd): P
   deps.setBusy(busy);
   const r = deps.dispatch(toCmd(args));
   const ep = deps.getEpisode(); const s = deps.getState();
-  const clock = { clock: ep.clockLabel(s.clock), minutesLeft: Math.max(0, ep.budgetMinutes - s.clock) };
+  const clock = { clock: ep.clockLabel(s.clock), minutesElapsed: s.clock };
   if (!r.ok) return Promise.resolve(toolResult({ ok: false, code: r.code, message: r.message, ...clock }));
   return Promise.resolve(toolResult({ ok: true, ...(project(r.result, deps.lang()) as Record<string, unknown>), ...clock }));
 }
@@ -28,12 +28,12 @@ const S = (props: Record<string, unknown>, required: string[]) => ({ type: 'obje
 export function watsonTools(deps: Deps): ToolDef[] {
   const ro = { readOnlyHint: true };
   return [
-    { name: 'get_case', description: 'Read-only. Call this FIRST every turn. Returns the case brief, the ship clock and minutes left before docking, where the investigator and you (Watson) are, everything on the shared notebook (cards with who found them and when), pinned notes, accusations left, the scene where you stand (people present with their topics, evidence in reach), the map, the list of people and methods, and your standing orders (voice). Nothing here reveals the truth; the page holds it.', inputSchema: S({}, []), annotations: ro,
+    { name: 'get_case', description: 'Read-only. Call this FIRST every turn. Returns the case brief, the ship clock and minutes elapsed (there is no deadline; ship time is part of the final score), where the investigator and you (Watson) are, everything on the shared notebook (cards with who found them and when), pinned notes, accusations left, the scene where you stand (people present with their topics, evidence in reach), the map, the list of people and methods, and your standing orders (voice). Nothing here reveals the truth; the page holds it.', inputSchema: S({}, []), annotations: ro,
       execute: async () => { const ep = deps.getEpisode(), s = deps.getState(), lang = deps.lang(); deps.onRead?.();
-        return toolResult(project({ ok: true, episode: { id: ep.id, title: ep.title, series: ep.series, brief: ep.brief }, clock: ep.clockLabel(s.clock), minutesLeft: Math.max(0, ep.budgetMinutes - s.clock), closed: s.clock >= ep.budgetMinutes, verdict: s.verdict,
+        return toolResult(project({ ok: true, episode: { id: ep.id, title: ep.title, series: ep.series, brief: ep.brief }, clock: ep.clockLabel(s.clock), minutesElapsed: s.clock, verdict: s.verdict,
           positions: s.pos, accusationsLeft: s.accusationsLeft, watsonCalls: s.watsonCalls, cards: s.cards, pins: s.pins, here: scene(ep, s, s.pos.watson),
           map: ep.places.map((p) => ({ id: p.id, name: p.name, adjacent: p.adjacent })), people: ep.people.map((p) => ({ id: p.id, name: p.name, role: p.role })), methods: ep.methods, voice: WATSON_VOICE }, lang) as Record<string, unknown>); } },
-    { name: 'move', description: 'Walk to a room (10 min of ship time per room entered; a distant room is reached through the connecting corridors automatically and every step is charged). Returns the scene there: people present and their topics, evidence in reach, plus the route taken.', inputSchema: S({ place_id: { type: 'string' } }, ['place_id']),
+    { name: 'move', description: 'Walk to any room (free — walking costs no ship time; a distant room is reached through the connecting corridors automatically). Returns the scene there: people present and their topics, evidence in reach, plus the route taken.', inputSchema: S({ place_id: { type: 'string' } }, ['place_id']),
       execute: async (raw) => {
         let args: { place_id: string }; try { args = parseArgs<{ place_id: string }>(raw); } catch { return toolResult({ ok: false, code: 'INVALID_ARGS', message: 'arguments must be a JSON object' }); }
         const ep = deps.getEpisode(); const from = deps.getState().pos.watson; const path = routeTo(ep, from, args.place_id);
@@ -42,7 +42,7 @@ export function watsonTools(deps: Deps): ToolDef[] {
         deps.setBusy('moving');
         let last: KernelResult | null = null;
         for (const step of path) { last = deps.dispatch({ kind: 'move', placeId: step }); if (!last.ok) break; }
-        const s = deps.getState(); const clock = { clock: ep.clockLabel(s.clock), minutesLeft: Math.max(0, ep.budgetMinutes - s.clock) };
+        const s = deps.getState(); const clock = { clock: ep.clockLabel(s.clock), minutesElapsed: s.clock };
         if (!last || !last.ok) return toolResult({ ok: false, code: last ? last.code : 'INVALID_ARGS', message: last ? last.message : 'no move', ...clock });
         return toolResult({ ok: true, ...(project(last.result, deps.lang()) as Record<string, unknown>), route: path, ...clock });
       } },

@@ -7,7 +7,7 @@ describe('clock', () => {
     let s = newRun('mini', 'hall', 'hall');
     s = advance(s, 'move'); expect(s.clock).toBe(COST.move);
     s = { ...s, clock: MINI_CASE.budgetMinutes - 1 };
-    s = advance(s, 'talk'); expect(isClosed(MINI_CASE, s)).toBe(true);
+    s = advance(s, 'talk'); expect(isClosed(MINI_CASE, s, true)).toBe(true); expect(isClosed(MINI_CASE, s)).toBe(false);   // deadline switched off by default
   });
   it('pin costs nothing', () => { const s = advance(newRun('mini', 'hall', 'hall'), 'pin'); expect(s.clock).toBe(0); });
 });

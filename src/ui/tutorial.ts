@@ -24,17 +24,15 @@ export function guide(ep: Episode, s: RunState, watsonReads: number): Guide | nu
   const goal = k + 1 < steps.length ? steps[k + 1].when : null;
   return { shown: steps[k], index: k, total: steps.length, goal, complete: goal === null };
 }
-function onRoute(ep: Episode, s: RunState, to: string, placeId: string): boolean { const r = routeTo(ep, s.pos.holmes, to); return !!r && r[0] === placeId; }
 /** Is this human action allowed while the tutorial's current goal is `goal`? */
 export function allowed(ep: Episode, s: RunState, goal: TutorialTrigger | null, cmd: Cmd): boolean {
   if (!goal) return true;
-  if (cmd.kind === 'pin') return true;
-  if (goal.kind === 'moved') return cmd.kind === 'move' && onRoute(ep, s, goal.placeId, cmd.placeId);
+  if (cmd.kind === 'pin' || cmd.kind === 'move') return true;   // walking is always free, even in the tutorial
   if (goal.kind === 'card') {
     const st = ep.statements.find((x) => x.id === goal.cardId);
-    if (st) { const where = ep.presence.find((p) => p.personId === st.personId && s.clock >= p.from && s.clock < p.to)?.placeId; if (cmd.kind === 'talk') return cmd.personId === st.personId && cmd.topicId === st.topicId; if (cmd.kind === 'move') return !!where && onRoute(ep, s, where, cmd.placeId); return false; }
+    if (st) { const where = ep.presence.find((p) => p.personId === st.personId && s.clock >= p.from && s.clock < p.to)?.placeId; if (cmd.kind === 'talk') return cmd.personId === st.personId && cmd.topicId === st.topicId; return false; void where; }
     const ev = ep.evidence.find((x) => x.id === goal.cardId);
-    if (ev) { if (cmd.kind === 'examine') return cmd.evidenceId === ev.id; if (cmd.kind === 'move') return onRoute(ep, s, ev.placeId, cmd.placeId); return false; }
+    if (ev) { if (cmd.kind === 'examine') return cmd.evidenceId === ev.id; return false; }
     return false;   // a record: Watson's job
   }
   if (goal.kind === 'accused') return cmd.kind === 'accuse';
@@ -53,4 +51,19 @@ export function hint(ep: Episode, s: RunState, goal: TutorialTrigger | null, lan
   }
   if (goal.kind === 'accused') return T.tutAccuse[lang];
   return T.tutWatson[lang];
+}
+
+/** What the screen should point at for the current tutorial goal: a room on the deck plan, the next exit to take, a person, a topic, an evidence marker. */
+export function goalTargets(ep: Episode, s: RunState, watsonReads: number): { room?: string; nextRoom?: string; person?: string; topic?: string; evidence?: string } {
+  if (!ep.tutorial || tutorialDone()) return {};
+  const g = guide(ep, s, watsonReads); if (!g || g.complete || !g.goal) return {};
+  const goal = g.goal; let room: string | undefined; const out: { room?: string; nextRoom?: string; person?: string; topic?: string; evidence?: string } = {};
+  if (goal.kind === 'moved') room = goal.placeId;
+  else if (goal.kind === 'card') {
+    const st = ep.statements.find((x) => x.id === goal.cardId);
+    if (st) { room = ep.presence.find((p) => p.personId === st.personId && s.clock >= p.from && s.clock < p.to)?.placeId; out.person = st.personId; out.topic = st.topicId; }
+    const ev = ep.evidence.find((x) => x.id === goal.cardId); if (ev) { room = ev.placeId; out.evidence = ev.id; }
+  }
+  if (room && room !== s.pos.holmes) { out.room = room; const r = routeTo(ep, s.pos.holmes, room); if (r && r.length) out.nextRoom = r[0]; }
+  return out;
 }

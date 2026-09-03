@@ -1,5 +1,5 @@
 export const T = {
-  accuse: { en: 'Accuse', ko: '기소' }, accusationsLeft: { en: 'accusations left', ko: '남은 기소' }, clock: { en: 'Ship time', ko: '선내 시각' }, docking: { en: 'Docking in', ko: '정박까지' },
+  accuse: { en: 'Accuse', ko: '기소' }, accusationsLeft: { en: 'accusations left', ko: '남은 기소' }, clock: { en: 'Ship time', ko: '선내 시각' }, docking: { en: 'Docking in', ko: '정박까지' }, elapsed: { en: 'elapsed', ko: '경과' },
   notebook: { en: 'Notebook', ko: '수첩' }, map: { en: 'Deck plan', ko: '선내 평면도' }, scene: { en: 'Here', ko: '현재 위치' }, people: { en: 'People', ko: '인물' }, evidence: { en: 'Evidence', ko: '물증' }, topics: { en: 'Ask about', ko: '화제' },
   who: { en: 'Who', ko: '누가' }, how: { en: 'How', ko: '어떻게' }, decisive: { en: 'Decisive evidence', ko: '결정적 물증' }, submit: { en: 'Submit', ko: '제출' }, cancel: { en: 'Cancel', ko: '취소' },
   solved: { en: 'Case closed.', ko: '사건 종결.' }, failed: { en: 'The truth stays sealed.', ko: '진실은 봉인됐다.' }, wrongSlots: { en: 'Wrong:', ko: '틀린 칸:' },

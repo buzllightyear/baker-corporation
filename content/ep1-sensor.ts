@@ -490,10 +490,12 @@ export const EP1_GOLDEN: ReadonlyArray<readonly ['holmes' | 'watson', Record<str
   ['watson', { kind: 'move', placeId: 'corridor_a' }],
   ['watson', { kind: 'move', placeId: 'galley' }],
   ['watson', { kind: 'talk', personId: 'reyes', topicId: 'night' }],
-  ['watson', { kind: 'talk', personId: 'lind', topicId: 'share' }],
   ['watson', { kind: 'cross_check', personId: 'sato' }],
   ['watson', { kind: 'timeline', personId: 'sato' }],
   ['watson', { kind: 'search_records', query: 'sensor pressure' }],
+  ['watson', { kind: 'cross_check', personId: 'lind' }],
+  ['watson', { kind: 'timeline' }],
+  ['watson', { kind: 'talk', personId: 'lind', topicId: 'share' }],
   ['watson', {
     kind: 'submit_theory',
     claims: [

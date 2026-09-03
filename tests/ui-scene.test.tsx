@@ -9,10 +9,10 @@ import { setLang } from '../src/i18n/lang';
 import { MINI_CASE } from './fixtures/mini-case';
 describe('click path', () => {
   beforeEach(() => { setLang('en'); registerEpisode(MINI_CASE); useGame.getState().startEpisode('mini'); });
-  it('map click walks the shortest route, paying for every step', () => {
+  it('map click walks the shortest route for free', () => {
     render(createElement(MiniMap));
-    fireEvent.click(screen.getByRole('button', { name: 'Galley' })); expect(useGame.getState().state!.pos.holmes).toBe('galley'); expect(useGame.getState().state!.clock).toBe(10);
-    fireEvent.click(screen.getByRole('button', { name: 'Engine' })); expect(useGame.getState().state!.pos.holmes).toBe('engine'); expect(useGame.getState().state!.clock).toBe(30);   // galley → hall → engine
+    fireEvent.click(screen.getByRole('button', { name: 'Galley' })); expect(useGame.getState().state!.pos.holmes).toBe('galley'); expect(useGame.getState().state!.clock).toBe(0);
+    fireEvent.click(screen.getByRole('button', { name: 'Engine' })); expect(useGame.getState().state!.pos.holmes).toBe('engine'); expect(useGame.getState().state!.clock).toBe(0);   // galley → hall → engine
   });
   it('scene shows people with topic chips; chip click adds a card that the notebook renders', () => {
     useGame.getState().dispatch('holmes', { kind: 'move', placeId: 'galley' });
