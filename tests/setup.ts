@@ -5,3 +5,6 @@ function memStorage(): Storage {
   return { get length() { return m.size; }, clear: () => { m = new Map(); }, getItem: (k) => (m.has(k) ? m.get(k)! : null), key: (i) => [...m.keys()][i] ?? null, removeItem: (k) => { m.delete(k); }, setItem: (k, v) => { m.set(k, String(v)); } };
 }
 beforeEach(() => { vi.stubGlobal('localStorage', memStorage()); });
+import { afterEach } from 'vitest';
+import { cleanup } from '@testing-library/react';
+afterEach(() => cleanup());
