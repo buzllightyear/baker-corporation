@@ -17,7 +17,7 @@ export function App() {
   const hash = useHash(); const state = useGame((s) => s.state); const hydrate = useGame((s) => s.hydrate);
   React.useEffect(() => { hydrate(); }, [hydrate]);
   const [accuseOpen, setAccuseOpen] = React.useState(false);
-  if (hash.startsWith('#/recap/')) return <RecapView code={hash.slice(8)} />;
+  if (hash.startsWith('#/recap/')) return <div className="center-wrap"><RecapView code={hash.slice(8)} /></div>;
   if (hash.startsWith('#/play') && state) {
     return (
       <>
@@ -30,5 +30,5 @@ export function App() {
       </>
     );
   }
-  return <Home />;
+  return <div className="center-wrap"><Home /></div>;
 }
