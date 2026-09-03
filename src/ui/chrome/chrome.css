@@ -1,0 +1,189 @@
+/* ==========================================================================
+   BAKER CORP — Direction A "Salvage Terminal" chrome
+   Panel frames, equipment tags, ink stamps, hazard striping, Watson console.
+
+   CLASS CONTRACT (any stream may use these; they are pure CSS):
+     .frame           panel treatment — steel border + inner dark rule + amber
+                      corner brackets + faint scanlines + boot flicker on mount
+     .frame.flat      same skin, no brackets / no scanlines (cards, chips)
+     .frame.paper     ledger variant — aged paper wash instead of brushed steel
+     .frame.hot       amber-lit variant (accent border + glow)
+     .tag             equipment tag strip: worn logo mark + owner line + serial
+       .tag .who        owner line   (e.g. "BAKER CORP · MARLOW · INV-UNIT 07")
+       .tag .sn         serial, mono, right aligned
+     .stamp           rotated ink stamp label; + .ok .warn .bad .mute .sealed
+     .hazard-strip    diagonal hazard striping (put at the top of a dialog)
+     .ticker          one-line Watson console strip, mono, blinking cursor,
+                      slides in; absolutely positioned inside .stage by default,
+                      add .inline to place it in normal flow
+     .boot            replay the boot flicker on an arbitrary element
+     .logo-mark       raster Baker mark with a CSS-drawn hexagon fallback
+
+   Raster assets live in /art/ui/ and are OPTIONAL — every rule layers them
+   over a solid colour or gradient so a missing file degrades silently.
+   ========================================================================== */
+
+:root {
+  --tex-metal: url('/art/ui/tex-metal.png');
+  --tex-paper: url('/art/ui/tex-paper.png');
+  --logo-worn: url('/art/ui/logo-worn.png');
+  --logo-clean: url('/art/ui/logo-clean.png');
+  --bracket: 9px;
+  --bracket-c: var(--amber);
+}
+
+/* --- panel frame ---------------------------------------------------------- */
+.frame,
+.minimap, .tut, .dialog, .look, .talk-rail, .hearing, .notebook {
+  position: relative;
+  border: 1px solid var(--steel);
+  background-color: var(--panel);
+  background-image: linear-gradient(180deg, rgba(19, 25, 31, .86), rgba(11, 15, 19, .93)), var(--tex-metal);
+  background-size: auto, 300px 300px;
+  background-repeat: no-repeat, repeat;
+  box-shadow: inset 0 0 0 1px #05080a, 0 10px 30px rgba(0, 0, 0, .55);
+  border-radius: 2px;
+  animation: boot .34s ease-out both;
+}
+
+/* corner brackets — eight 1px gradient slivers, four corners, no SVG */
+.frame::before,
+.minimap::before, .tut::before, .dialog::before, .look::before, .hearing::before, .epcard::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 2;
+  background-image:
+    linear-gradient(var(--bracket-c), var(--bracket-c)), linear-gradient(var(--bracket-c), var(--bracket-c)),
+    linear-gradient(var(--bracket-c), var(--bracket-c)), linear-gradient(var(--bracket-c), var(--bracket-c)),
+    linear-gradient(var(--bracket-c), var(--bracket-c)), linear-gradient(var(--bracket-c), var(--bracket-c)),
+    linear-gradient(var(--bracket-c), var(--bracket-c)), linear-gradient(var(--bracket-c), var(--bracket-c));
+  background-repeat: no-repeat;
+  background-size:
+    var(--bracket) 1px, 1px var(--bracket), var(--bracket) 1px, 1px var(--bracket),
+    var(--bracket) 1px, 1px var(--bracket), var(--bracket) 1px, 1px var(--bracket);
+  background-position:
+    left top, left top, right top, right top,
+    left bottom, left bottom, right bottom, right bottom;
+  opacity: .85;
+}
+
+/* scanline wash — kept at 5% so text never fights it */
+.frame::after,
+.minimap::after, .tut::after, .dialog::after, .hearing::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 1; border-radius: inherit;
+  background-image: repeating-linear-gradient(to bottom, rgba(198, 224, 255, .05) 0 1px, transparent 1px 3px);
+}
+
+.frame.flat::before, .frame.flat::after { content: none; }
+.frame.flat { box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .5); animation: none; }
+
+.frame.paper, .paper-skin {
+  background-image:
+    linear-gradient(180deg, rgba(20, 22, 22, .90), rgba(13, 15, 16, .94)),
+    var(--tex-paper);
+  background-size: auto, 420px 420px;
+  background-repeat: no-repeat, repeat;
+}
+
+.frame.hot { border-color: var(--amber); box-shadow: inset 0 0 0 1px #05080a, 0 0 22px var(--glow), 0 10px 30px rgba(0, 0, 0, .6); }
+.frame.danger { border-color: var(--danger); box-shadow: inset 0 0 0 1px #05080a, 0 0 22px rgba(255, 92, 77, .35), 0 10px 30px rgba(0, 0, 0, .6); }
+
+@keyframes boot {
+  0%   { opacity: 0;   filter: brightness(2.4) contrast(.7); }
+  8%   { opacity: 1; }
+  16%  { opacity: .2; }
+  26%  { opacity: 1;   filter: brightness(1.6); }
+  46%  { opacity: .72; }
+  100% { opacity: 1;   filter: none; }
+}
+.boot { animation: boot .34s ease-out both; }
+@media (prefers-reduced-motion: reduce) {
+  .frame, .minimap, .tut, .dialog, .look, .talk-rail, .hearing, .notebook, .boot { animation: none; }
+}
+
+/* --- equipment tag -------------------------------------------------------- */
+.tag {
+  display: flex; align-items: center; gap: 8px;
+  padding: 4px 9px; min-height: 22px; position: relative; z-index: 3;
+  font-family: var(--font-mono); font-size: 9px; line-height: 1;
+  letter-spacing: .08em; text-transform: uppercase; white-space: nowrap;
+  color: #6f7d86;
+  background: linear-gradient(180deg, #0e1418, #090d10);
+  border-bottom: 1px solid var(--line);
+}
+/* the worn plate is a riveted placard, so it keeps its square crop */
+.tag::before {
+  content: ''; flex: none; width: 15px; height: 15px; border-radius: 1px; opacity: .95;
+  background-image: var(--logo-worn), linear-gradient(155deg, var(--amber) 0%, #91581a 55%, #3a2409 100%);
+  background-size: 116%, cover; background-position: center;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .55);
+}
+.tag .who { overflow: hidden; text-overflow: ellipsis; }
+.tag .sn { margin-left: auto; color: var(--steel-lit); font-variant-numeric: tabular-nums; }
+
+/* --- ink stamp ------------------------------------------------------------ */
+.stamp, .verdict .st {
+  display: inline-block; align-self: flex-start;
+  padding: 2px 8px; border: 2px solid currentColor; border-radius: 2px;
+  font-family: var(--font-stencil); font-weight: 700; font-size: 12px;
+  letter-spacing: .18em; text-transform: uppercase; line-height: 1.15;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .45); opacity: .92;
+  transform: rotate(-1.6deg);
+}
+.stamp:nth-child(even), .verdict:nth-child(even) .st { transform: rotate(1.3deg); }
+.stamp.ok { color: var(--ok); } .stamp.warn { color: var(--warn); }
+.stamp.bad { color: var(--danger); } .stamp.mute { color: var(--muted); }
+.stamp.amber { color: var(--amber); }
+.stamp.sealed {
+  color: var(--danger); border-width: 3px; padding: 6px 16px;
+  font-size: 26px; letter-spacing: .26em; transform: rotate(-7deg);
+  text-shadow: 0 0 14px rgba(255, 92, 77, .35);
+}
+
+/* --- hazard striping ------------------------------------------------------ */
+.hazard-strip {
+  height: 8px; flex: none; position: relative; z-index: 3;
+  background-image: repeating-linear-gradient(115deg, var(--hazard) 0 9px, #191308 9px 19px);
+  opacity: .82; border-bottom: 1px solid #000;
+}
+.hazard-strip.thin { height: 5px; }
+
+/* --- Watson console skin -------------------------------------------------- */
+.ticker {
+  position: absolute; left: 326px; right: 14px; bottom: 14px; z-index: 4;
+  display: flex; align-items: center; gap: 8px;
+  padding: 6px 10px; border-radius: 2px;
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: .02em;
+  color: var(--console); text-shadow: 0 0 9px var(--glow-console);
+  background: linear-gradient(90deg, rgba(6, 24, 22, .93), rgba(6, 14, 17, .74));
+  border: 1px solid rgba(77, 227, 193, .32); border-left: 3px solid var(--console);
+  box-shadow: 0 6px 22px rgba(0, 0, 0, .5);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  animation: ticker-in .45s cubic-bezier(.2, .8, .25, 1) both;
+}
+.ticker::before { content: '\25B2'; flex: none; font-size: 10px; opacity: .85; }
+.ticker::after { content: '\258C'; margin-left: 2px; animation: blink 1.05s steps(1) infinite; }
+.ticker.inline { position: static; left: auto; right: auto; bottom: auto; }
+@keyframes ticker-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+@keyframes blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .ticker { animation: none; } .ticker::after { animation: none; } }
+@media (max-width: 900px) { .ticker { left: 14px; } }
+
+/* --- logo mark ------------------------------------------------------------ */
+.logo-mark { display: block; object-fit: contain; border-radius: 2px; }
+.logo-fallback {
+  display: inline-block; width: 1em; height: 1.08em;
+  background-image: linear-gradient(155deg, var(--amber) 0%, #91581a 58%, #35210a 100%);
+  clip-path: polygon(50% 0%, 100% 26%, 100% 74%, 50% 100%, 0% 74%, 0% 26%);
+  position: relative;
+}
+.logo-fallback::after {
+  content: 'B'; position: absolute; inset: 0; display: grid; place-items: center;
+  font-family: var(--font-stencil); font-weight: 700; font-size: .62em; color: #0b0e11;
+}
+
+/* --- play-area vignette --------------------------------------------------- */
+.stage::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 1;
+  background:
+    radial-gradient(ellipse 78% 72% at 50% 48%, transparent 42%, rgba(0, 0, 0, .30) 78%, rgba(0, 0, 0, .62) 100%),
+    repeating-linear-gradient(to bottom, rgba(198, 224, 255, .035) 0 1px, transparent 1px 3px);
+}
