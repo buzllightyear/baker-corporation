@@ -111,12 +111,79 @@ export const EP1: Episode = {
   ],
 
   people: [
-    { id: 'vance', name: t('Captain Iris Vance', '아이리스 밴스 선장'), role: t('Master of the Marlow', '말로우 선장'), portrait: '🎖️', truthful: false },
-    { id: 'okafor', name: t('Dr. Ada Okafor', '아다 오카포 선의'), role: t('Ship’s doctor', '선의'), portrait: '⚕️', truthful: false },
-    { id: 'lind', name: t('Teo Lind', '테오 린드'), role: t('Engineer', '기관사'), portrait: '🔧', truthful: false },
-    { id: 'sato', name: t('Kei Sato', '케이 사토'), role: t('Navigator', '항해사'), portrait: '🧭', truthful: false },
-    { id: 'reyes', name: t('Mara Reyes', '마라 레예스'), role: t('Cook', '요리사'), portrait: '🍲', truthful: true },
+    {
+      id: 'vance', name: t('Captain Iris Vance', '아이리스 밴스 선장'), role: t('Master of the Marlow', '말로우 선장'), portrait: '🎖️', truthful: false,
+      blurb: t(
+        'Twenty years on the Ceres run, and signs every manifest that leaves this ship.',
+        '세레스 항로 이십 년, 이 배에서 나가는 모든 화물 명세에 서명한다.',
+      ),
+    },
+    {
+      id: 'okafor', name: t('Dr. Ada Okafor', '아다 오카포 선의'), role: t('Ship’s doctor', '선의'), portrait: '⚕️', truthful: false,
+      blurb: t(
+        'Runs the medbay alone, and wrote the only account of the body anyone will read.',
+        '의무실을 혼자 맡고, 누구든 읽게 될 시신에 관한 유일한 기록을 썼다.',
+      ),
+    },
+    {
+      id: 'lind', name: t('Teo Lind', '테오 린드'), role: t('Engineer', '기관사'), portrait: '🔧', truthful: false,
+      blurb: t(
+        'Holds the maintenance codes for every sensor and hatch between the bridge and bay 3.',
+        '함교에서 화물칸 3까지, 모든 센서와 해치의 정비 코드를 쥐고 있다.',
+      ),
+    },
+    {
+      id: 'sato', name: t('Kei Sato', '케이 사토'), role: t('Navigator', '항해사'), portrait: '🧭', truthful: false,
+      blurb: t(
+        'Plots the course, keeps the bridge log, and has been off the watch rotation for a week.',
+        '항로를 짜고 함교 일지를 쓰며, 일주일째 당직 순번에서 빠져 있다.',
+      ),
+    },
+    {
+      id: 'reyes', name: t('Mara Reyes', '마라 레예스'), role: t('Cook', '요리사'), portrait: '🍲', truthful: true,
+      blurb: t(
+        'Found the body at 23:10, on her way to lock the galley down for the night.',
+        '밤에 주방을 잠그러 가던 23시 10분, 시신을 발견했다.',
+      ),
+    },
   ],
+
+  intro: {
+    cards: [
+      {
+        title: t('Seven and a half hours out', '입항까지 일곱 시간 반'),
+        image: '/art/rooms/bridge.jpg',
+        body: t(
+          'The Marlow is seven and a half hours from Ceres Reach with nine aboard and no port authority until dawn. Between here and there the ship is its own jurisdiction, and its own witness.',
+          '말로우는 세레스 리치까지 일곱 시간 반, 아홉 명이 타고 있고 날이 밝기 전에는 항만 당국도 오지 않는다. 그때까지 이 배는 스스로 관할이고, 스스로 증인이다.',
+        ),
+      },
+      {
+        title: t('Bay 3, 23:10', '화물칸 3, 23시 10분'),
+        image: '/art/rooms/cargo3.jpg',
+        body: t(
+          'At 23:10 the cook found cargo master Haldane face down in bay 3, one wound at the base of the skull. The bay 3 pressure sensor recorded nothing from 22:40 to 23:05. Twenty-five minutes of a ship that did not exist.',
+          '23시 10분, 요리사가 화물칸 3에서 화물 관리관 하들레인을 발견했다. 엎드린 자세, 뒤통수 아래 상처 하나. 화물칸 3의 압력 센서는 22시 40분부터 23시 5분까지 아무것도 기록하지 않았다. 배가 존재하지 않았던 25분이다.',
+        ),
+      },
+      {
+        title: t('The crew', '승무원'),
+        showCrew: true,
+        body: t(
+          'Five of the crew will speak with you. Every one of them was somewhere at 22:40, and every one of them would rather you heard it from them first.',
+          '승무원 다섯이 당신과 이야기할 것이다. 22시 40분에 모두 어딘가에 있었고, 모두 그 얘기를 자기 입으로 먼저 하고 싶어 한다.',
+        ),
+      },
+      {
+        title: t('Your posting', '당신의 배치'),
+        image: '/art/portraits/watson.jpg',
+        body: t(
+          'You are the investigator Baker Corp sent. Watson is the service unit they issued you.',
+          '당신은 베이커 사가 보낸 조사관입니다. 왓슨은 그들이 당신에게 지급한 업무용 유닛입니다.',
+        ),
+      },
+    ],
+  },
 
   presence: [
     { personId: 'sato', placeId: 'bridge', from: 0, to: 60 },

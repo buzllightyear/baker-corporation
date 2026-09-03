@@ -61,10 +61,65 @@ export const EP0: Episode = {
   ],
 
   people: [
-    { id: 'okafor', name: t('Okafor', '오카포'), role: t('Ship\'s medic', '선의'), portrait: '🩺', truthful: false },
-    { id: 'reyes', name: t('Reyes', '레이예스'), role: t('Cook', '요리사'), portrait: '🍳', truthful: true },
-    { id: 'lind', name: t('Lind', '린드'), role: t('Apprentice engineer', '견습 기관사'), portrait: '🔧', truthful: false },
+    {
+      id: 'okafor', name: t('Okafor', '오카포'), role: t('Ship\'s medic', '선의'), portrait: '🩺', truthful: false,
+      blurb: t(
+        'Keeps the medbay, the drug safe, and the only key that is supposed to open it.',
+        '의무실과 약품 금고, 그리고 그 금고를 열 수 있어야 할 유일한 열쇠를 관리한다.',
+      ),
+    },
+    {
+      id: 'reyes', name: t('Reyes', '레이예스'), role: t('Cook', '요리사'), portrait: '🍳', truthful: true,
+      blurb: t(
+        'Feeds the watch, empties the galley bin, and notices who comes past the door.',
+        '당직조를 먹이고 주방 쓰레기통을 비우면서, 문 앞을 지나가는 사람을 눈여겨본다.',
+      ),
+    },
+    {
+      id: 'lind', name: t('Lind', '린드'), role: t('Apprentice engineer', '견습 기관사'), portrait: '🔧', truthful: false,
+      blurb: t(
+        'Youngest aboard, three months on the line, still sleeps in the bunk nearest the hatch.',
+        '배에서 가장 어리고, 이 항로에 오른 지 석 달째이며, 아직 해치에서 가장 가까운 침상을 쓴다.',
+      ),
+    },
   ],
+
+  intro: {
+    cards: [
+      {
+        title: t('The Marlow', '말로우'),
+        image: '/art/rooms/corridor_a.jpg',
+        body: t(
+          'The Baker freighter Marlow runs the Titan line with a crew of six and a cargo nobody would bother to steal. Eleven hours out. Two hours to dock. After that the ship belongs to the port authority, and so does the case.',
+          '베이커 사 화물선 말로우는 승무원 여섯과 아무도 훔칠 생각을 않을 화물을 싣고 타이탄 항로를 돈다. 출항 열한 시간째. 정박까지 두 시간. 그 뒤로 배는 항만 당국의 것이 되고, 사건도 마찬가지다.',
+        ),
+      },
+      {
+        title: t('What is missing', '사라진 것'),
+        image: '/art/rooms/medbay_ep0.jpg',
+        body: t(
+          'The medbay safe stood open when the night watch ended. A box of analgesic ampoules is gone from it. Nobody reported the loss, and nobody has asked who else knew the combination.',
+          '야간 당직이 끝났을 때 의무실 금고는 열려 있었다. 안에서 진통제 앰플 한 상자가 사라졌다. 아무도 신고하지 않았고, 금고 번호를 또 누가 알았는지 묻는 사람도 없다.',
+        ),
+      },
+      {
+        title: t('The crew', '승무원'),
+        showCrew: true,
+        body: t(
+          'Six aboard, three of them awake on this watch. Baker Corporation keeps a file on each of them. The files are thin.',
+          '여섯 명이 타고 있고, 이번 당직에 깨어 있던 사람은 셋이다. 베이커 사는 각자에 대한 파일을 갖고 있다. 파일은 얇다.',
+        ),
+      },
+      {
+        title: t('Your posting', '당신의 배치'),
+        image: '/art/portraits/watson.jpg',
+        body: t(
+          'You are the investigator Baker Corp sent. Watson is the service unit they issued you.',
+          '당신은 베이커 사가 보낸 조사관입니다. 왓슨은 그들이 당신에게 지급한 업무용 유닛입니다.',
+        ),
+      },
+    ],
+  },
 
   presence: [
     { personId: 'okafor', placeId: 'medbay', from: 0, to: 120 },
