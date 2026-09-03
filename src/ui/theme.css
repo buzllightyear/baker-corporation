@@ -86,7 +86,7 @@ h1, h2 { font-family: var(--font-stencil); letter-spacing: .05em; text-transform
   display: flex; align-items: center; gap: 12px; padding: 6px 14px;
   border-bottom: 1px solid var(--steel); z-index: 5; flex-wrap: wrap; min-height: 44px; flex: none;
   background-color: #0e1317;
-  background-image: linear-gradient(180deg, rgba(22, 29, 35, .94), rgba(9, 13, 16, .97)), var(--tex-metal);
+  background-image: linear-gradient(180deg, rgba(22, 29, 35, .90), rgba(9, 13, 16, .95)), var(--tex-metal);
   background-size: auto, 300px 300px; background-repeat: no-repeat, repeat;
   box-shadow: 0 1px 0 #05080a, 0 6px 18px rgba(0, 0, 0, .45);
 }
@@ -252,7 +252,7 @@ h1, h2 { font-family: var(--font-stencil); letter-spacing: .05em; text-transform
 
 /* --- notebook = case ledger (Direction B) --------------------------------- */
 .notebook {
-  background-image: linear-gradient(180deg, rgba(20, 22, 22, .93), rgba(12, 14, 15, .95)), var(--tex-paper);
+  background-image: linear-gradient(180deg, rgba(21, 22, 21, .885), rgba(13, 14, 14, .925)), var(--tex-paper);
   background-size: auto, 420px 420px; background-repeat: no-repeat, repeat;
 }
 .notebook h2 { color: var(--steel-lit); margin: 11px 14px 9px; display: flex; align-items: baseline; gap: 8px; }
@@ -261,7 +261,7 @@ h1, h2 { font-family: var(--font-stencil); letter-spacing: .05em; text-transform
 .cards { display: flex; flex-direction: column; gap: 9px; }
 .card {
   border: 1px solid var(--line); border-left: 2px solid var(--steel); border-radius: 2px;
-  padding: 8px 10px; background: rgba(24, 27, 27, .72);
+  padding: 8px 10px; background: rgba(31, 30, 26, .58);
   box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .35);
 }
 .card:hover { border-left-color: var(--hazard); }
@@ -283,7 +283,8 @@ h1, h2 { font-family: var(--font-stencil); letter-spacing: .05em; text-transform
 }
 .card .pins div { transform: rotate(-.4deg); }
 .card form { display: flex; gap: 4px; margin-top: 7px; }
-.card form input { flex: 1; font-size: 12px; font-family: var(--font-mono); background: rgba(6, 9, 12, .6); }
+.card form input { flex: 1; font-size: 12px; font-family: var(--font-mono); background: rgba(6, 9, 12, .45); border-color: transparent; border-bottom-color: var(--line); opacity: .5; transition: opacity .15s, border-color .15s; }
+.card:hover form input, .card form input:focus { opacity: 1; border-color: var(--line); }
 .empty { color: var(--muted); font-style: italic; }
 
 /* --- tutorial box --------------------------------------------------------- */
@@ -317,7 +318,7 @@ h1, h2 { font-family: var(--font-stencil); letter-spacing: .05em; text-transform
 .dialog { padding: 0; width: min(540px, 92vw); display: flex; flex-direction: column; box-shadow: inset 0 0 0 1px #05080a, 0 24px 90px rgba(0, 0, 0, .85); }
 .dialog-body { padding: 15px 20px 18px; display: flex; flex-direction: column; gap: 11px; position: relative; z-index: 3; }
 .dialog h2 { font-size: 19px; letter-spacing: .14em; display: flex; align-items: center; gap: 10px; }
-.dialog h2 .logo-mark, .dialog h2 .logo-fallback { width: 22px; height: 24px; font-size: 22px; }
+.dialog h2 .logo-mark, .dialog h2 .logo-fallback { width: 26px; height: 26px; font-size: 26px; border: 1px solid var(--steel); box-shadow: inset 0 0 0 1px #05080a; }
 .dialog h2 .cnt { font-family: var(--font-mono); font-size: 11px; letter-spacing: .08em; color: var(--muted); text-transform: none; margin-left: auto; font-weight: 400; }
 .dialog label { display: flex; flex-direction: column; gap: 4px; font-family: var(--font-mono); font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: var(--steel-lit); }
 .dialog label select { font-family: var(--font-ui); font-size: 14px; letter-spacing: normal; text-transform: none; color: var(--ink); }
@@ -344,7 +345,7 @@ h1, h2 { font-family: var(--font-stencil); letter-spacing: .05em; text-transform
   position: absolute; left: 12px; top: 56px; width: 360px; z-index: 4;
   display: flex; flex-direction: column; overflow: visible;
   border-color: var(--hazard); backdrop-filter: blur(4px);
-  background-image: linear-gradient(180deg, rgba(21, 22, 20, .94), rgba(12, 13, 13, .95)), var(--tex-paper);
+  background-image: linear-gradient(180deg, rgba(22, 22, 20, .895), rgba(13, 14, 13, .93)), var(--tex-paper);
   background-size: auto, 420px 420px; background-repeat: no-repeat, repeat;
   box-shadow: inset 0 0 0 1px #05080a, 0 0 20px rgba(240, 192, 96, .2), 0 12px 34px rgba(0, 0, 0, .6);
 }
@@ -411,3 +412,14 @@ h1, h2 { font-family: var(--font-stencil); letter-spacing: .05em; text-transform
 .banner .k { color: var(--hazard); font-size: 10px; letter-spacing: .18em; text-transform: uppercase; border: 1px solid rgba(240, 192, 96, .5); padding: 1px 6px; border-radius: 2px; margin-right: 8px; }
 .banner.closed .k { color: var(--danger); border-color: rgba(255, 92, 77, .5); }
 .card-sec { color: var(--steel-lit); font-size: 11px; border-bottom: 1px solid var(--line); padding-bottom: 4px; }
+
+/* --- narrow viewports -----------------------------------------------------
+   #root is height:auto below 900px, so .stage (a flex child with min-height:0)
+   collapses to zero and the floating panels pile onto the banner. Give the
+   picture a floor and let the panels stack under it. Declared last so it wins
+   over the desktop .stage / .minimap / .hearing rules above. */
+@media (max-width: 900px) {
+  .stage { min-height: 58vh; }
+  .minimap, .hearing { position: static; width: auto; max-height: none; margin: 10px; }
+  .hearing-body { max-height: none; }
+}
