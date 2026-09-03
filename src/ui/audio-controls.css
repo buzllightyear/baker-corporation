@@ -1,0 +1,19 @@
+/* Topbar audio group — steel, unlit, the way every other switch on this ship looks. */
+.audio-ctl { display: inline-flex; align-items: center; gap: 6px; }
+.audio-ctl .audio-mute { padding: 2px 7px; font-size: 13px; line-height: 1.2; opacity: .45; filter: grayscale(1); }
+.audio-ctl .audio-mute.on { opacity: .9; filter: none; }
+.audio-ctl .audio-vol {
+  -webkit-appearance: none; appearance: none;
+  width: 62px; height: 3px; padding: 0; border: 0; background: var(--line);
+  border-radius: 2px; cursor: pointer; outline: none;
+}
+.audio-ctl .audio-vol::-webkit-slider-runnable-track { height: 3px; background: transparent; border-radius: 2px; }
+.audio-ctl .audio-vol::-moz-range-track { height: 3px; background: var(--line); border: 0; border-radius: 2px; }
+.audio-ctl .audio-vol::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 9px; height: 9px; margin-top: -3px; border-radius: 50%; background: var(--console); box-shadow: 0 0 5px var(--glow-console); border: none;
+}
+.audio-ctl .audio-vol::-moz-range-thumb {
+  width: 9px; height: 9px; border-radius: 50%; background: var(--console); box-shadow: 0 0 5px var(--glow-console); border: none;
+}
+.audio-ctl .audio-vol:focus-visible { outline: 1px solid var(--steel-lit); outline-offset: 3px; }

@@ -2,6 +2,7 @@ import React from 'react';
 import type { Text } from '../../content/types';
 import { useLang, pick } from '../i18n/lang';
 import './narrative.css';
+import { playSfx } from '../audio/sfx';
 
 /** Anything with an id, a bilingual name/role and an emoji: both `Person` and the trimmed
  *  person object that `scene()` returns satisfy this, so a caller can pass either. */
@@ -18,7 +19,7 @@ export function useTypewriter(text: string, msPerChar = 18) {
   React.useEffect(() => { setN(instant ? text.length : 0); }, [text, instant]);
   React.useEffect(() => {
     if (n >= text.length) return;
-    const id = setTimeout(() => setN((k) => Math.min(text.length, k + 1)), msPerChar);
+    const id = setTimeout(() => { playSfx('type'); setN((k) => Math.min(text.length, k + 1)); }, msPerChar);
     return () => clearTimeout(id);
   }, [n, text, msPerChar]);
   const complete = React.useCallback(() => setN(text.length), [text.length]);
