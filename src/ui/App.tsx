@@ -2,8 +2,8 @@ import React from 'react';
 import { useGame } from '../state/store';
 import { useWebmcpRoot } from '../webmcp/useWebmcp';
 import { TopBar } from './TopBar';
-import { MapPanel } from './MapPanel';
-import { ScenePanel } from './ScenePanel';
+import { MiniMap } from './MiniMap';
+import { SceneStage } from './SceneStage';
 import { NotebookPanel } from './NotebookPanel';
 import { NoAgentBanner } from './NoAgentBanner';
 import { AccuseDialog } from './AccuseDialog';
@@ -23,7 +23,7 @@ export function App() {
       <>
         <TopBar onAccuse={() => setAccuseOpen(true)} />
         <NoAgentBanner />
-        <main className="cols"><MapPanel /><ScenePanel /><NotebookPanel /></main>
+        <main className="play"><div className="stage-col"><SceneStage /><MiniMap /></div><NotebookPanel /></main>
         <TutorialChips />
         <AccuseDialog open={accuseOpen} onClose={() => setAccuseOpen(false)} />
         <VerdictView />
