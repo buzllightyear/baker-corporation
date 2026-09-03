@@ -14,6 +14,8 @@ import { HearingPanel } from './HearingPanel';
 import { Home } from './Home';
 import { Intro, introSeen } from './Intro';
 import { Dossier } from './Dossier';
+import { useAudioBindings } from '../audio/useAudioBindings';
+import { playSfx } from '../audio/sfx';
 function useHash() { const [h, setH] = React.useState(location.hash); React.useEffect(() => { const f = () => setH(location.hash); addEventListener('hashchange', f); return () => removeEventListener('hashchange', f); }, []); return h; }
 export function App() {
   useWebmcpRoot();
@@ -23,11 +25,12 @@ export function App() {
   const episode = useGame((s) => s.episode); const epId = episode?.id ?? null;
   const [introOpen, setIntroOpen] = React.useState(false); const [crewOpen, setCrewOpen] = React.useState(false);
   React.useEffect(() => { if (epId && !introSeen(epId)) setIntroOpen(true); }, [epId]);
+  useAudioBindings(hash.startsWith('#/play') && !!state && state.verdict === null);
   if (hash.startsWith('#/recap/')) return <div className="center-wrap"><RecapView code={hash.slice(8)} /></div>;
   if (hash.startsWith('#/play') && state) {
     return (
       <>
-        <TopBar onAccuse={() => setAccuseOpen(true)} onCaseFile={() => setIntroOpen(true)} onCrew={() => setCrewOpen((v) => !v)} />
+        <TopBar onAccuse={() => { playSfx('open'); setAccuseOpen(true); }} onCaseFile={() => { playSfx('open'); setIntroOpen(true); }} onCrew={() => { playSfx('open'); setCrewOpen((v) => !v); }} />
         <NoAgentBanner />
         <main className={'play' + (nbOpen ? '' : ' nb-closed')}><div className="stage-col"><SceneStage /><MiniMap /><HearingPanel /></div>{nbOpen && <NotebookPanel />}</main>
         <TutorialChips />

@@ -16,6 +16,7 @@ import { EvidenceCloseup } from './EvidenceCloseup';
 import { DialogueView } from './DialogueView';
 import { WatsonTicker } from './WatsonTicker';
 import './stage-fx.css';
+import { playSfx } from '../audio/sfx';
 const EXIT_POS: Record<'left' | 'right' | 'ahead' | 'back', React.CSSProperties> = {
   left: { left: 12, top: '50%', transform: 'translateY(-50%)' }, right: { right: 12, top: '50%', transform: 'translateY(-50%)' },
   ahead: { left: '50%', top: '34%', transform: 'translateX(-50%)' }, back: { left: '50%', bottom: 14, transform: 'translateX(-50%)' },
@@ -125,21 +126,22 @@ export function SceneStage() {
       <div className="stage-caption"><b>{pick(sc.place.name, lang)}</b> {img === 'ok' && <span>{pick(sc.place.description, lang)}</span>}</div>
       {sc.evidence.map((e) => { const h = art?.evidence?.[e.id] ?? { x: 50, y: 80 }; return (
         <button key={e.id} className={'hot evidence' + (goal.evidence === e.id ? ' goal' : '') + (eye === e.id ? ' watson-eye' : '')} style={hotStyle(h.x, h.y)} aria-label={pick(e.name, lang)} title={pick(e.name, lang)}
-          onClick={() => { const r = dispatch({ kind: 'examine', evidenceId: e.id }); if (!r.ok) { show(r.message); return; } const card = (r.result as { card: Card }).card;
+          onMouseEnter={() => playSfx('hover')}
+          onClick={() => { const r = dispatch({ kind: 'examine', evidenceId: e.id }); if (!r.ok) { show(r.message); return; } playSfx('examine'); const card = (r.result as { card: Card }).card;
             setPerson(null); setDialogue(null); setCloseup({ evidenceId: e.id, cardId: card.id, name: pick(e.name, lang), body: pick(card.body, lang), at: h }); }}>
           <span className="ring" /><span className="lbl">{pick(e.name, lang)}</span>
         </button>); })}
       {sc.people.map((p, i) => { const h = art?.people?.[p.id] ?? peoplePos(i, sc.people.length); const src = PORTRAIT[p.id]; return (
-        <button key={p.id} className={'hot person' + (person === p.id ? ' on' : '') + (goal.person === p.id ? ' goal' : '') + (eye === p.id ? ' watson-eye' : '')} style={hotStyle(h.x, h.y)} aria-label={pick(p.name, lang)} onClick={() => { setCloseup(null); setDialogue(null); setPerson(person === p.id ? null : p.id); }}>
+        <button key={p.id} className={'hot person' + (person === p.id ? ' on' : '') + (goal.person === p.id ? ' goal' : '') + (eye === p.id ? ' watson-eye' : '')} style={hotStyle(h.x, h.y)} aria-label={pick(p.name, lang)} onMouseEnter={() => playSfx('hover')} onClick={() => { playSfx('chip'); setCloseup(null); setDialogue(null); setPerson(person === p.id ? null : p.id); }}>
           <span className="face">{src ? <img src={src} alt="" onError={(ev) => { (ev.currentTarget as HTMLImageElement).style.display = 'none'; }} /> : null}<span className="emoji">{p.portrait}</span></span>
           <span className="lbl">{pick(p.name, lang)}<small>{pick(p.role, lang)}</small></span>
         </button>); })}
-      {exits.map((x) => <button key={x.id} className={'exit ' + x.dir + (goal.nextRoom === x.id ? ' goal' : '')} style={EXIT_POS[x.dir]} aria-label={x.name} onClick={() => { const r = dispatch({ kind: 'move', placeId: x.id }); if (!r.ok) show(r.message); }}><span className="arrow">{ARROW[x.dir]}</span><span className="lbl">{x.name}</span></button>)}
+      {exits.map((x) => <button key={x.id} className={'exit ' + x.dir + (goal.nextRoom === x.id ? ' goal' : '')} style={EXIT_POS[x.dir]} aria-label={x.name} onMouseEnter={() => playSfx('hover')} onClick={() => { const r = dispatch({ kind: 'move', placeId: x.id }); if (!r.ok) show(r.message); }}><span className="arrow">{ARROW[x.dir]}</span><span className="lbl">{x.name}</span></button>)}
       {sel && !closeup && (() => { const { head, rest } = topicSplit(sel); const open = !!expanded[sel.id]; const chips = open ? [...head, ...rest] : head; return (
         <div className="talk-rail">
           <div className="who">{sel.portrait} {pick(sel.name, lang)} · <span>{T.topics[lang]}</span></div>
           <div className="chips">
-            {chips.map((t) => <button key={t.id} className={'chip topic' + (goal.topic === t.id && goal.person === sel.id ? ' goal' : '')} onClick={() => { const r = dispatch({ kind: 'talk', personId: sel.id, topicId: t.id }); if (!r.ok) { show(r.message); return; } const card = (r.result as { card: Card }).card; setDialogue({ personId: sel.id, topicLabel: pick(t.label, lang), text: pick(card.body, lang) }); }}>{pick(t.label, lang)}</button>)}
+            {chips.map((t) => <button key={t.id} className={'chip topic' + (goal.topic === t.id && goal.person === sel.id ? ' goal' : '')} onClick={() => { playSfx('chip'); const r = dispatch({ kind: 'talk', personId: sel.id, topicId: t.id }); if (!r.ok) { show(r.message); return; } const card = (r.result as { card: Card }).card; setDialogue({ personId: sel.id, topicLabel: pick(t.label, lang), text: pick(card.body, lang) }); }}>{pick(t.label, lang)}</button>)}
             {rest.length > 0 && <button className="chip more" onClick={() => setExpanded((s) => ({ ...s, [sel.id]: !open }))}>{open ? T.fewerTopics[lang] : T.moreTopics[lang].replace('{n}', String(rest.length))}</button>}
           </div>
         </div>
