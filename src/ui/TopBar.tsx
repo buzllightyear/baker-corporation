@@ -4,6 +4,7 @@ import { useWebmcpStatus } from '../webmcp/useWebmcp';
 export function TopBar({ onAccuse }: { onAccuse: () => void }) {
   const ep = useGame((s) => s.episode)!; const st = useGame((s) => s.state)!;
   const { lang, set } = useLang(); const { available, count } = useWebmcpStatus();
+  const nbOpen = useGame((s) => s.notebookOpen); const toggleNb = useGame((s) => s.toggleNotebook); const nCards = st.cards.filter((c) => c.kind !== 'place').length;
   const left = Math.max(0, ep.budgetMinutes - st.clock);
   const closed = st.clock >= ep.budgetMinutes;
   return (
@@ -14,6 +15,7 @@ export function TopBar({ onAccuse }: { onAccuse: () => void }) {
         <div className="badge" title={T.accusationsLeft[lang]}>{st.accusationsLeft} {T.accusationsLeft[lang]}</div>
         <div className={'badge' + (available && count > 0 ? ' on' : '')} title="WebMCP">● {count} {T.siteTools[lang]}</div>
         <div className="spacer" />
+        <button className={'nb-toggle' + (nbOpen ? ' on' : '')} onClick={toggleNb} aria-label="notebook">{nbOpen ? '▸' : '◂'} {T.notebook[lang]} · {nCards}</button>
         <button onClick={() => set(lang === 'en' ? 'ko' : 'en')} aria-label="language">{lang === 'en' ? '한국어' : 'English'}</button>
         <button className="accuse" onClick={onAccuse} disabled={st.verdict !== null}>{T.accuse[lang]}</button>
       </header>

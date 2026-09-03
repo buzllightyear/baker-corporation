@@ -12,7 +12,7 @@ function done(step: TutorialStep, s: NonNullable<ReturnType<typeof useGame.getSt
   return false;
 }
 export function TutorialChips() {
-  const ep = useGame((s) => s.episode)!; const st = useGame((s) => s.state)!; const activity = useGame((s) => s.activity); const lang = useLang((s) => s.lang);
+  const ep = useGame((s) => s.episode)!; const st = useGame((s) => s.state)!; const activity = useGame((s) => s.activity); const lang = useLang((s) => s.lang); const nbOpen = useGame((s) => s.notebookOpen);
   const key = `baker.tut.${ep.id}`;
   const [dismissed, setDismissed] = React.useState<string[]>(() => { try { return JSON.parse(localStorage.getItem(key) ?? '[]'); } catch { return []; } });
   const [copied, setCopied] = React.useState(false);
@@ -24,7 +24,7 @@ export function TutorialChips() {
   const dismiss = () => { const next = [...dismissed, step.id]; setDismissed(next); try { localStorage.setItem(key, JSON.stringify(next)); } catch {} };
   const copy = async () => { if (!step.chip) return; try { await navigator.clipboard.writeText(pick(step.chip, lang)); setCopied(true); setTimeout(() => setCopied(false), 1500); } catch {} };
   return (
-    <div className="tut">
+    <div className="tut" style={nbOpen ? undefined : { right: 14 }}>
       <div className="label">Tutorial · {ep.tutorial.indexOf(step) + 1}/{ep.tutorial.length}</div>
       <p className="say">{pick(step.say, lang)}</p>
       {step.chip && <div className="chipline"><span className="label">{T.sayToWatson[lang]}</span><button onClick={copy} title="copy">{copied ? T.copied[lang] : pick(step.chip, lang)}</button></div>}

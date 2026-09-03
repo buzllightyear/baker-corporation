@@ -24,6 +24,9 @@ h1, h2, h3 { margin: 0; font-weight: 600; }
 .banner.closed { background: #2a1210; border-color: #6a2a20; color: var(--danger); }
 /* play layout */
 .play { display: grid; grid-template-columns: 1fr 340px; flex: 1; min-height: 0; }
+.play.nb-closed { grid-template-columns: 1fr; }
+.play.nb-closed ~ .tut, .nb-closed-tut { right: 14px; }
+.topbar .nb-toggle.on { border-color: var(--holmes); color: var(--holmes); }
 .stage-col { position: relative; min-width: 0; display: flex; flex-direction: column; background: #000; }
 .notebook { border-left: 1px solid var(--line); background: var(--panel); overflow-y: auto; padding: 12px 14px; }
 @media (max-width: 900px) { body { overflow: auto; } #root { height: auto; } .play { grid-template-columns: 1fr; } .notebook { border-left: 0; border-top: 1px solid var(--line); } }

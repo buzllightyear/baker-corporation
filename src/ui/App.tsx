@@ -16,14 +16,14 @@ export function App() {
   useWebmcpRoot();
   const hash = useHash(); const state = useGame((s) => s.state); const hydrate = useGame((s) => s.hydrate);
   React.useEffect(() => { hydrate(); }, [hydrate]);
-  const [accuseOpen, setAccuseOpen] = React.useState(false);
+  const [accuseOpen, setAccuseOpen] = React.useState(false); const nbOpen = useGame((s) => s.notebookOpen);
   if (hash.startsWith('#/recap/')) return <div className="center-wrap"><RecapView code={hash.slice(8)} /></div>;
   if (hash.startsWith('#/play') && state) {
     return (
       <>
         <TopBar onAccuse={() => setAccuseOpen(true)} />
         <NoAgentBanner />
-        <main className="play"><div className="stage-col"><SceneStage /><MiniMap /></div><NotebookPanel /></main>
+        <main className={'play' + (nbOpen ? '' : ' nb-closed')}><div className="stage-col"><SceneStage /><MiniMap /></div>{nbOpen && <NotebookPanel />}</main>
         <TutorialChips />
         <AccuseDialog open={accuseOpen} onClose={() => setAccuseOpen(false)} />
         <VerdictView />
