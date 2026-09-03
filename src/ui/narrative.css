@@ -25,7 +25,7 @@
 .nv-card-body { margin: 0; font-size: 16px; line-height: 1.65; color: var(--ink, #e8e4d8); text-wrap: pretty; }
 
 .nv-crew { margin-top: 20px; border-top: 1px solid var(--line, #2a323b); padding-top: 16px; }
-.nv-crew-photo { display: block; width: 100%; max-height: 190px; object-fit: cover; border-radius: 4px; margin-bottom: 14px; filter: saturate(.7) contrast(1.05); }
+.nv-crew-photo { width: 100%; aspect-ratio: 16 / 9; height: auto; max-height: 38vh; object-fit: cover; object-position: 50% 22%; border-radius: 6px; display: block; margin-bottom: 12px; }
 .nv-crew-head { font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: var(--muted, #8b9199); margin-bottom: 10px; }
 .nv-crew-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
 .nv-crew-row { display: flex; gap: 12px; align-items: flex-start; }
