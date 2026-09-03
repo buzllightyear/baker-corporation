@@ -5,6 +5,8 @@ import { invoke } from '../kernel/kernel';
 import { newRun } from '../kernel/model';
 import type { Actor, Cmd, KernelResult, RunState } from '../kernel/model';
 import { loadRun, saveRun } from './persist';
+import { crewMoves } from '../kernel/presence';
+import { currentLang, pick } from '../i18n/lang';
 const registry = new Map<string, Episode>(EPISODES.map((e) => [e.id, e]));
 export function registerEpisode(e: Episode) { registry.set(e.id, e); }
 export function getEpisode(id: string): Episode | undefined { return registry.get(id); }
@@ -15,6 +17,16 @@ export interface Activity { ts: number; actor: Actor | 'sys'; verb: string; ok: 
 export interface TickerLine { id: number; text: string; placeId?: string; targetId?: string; at: number }
 export const TICKER_KEEP = 5;
 let tickerId = 0;
+/** The manifest moved someone while the clock advanced: say so on the stage ticker, in the UI language,
+ *  so a player who met the engineer in the engine room and finds him in the galley reads a move, not a twin. */
+function announceMoves(ep: Episode, before: number, after: number, push: GameStore['pushTicker']): void {
+  const lang = currentLang();
+  const place = (id: string | null) => (id ? pick(ep.places.find((p) => p.id === id)?.name ?? { en: id, ko: id }, lang) : '—');
+  for (const m of crewMoves(ep, before, after)) {
+    const who = pick(ep.people.find((p) => p.id === m.personId)?.name ?? { en: m.personId, ko: m.personId }, lang);
+    push({ text: `◆ ${who}: ${place(m.from)} → ${place(m.to)}`, placeId: m.to ?? undefined, targetId: m.personId });
+  }
+}
 const BUSY_MS = 1200;
 let busyTimer: ReturnType<typeof setTimeout> | null = null;
 interface GameStore {
@@ -43,7 +55,7 @@ export const useGame = create<GameStore>((set, get) => ({
   dispatch: (actor, cmd) => {
     const { episode, state } = get(); if (!episode || !state) return { ok: false, code: 'INVALID_ARGS', message: 'No episode running.' };
     const r = invoke(episode, state, actor, cmd);
-    if (r.ok) { saveRun(r.state); set({ state: r.state }); get().log({ actor, verb: cmd.kind, ok: true }); if (cmd.kind === 'submit_theory') set({ lastHearing: { at: r.state.clock, verdicts: (r.result as { verdicts: HearingVerdict[] }).verdicts } }); }
+    if (r.ok) { saveRun(r.state); set({ state: r.state }); get().log({ actor, verb: cmd.kind, ok: true }); announceMoves(episode, state.clock, r.state.clock, get().pushTicker); if (cmd.kind === 'submit_theory') set({ lastHearing: { at: r.state.clock, verdicts: (r.result as { verdicts: HearingVerdict[] }).verdicts } }); }
     else get().log({ actor, verb: cmd.kind, ok: false, code: r.code, detail: r.message });
     return r;
   },
