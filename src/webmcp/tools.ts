@@ -4,6 +4,7 @@ import type { ToolDef } from './registry';
 import { parseArgs, toolResult } from './normalize';
 import { WATSON_VOICE } from './voice';
 import { scene } from '../kernel/kernel';
+import { routeTo } from '../kernel/path';
 export interface Deps { getState: () => RunState; getEpisode: () => Episode; dispatch: (cmd: Cmd) => KernelResult; setBusy: (s: string | null) => void; lang: () => 'en' | 'ko' }
 const isText = (v: unknown): v is Text => !!v && typeof v === 'object' && !Array.isArray(v) && 'en' in (v as object) && 'ko' in (v as object) && typeof (v as Text).en === 'string';
 /** Walks a tool response and replaces every {en,ko} with the current language's string — cards never leak as language objects. */
@@ -32,8 +33,19 @@ export function watsonTools(deps: Deps): ToolDef[] {
         return toolResult(project({ ok: true, episode: { id: ep.id, title: ep.title, series: ep.series, brief: ep.brief }, clock: ep.clockLabel(s.clock), minutesLeft: Math.max(0, ep.budgetMinutes - s.clock), closed: s.clock >= ep.budgetMinutes, verdict: s.verdict,
           positions: s.pos, accusationsLeft: s.accusationsLeft, watsonCalls: s.watsonCalls, cards: s.cards, pins: s.pins, here: scene(ep, s, s.pos.watson),
           map: ep.places.map((p) => ({ id: p.id, name: p.name, adjacent: p.adjacent })), people: ep.people.map((p) => ({ id: p.id, name: p.name, role: p.role })), methods: ep.methods, voice: WATSON_VOICE }, lang) as Record<string, unknown>); } },
-    { name: 'move', description: 'Walk to an adjacent room (10 min of ship time). Returns the scene there: people present and their topics, evidence in reach. Adjacency is in get_case.map.', inputSchema: S({ place_id: { type: 'string' } }, ['place_id']),
-      execute: (raw) => run<{ place_id: string }>(deps, raw, 'moving', (a) => ({ kind: 'move', placeId: a.place_id })) },
+    { name: 'move', description: 'Walk to a room (10 min of ship time per room entered; a distant room is reached through the connecting corridors automatically and every step is charged). Returns the scene there: people present and their topics, evidence in reach, plus the route taken.', inputSchema: S({ place_id: { type: 'string' } }, ['place_id']),
+      execute: async (raw) => {
+        let args: { place_id: string }; try { args = parseArgs<{ place_id: string }>(raw); } catch { return toolResult({ ok: false, code: 'INVALID_ARGS', message: 'arguments must be a JSON object' }); }
+        const ep = deps.getEpisode(); const from = deps.getState().pos.watson; const path = routeTo(ep, from, args.place_id);
+        if (!path) return toolResult({ ok: false, code: 'UNKNOWN_ID', message: `No route from ${from} to ${args.place_id}. Rooms: ${ep.places.map((p) => p.id).join(', ')}.` });
+        if (path.length === 0) return toolResult({ ok: true, ...(project(scene(ep, deps.getState(), from), deps.lang()) as Record<string, unknown>), route: [], note: 'Already there.' });
+        deps.setBusy('moving');
+        let last: KernelResult | null = null;
+        for (const step of path) { last = deps.dispatch({ kind: 'move', placeId: step }); if (!last.ok) break; }
+        const s = deps.getState(); const clock = { clock: ep.clockLabel(s.clock), minutesLeft: Math.max(0, ep.budgetMinutes - s.clock) };
+        if (!last || !last.ok) return toolResult({ ok: false, code: last ? last.code : 'INVALID_ARGS', message: last ? last.message : 'no move', ...clock });
+        return toolResult({ ok: true, ...(project(last.result, deps.lang()) as Record<string, unknown>), route: path, ...clock });
+      } },
     { name: 'talk', description: 'Ask a person in your room about one of their listed topics (5 min). Returns their statement as a notebook card. Relay it in their voice; the card is all they said.', inputSchema: S({ person_id: { type: 'string' }, topic_id: { type: 'string' } }, ['person_id', 'topic_id']),
       execute: (raw) => run<{ person_id: string; topic_id: string }>(deps, raw, 'talking', (a) => ({ kind: 'talk', personId: a.person_id, topicId: a.topic_id })) },
     { name: 'ask', description: 'Ask a person in your room a free question (5 min). Write the question in ENGLISH keywords even if the investigator spoke another language. The page finds what that person is able to say about it; if it returns unknown, they have nothing on that — say so in character, never invent.', inputSchema: S({ person_id: { type: 'string' }, question: { type: 'string', minLength: 2, maxLength: 200 } }, ['person_id', 'question']),
