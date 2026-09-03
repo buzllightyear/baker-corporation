@@ -13,6 +13,7 @@ import { guide } from '../ui/tutorial';
 import { playSfx, playSequence } from './sfx';
 import type { SfxName } from './sfx';
 import { ambience, mapRoom } from './ambience';
+import { music } from './music';
 import { isUnlocked, onUnlock, unlock } from './engine';
 
 const HEARING_GAP_MS = 180;
@@ -73,6 +74,7 @@ export function reactTo(prev: Snap, next: Snap): void {
   }
 
   // preliminary hearing: one cue per claim, read out in order
+  if (next.hearingAt !== prev.hearingAt && next.hearing) { music.set('tense'); setTimeout(() => { if (music.current() === 'tense') music.set('play'); }, 25000); }
   if (next.hearingAt !== prev.hearingAt && next.hearing) {
     const cues = next.hearing.map((v) => HEARING_SFX[v.status]).filter((n): n is SfxName => n !== null);
     if (cues.length) playSequence(cues, HEARING_GAP_MS);
@@ -82,7 +84,7 @@ export function reactTo(prev: Snap, next: Snap): void {
 
   if (next.verdict !== prev.verdict && next.verdict) {
     playSfx(next.verdict === 'solved' ? 'solved' : 'failed');
-    ambience.stop(2.2);
+    ambience.stop(2.2); music.set('off');
   }
 
   if (next.step !== prev.step && next.step >= 0 && prev.step >= 0) playSfx('tutorial');
@@ -110,17 +112,17 @@ export function useAudioBindings(active: boolean): void {
       if (typeof window !== 'undefined' && /[?&]bridge=1/.test(location.search)) {
         const w = window as unknown as { __bakerAudio?: { played: string[]; amb?: () => { running: boolean; room: string } } };
         if (!w.__bakerAudio) w.__bakerAudio = { played: [] };
-        w.__bakerAudio.amb = () => ({ running: ambience.isRunning(), room: ambience.currentRoom() });
+        w.__bakerAudio.amb = () => ({ running: ambience.isRunning(), room: ambience.currentRoom(), music: music.current() });
       }
     } catch { /* ignore */ }
-    if (!active) { ambience.stop(); return; }
+    if (!active) { ambience.stop(); if (isUnlocked()) music.set(location.hash.startsWith('#/play') ? 'off' : 'home'); else onUnlock(() => music.set(location.hash.startsWith('#/play') ? 'off' : 'home')); return; }
     const place = useGame.getState().state?.pos.holmes ?? null;
     ambience.setRoom(mapRoom(place));
-    if (isUnlocked()) { ambience.start(); return; }
+    if (isUnlocked()) { ambience.start(); music.set('play'); return; }
     // no gesture yet: come back the moment the context is allowed to run
     unlock();
-    return onUnlock(() => ambience.start());
+    return onUnlock(() => { ambience.start(); music.set('play'); });
   }, [active]);
 
-  React.useEffect(() => () => { ambience.stop(0.3); }, []);
+  React.useEffect(() => () => { ambience.stop(0.3); music.set('off'); }, []);
 }
