@@ -1,2 +1,4 @@
 import type { Episode } from './types';
-export const EPISODES: Episode[] = [];
+import { EP0 } from './ep0-titan';
+
+export const EPISODES: Episode[] = [EP0];
