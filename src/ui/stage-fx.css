@@ -69,3 +69,6 @@
   .stage .hot:hover { filter: brightness(1.35); }
   .stage-art { transition: none !important; }
 }
+
+/* hotspots stay clickable above the minimap panel */
+.stage .hot { z-index: 6; }

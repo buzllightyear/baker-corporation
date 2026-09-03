@@ -8,6 +8,10 @@ import type { Card } from '../kernel/model';
 import { useToast } from './useToast';
 import { useGuard } from './useGuard';
 import { goalTargets } from './tutorial';
+import { StageArt3D } from './StageArt3D';
+import { hasWebGL } from './webgl';
+import { loadDepth, hotspotOffset, flatSampler, PARALLAX_STRENGTH, type DepthSampler } from './depth';
+const depthUrl = (image: string) => image.replace(/\.jpg$/, '.depth.png');
 import { EvidenceCloseup } from './EvidenceCloseup';
 import { DialogueView } from './DialogueView';
 import { WatsonTicker } from './WatsonTicker';
@@ -36,6 +40,9 @@ export function SceneStage() {
   const [dialogue, setDialogue] = React.useState<{ personId: string; topicLabel: string; text: string } | null>(null);
   const [expanded, setExpanded] = React.useState<Record<string, boolean>>({});
   const [par, setPar] = React.useState({ x: 0, y: 0 });
+  const gl = React.useMemo(() => hasWebGL(), []);
+  const stageRef = React.useRef<HTMLDivElement>(null);
+  const [dep, setDep] = React.useState<DepthSampler>(flatSampler);
   const sc = scene(ep, st, st.pos.holmes);
   const art = roomArt(ep.id, st.pos.holmes);
   const reads = useGame((s) => s.watsonReads); const goal = goalTargets(ep, st, reads);
@@ -53,6 +60,18 @@ export function SceneStage() {
     return () => clearTimeout(t);
   }, [st.pos.holmes, ep.id]);
   React.useEffect(() => { setPerson(null); setCloseup(null); setDialogue(null); setExpanded({}); }, [st.pos.holmes]);
+  const artImage = art?.image ?? null;
+  React.useEffect(() => {
+    if (!gl || !artImage) { setDep(flatSampler()); return; }
+    let live = true;
+    loadDepth(depthUrl(artImage)).then((d) => { if (live) setDep(d); });
+    return () => { live = false; };
+  }, [gl, artImage]);
+  const hotStyle = (x: number, y: number): React.CSSProperties => {
+    const box = stageRef.current;
+    const off = gl && dep.ok && box && !closeup ? hotspotOffset(dep, x / 100, y / 100, par, PARALLAX_STRENGTH, box.clientWidth, box.clientHeight) : { dx: 0, dy: 0 };
+    return { left: `${x}%`, top: `${y}%`, transform: `translate(-50%, -50%) translate(${off.dx}px, ${off.dy}px)`, transition: 'transform 120ms linear' };
+  };
 
   // — the zoom transition has to outlive the close-up itself, so the way back out is just as slow —
   const [zooming, setZooming] = React.useState(false);
@@ -97,19 +116,21 @@ export function SceneStage() {
   };
 
   return (
-    <div className={'stage' + (img === 'ok' ? ' has-art' : '') + (leaving !== null ? ' fx-transition' : '') + (closeup ? ' closeup-on' : '')} onMouseMove={onMove} onMouseLeave={() => setPar({ x: 0, y: 0 })}>
+    <div ref={stageRef} className={'stage' + (img === 'ok' ? ' has-art' : '') + (leaving !== null ? ' fx-transition' : '') + (closeup ? ' closeup-on' : '')} onMouseMove={onMove} onMouseLeave={() => setPar({ x: 0, y: 0 })}>
       {leaving && <div className="stage-art fx-out" style={{ backgroundImage: `url(${leaving})` }} />}
-      <div key={st.pos.holmes} className={'stage-art' + (leaving !== null ? ' fx-in' : '')} style={artStyle} />
+      {img === 'ok' && art && gl
+        ? <StageArt3D key={st.pos.holmes} image={art.image} depth={depthUrl(art.image)} parallax={par} zoom={closeup ? { x: closeup.at.x / 100, y: closeup.at.y / 100, scale: ZOOM } : null} />
+        : <div key={st.pos.holmes} className={'stage-art' + (leaving !== null ? ' fx-in' : '')} style={artStyle} />}
       {img !== 'ok' && <div className="stage-placeholder"><div className="ph-name">{pick(sc.place.name, lang)}</div><div className="ph-desc">{pick(sc.place.description, lang)}</div></div>}
       <div className="stage-caption"><b>{pick(sc.place.name, lang)}</b> {img === 'ok' && <span>{pick(sc.place.description, lang)}</span>}</div>
       {sc.evidence.map((e) => { const h = art?.evidence?.[e.id] ?? { x: 50, y: 80 }; return (
-        <button key={e.id} className={'hot evidence' + (goal.evidence === e.id ? ' goal' : '') + (eye === e.id ? ' watson-eye' : '')} style={{ left: `${h.x}%`, top: `${h.y}%` }} aria-label={pick(e.name, lang)} title={pick(e.name, lang)}
+        <button key={e.id} className={'hot evidence' + (goal.evidence === e.id ? ' goal' : '') + (eye === e.id ? ' watson-eye' : '')} style={hotStyle(h.x, h.y)} aria-label={pick(e.name, lang)} title={pick(e.name, lang)}
           onClick={() => { const r = dispatch({ kind: 'examine', evidenceId: e.id }); if (!r.ok) { show(r.message); return; } const card = (r.result as { card: Card }).card;
             setPerson(null); setDialogue(null); setCloseup({ evidenceId: e.id, cardId: card.id, name: pick(e.name, lang), body: pick(card.body, lang), at: h }); }}>
           <span className="ring" /><span className="lbl">{pick(e.name, lang)}</span>
         </button>); })}
       {sc.people.map((p, i) => { const h = art?.people?.[p.id] ?? peoplePos(i, sc.people.length); const src = PORTRAIT[p.id]; return (
-        <button key={p.id} className={'hot person' + (person === p.id ? ' on' : '') + (goal.person === p.id ? ' goal' : '') + (eye === p.id ? ' watson-eye' : '')} style={{ left: `${h.x}%`, top: `${h.y}%` }} aria-label={pick(p.name, lang)} onClick={() => { setCloseup(null); setDialogue(null); setPerson(person === p.id ? null : p.id); }}>
+        <button key={p.id} className={'hot person' + (person === p.id ? ' on' : '') + (goal.person === p.id ? ' goal' : '') + (eye === p.id ? ' watson-eye' : '')} style={hotStyle(h.x, h.y)} aria-label={pick(p.name, lang)} onClick={() => { setCloseup(null); setDialogue(null); setPerson(person === p.id ? null : p.id); }}>
           <span className="face">{src ? <img src={src} alt="" onError={(ev) => { (ev.currentTarget as HTMLImageElement).style.display = 'none'; }} /> : null}<span className="emoji">{p.portrait}</span></span>
           <span className="lbl">{pick(p.name, lang)}<small>{pick(p.role, lang)}</small></span>
         </button>); })}
