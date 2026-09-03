@@ -11,4 +11,5 @@ export const T = {
   tutGo: { en: 'Tutorial: go to', ko: '튜토리얼: 이동할 곳 —' }, tutTalk: { en: 'Tutorial: talk to', ko: '튜토리얼: 대화 —' }, tutExamine: { en: 'Tutorial: examine', ko: '튜토리얼: 조사 —' },
   tutWatson: { en: "Tutorial: Watson's turn — paste the sentence into the chat.", ko: '튜토리얼: 왓슨 차례입니다. 문장을 채팅에 붙여넣으세요.' }, tutAccuse: { en: 'Tutorial: press Accuse.', ko: '튜토리얼: 기소 버튼을 누르세요.' },
   tutLocked: { en: 'Finish the tutorial episode first.', ko: '튜토리얼 에피소드를 먼저 끝내세요.' }, tutDone: { en: 'Tutorial complete.', ko: '튜토리얼 완료.' },
+  hearing: { en: 'Preliminary hearing', ko: '예비 심리' }, missing: { en: 'missing', ko: '부족한 근거' }, hearingNote: { en: 'The page grades the logic of the theory, never the truth. A proven theory can still accuse the wrong person.', ko: '페이지는 가설의 논리만 채점합니다. 진실은 판정하지 않습니다. 입증된 가설도 엉뚱한 사람을 가리킬 수 있습니다.' },
 } as const;

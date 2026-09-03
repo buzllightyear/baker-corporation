@@ -10,10 +10,11 @@ export function runCrossCheck(ep: Episode, s: RunState, cmd: Extract<Cmd, { kind
   if (!ep.people.some((p) => p.id === cmd.personId)) return { ok: false, code: 'UNKNOWN_ID', message: `No person ${cmd.personId}.` };
   s = advance(s, 'cross_check');
   const spans = spansOnBoard(s, cmd.personId).sort((a, b) => a.from - b.from);
-  const conflicts: { a: string; b: string; personId: string; why: string }[] = [];
+  const titleOf = (id: string) => s.cards.find((c) => c.id === id)?.title;
+  const conflicts: { a: string; b: string; aTitle?: { en: string; ko: string }; bTitle?: { en: string; ko: string }; personId: string; why: string }[] = [];
   for (let i = 0; i < spans.length; i++) for (let j = i + 1; j < spans.length; j++) {
     const x = spans[i], y = spans[j];
-    if (x.sourceCardId !== y.sourceCardId && conflictsBetween(x, y)) conflicts.push({ a: x.sourceCardId, b: y.sourceCardId, personId: cmd.personId, why: `${x.sourceCardId} puts ${cmd.personId} in ${x.placeId} ${x.from}-${x.to}; ${y.sourceCardId} puts them in ${y.placeId} ${y.from}-${y.to}.` });
+    if (x.sourceCardId !== y.sourceCardId && conflictsBetween(x, y)) conflicts.push({ a: x.sourceCardId, b: y.sourceCardId, aTitle: titleOf(x.sourceCardId), bTitle: titleOf(y.sourceCardId), personId: cmd.personId, why: `${x.sourceCardId} puts ${cmd.personId} in ${x.placeId} ${x.from}-${x.to}; ${y.sourceCardId} puts them in ${y.placeId} ${y.from}-${y.to}.` });
   }
   return { ok: true, state: s, result: { conflicts, note: 'These are mechanical time/place collisions between cards already on the board — candidates, not verdicts. A collision means at least one card is wrong, not which.' } };
 }

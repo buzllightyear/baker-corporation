@@ -325,29 +325,37 @@ export const EP0: Episode = {
       id: 'tut_conflict',
       when: { kind: 'card', cardId: 's_reyes_night' },
       say: t(
-        'Two cards now put Lind in two places. Have Watson lay them side by side — and you, walk to the crew bunks and open Lind\'s locker.',
-        '이제 카드 두 장이 린드를 서로 다른 곳에 놓습니다. 왓슨에게 나란히 놓아보라고 하세요. 그리고 당신은 승무원 침상으로 가 린드의 사물함을 조사하세요.',
+        'Reyes puts Lind in the galley after the first hour. Lind is standing in the main corridor: send Watson there to hear his side, then have him rebuild the timeline and cross-check.',
+        '레이예스는 린드가 첫 시간 뒤 주방에 왔다고 합니다. 린드는 중앙 복도에 서 있습니다. 왓슨을 거기로 보내 린드의 말을 듣게 하고, 시간표를 짜서 대조하게 하세요.',
       ),
       chip: t(
-        'Watson, ask Lind where he was last night, then rebuild his timeline and cross-check him.',
-        '왓슨, 린드에게 간밤에 어디 있었는지 묻고 시간표를 다시 짜서 대조해줘.',
+        'Watson, go to the main corridor and ask Lind where he was last night, then rebuild his timeline and cross-check him.',
+        '왓슨, 중앙 복도로 가서 린드에게 간밤에 어디 있었는지 묻고, 시간표를 다시 짜서 대조해줘.',
+      ),
+    },
+    {
+      id: 'tut_locker',
+      when: { kind: 'card', cardId: 's_lind_night' },
+      say: t(
+        'Two statements now put Lind in two places at once. Watson can only show the collision; the proof is yours to find. Walk to the crew bunks and open Lind\'s locker.',
+        '두 진술에서 린드의 위치가 서로 다릅니다. 왓슨은 충돌을 보여줄 뿐이고, 증거는 당신이 찾습니다. 승무원 침상으로 가서 린드의 사물함을 조사하세요.',
       ),
     },
     {
       id: 'tut_theory',
       when: { kind: 'card', cardId: 'e_locker' },
       say: t(
-        'You have enough for a hearing. Have Watson submit the theory and read the holes it comes back with.',
-        '예비 심리를 걸 만큼 모였습니다. 왓슨에게 가설을 제출하게 하고 돌아온 구멍을 읽으세요.',
+        'You have enough for a hearing. Have Watson submit the theory with the cards that back it, and read the verdicts that come back on screen.',
+        '예비 심리를 걸 만큼 모였습니다. 왓슨에게 근거 카드와 함께 가설을 제출하게 하고, 화면에 뜨는 판정을 읽으세요.',
       ),
-      chip: t('Watson, submit your theory: Lind took the ampoules.', '왓슨, 가설을 제출해줘. 린드가 앰플을 가져갔다고.'),
+      chip: t('Watson, submit your theory: Lind took the ampoules, with Lind\'s locker and the medbay stock sheet as evidence.', '왓슨, 가설을 제출해줘. 린드가 앰플을 가져갔다고. 근거는 린드의 사물함과 의무실 재고표.'),
     },
     {
       id: 'tut_verdicts',
       when: { kind: 'theory' },
       say: t(
-        'Read the verdicts. If nothing came back unsupported, the accusation is yours to make; Watson cannot make it.',
-        '판정을 읽으세요. 근거 부족이 없다면 기소는 당신 몫입니다. 왓슨은 기소할 수 없습니다.',
+        'Read the hearing panel on the left. If nothing came back unsupported, the accusation is yours to make; Watson cannot make it.',
+        '왼쪽의 예비 심리 패널을 읽으세요. 근거 부족이 없다면 기소는 당신 몫입니다. 왓슨은 기소할 수 없습니다.',
       ),
     },
     {

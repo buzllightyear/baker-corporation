@@ -6,7 +6,7 @@ export function RecapView({ code }: { code: string }) {
   const lang = useLang((s) => s.lang); const [copied, setCopied] = React.useState(false);
   const r = decodeRecap(code); const ep = r ? getEpisode(r.episodeId) : undefined;
   if (!r || !ep) { location.hash = '#/'; return null; }
-  const title = (id: string) => { const c = id.startsWith('place:') ? ep.places.find((p) => p.id === id.slice(6))?.name : ep.statements.find((s) => s.id === id) ? { en: id, ko: id } : ep.evidence.find((e) => e.id === id)?.name ?? ep.records.find((x) => x.id === id)?.title; return c ? pick(c, lang) : id; };
+  const title = (id: string) => { if (id.startsWith('place:')) { const n = ep.places.find((p) => p.id === id.slice(6))?.name; return n ? pick(n, lang) : id; } const st = ep.statements.find((s) => s.id === id); if (st) { const p = ep.people.find((x) => x.id === st.personId)!; const t = ep.topics.find((x) => x.id === st.topicId)!; return `${pick(p.name, lang)} — ${pick(t.label, lang)}`; } const c = ep.evidence.find((e) => e.id === id)?.name ?? ep.records.find((x) => x.id === id)?.title; return c ? pick(c, lang) : id; };
   const copy = async () => { try { await navigator.clipboard.writeText(location.href); setCopied(true); setTimeout(() => setCopied(false), 1500); } catch {} };
   return (
     <div className="center">

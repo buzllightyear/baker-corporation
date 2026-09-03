@@ -10,6 +10,7 @@ import { AccuseDialog } from './AccuseDialog';
 import { VerdictView } from './VerdictView';
 import { RecapView } from './RecapView';
 import { TutorialChips } from './TutorialChips';
+import { HearingPanel } from './HearingPanel';
 import { Home } from './Home';
 function useHash() { const [h, setH] = React.useState(location.hash); React.useEffect(() => { const f = () => setH(location.hash); addEventListener('hashchange', f); return () => removeEventListener('hashchange', f); }, []); return h; }
 export function App() {
@@ -23,7 +24,7 @@ export function App() {
       <>
         <TopBar onAccuse={() => setAccuseOpen(true)} />
         <NoAgentBanner />
-        <main className={'play' + (nbOpen ? '' : ' nb-closed')}><div className="stage-col"><SceneStage /><MiniMap /></div>{nbOpen && <NotebookPanel />}</main>
+        <main className={'play' + (nbOpen ? '' : ' nb-closed')}><div className="stage-col"><SceneStage /><MiniMap /><HearingPanel /></div>{nbOpen && <NotebookPanel />}</main>
         <TutorialChips />
         <AccuseDialog open={accuseOpen} onClose={() => setAccuseOpen(false)} />
         <VerdictView />
