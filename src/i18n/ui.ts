@@ -17,4 +17,14 @@ export const T = {
   lastSeen: { en: 'last seen', ko: '마지막 목격' }, notLogged: { en: 'not logged', ko: '기록 없음' },
   statementsOn: { en: 'statements on the notebook', ko: '수첩의 진술' }, noStatements: { en: 'No statements collected yet.', ko: '아직 수집한 진술이 없습니다.' },
   briefing: { en: 'Briefing', ko: '브리핑' },
+  // — evidence close-up (P3)
+  pinNote: { en: 'Pin note', ko: '메모 남기기' }, askWatson: { en: 'Ask Watson', ko: '왓슨에게 묻기' }, back: { en: 'Back', ko: '뒤로' }, save: { en: 'Save', ko: '저장' },
+  pinPlaceholder: { en: 'What is odd about this?', ko: '이 물건의 이상한 점은?' }, pinned: { en: 'Pinned', ko: '메모 부착됨' },
+  askWatsonLook: { en: 'Watson, look at {name} for me.', ko: '왓슨, {name} 좀 봐줘.' },
+  // — topic fold (P3)
+  moreTopics: { en: '+{n} more', ko: '+{n}개 더' }, fewerTopics: { en: 'Fewer', ko: '접기' },
+  // — Watson ticker (P3). Rendered as `▲ WATSON · <verb> <detail>`, or `▲ WATSON → <room>` for a walk.
+  wtReading: { en: 'reading the case', ko: '사건 기록 확인' }, wtAsking: { en: 'asking', ko: '질문 —' }, wtExamining: { en: 'examining', ko: '조사 —' },
+  wtPinning: { en: 'pinning a note', ko: '메모 부착' }, wtTimeline: { en: 'rebuilding timeline', ko: '동선 재구성' }, wtCrossChecking: { en: 'cross-checking', ko: '교차 확인 —' },
+  wtSearching: { en: 'searching records', ko: '기록 검색' }, wtHearing: { en: 'hearing submitted', ko: '예비 심리 제출' },
 } as const;

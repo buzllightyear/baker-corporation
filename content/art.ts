@@ -25,3 +25,8 @@ export const ROOM_ART: Record<string, Record<string, RoomArt>> = {
 };
 export const PORTRAIT: Record<string, string> = { vance: '/art/portraits/vance.jpg', okafor: '/art/portraits/okafor.jpg', lind: '/art/portraits/lind.jpg', sato: '/art/portraits/sato.jpg', reyes: '/art/portraits/reyes.jpg', watson: '/art/portraits/watson.jpg' };
 export function roomArt(episodeId: string, placeId: string): RoomArt | null { return ROOM_ART[episodeId]?.[placeId] ?? null; }
+/** Where a hotspot sits in the room picture, for the close-up zoom origin and Watson's targeting pulse. Falls back to the stage's own default. */
+export function hotspot(episodeId: string, placeId: string, targetId: string): Hotspot | null {
+  const a = roomArt(episodeId, placeId); if (!a) return null;
+  return a.evidence?.[targetId] ?? a.people?.[targetId] ?? null;
+}
