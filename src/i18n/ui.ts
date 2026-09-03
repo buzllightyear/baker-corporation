@@ -12,4 +12,14 @@ export const T = {
   tutWatson: { en: "Tutorial: Watson's turn — paste the sentence into the chat.", ko: '튜토리얼: 왓슨 차례입니다. 문장을 채팅에 붙여넣으세요.' }, tutAccuse: { en: 'Tutorial: press Accuse.', ko: '튜토리얼: 기소 버튼을 누르세요.' },
   tutLocked: { en: 'Finish the tutorial episode first.', ko: '튜토리얼 에피소드를 먼저 끝내세요.' }, tutDone: { en: 'Tutorial complete.', ko: '튜토리얼 완료.' },
   hearing: { en: 'Preliminary hearing', ko: '예비 심리' }, missing: { en: 'missing', ko: '부족한 근거' }, hearingNote: { en: 'The page grades the logic of the theory, never the truth. A proven theory can still accuse the wrong person.', ko: '페이지는 가설의 논리만 채점합니다. 진실은 판정하지 않습니다. 입증된 가설도 엉뚱한 사람을 가리킬 수 있습니다.' },
+  // — evidence close-up (P3)
+  pinNote: { en: 'Pin note', ko: '메모 남기기' }, askWatson: { en: 'Ask Watson', ko: '왓슨에게 묻기' }, back: { en: 'Back', ko: '뒤로' }, save: { en: 'Save', ko: '저장' },
+  pinPlaceholder: { en: 'What is odd about this?', ko: '이 물건의 이상한 점은?' }, pinned: { en: 'Pinned', ko: '메모 부착됨' },
+  askWatsonLook: { en: 'Watson, look at {name} for me.', ko: '왓슨, {name} 좀 봐줘.' },
+  // — topic fold (P3)
+  moreTopics: { en: '+{n} more', ko: '+{n}개 더' }, fewerTopics: { en: 'Fewer', ko: '접기' },
+  // — Watson ticker (P3). Rendered as `▲ WATSON · <verb> <detail>`, or `▲ WATSON → <room>` for a walk.
+  wtReading: { en: 'reading the case', ko: '사건 기록 확인' }, wtAsking: { en: 'asking', ko: '질문 —' }, wtExamining: { en: 'examining', ko: '조사 —' },
+  wtPinning: { en: 'pinning a note', ko: '메모 부착' }, wtTimeline: { en: 'rebuilding timeline', ko: '동선 재구성' }, wtCrossChecking: { en: 'cross-checking', ko: '교차 확인 —' },
+  wtSearching: { en: 'searching records', ko: '기록 검색' }, wtHearing: { en: 'hearing submitted', ko: '예비 심리 제출' },
 } as const;

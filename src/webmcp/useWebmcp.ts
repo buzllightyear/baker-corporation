@@ -17,7 +17,7 @@ export function useWebmcpRoot() {
       w.__baker = { ...(w.__baker ?? {}), ready: !!episodeId, episodeId, tools: {}, start: (id: string) => { useGame.getState().startEpisode(id); location.hash = '#/play'; }, episodes: () => listEpisodes().map((e) => e.id) };
     }
     if (!episodeId) { void ref.current.apply('none', []); return; }
-    const deps = { getState: () => useGame.getState().state!, getEpisode: () => useGame.getState().episode!, dispatch: (c: Parameters<ReturnType<typeof useGame.getState>['dispatch']>[1]) => useGame.getState().dispatch('watson', c), setBusy: (s: string | null) => useGame.getState().setWatsonBusy(s), lang: () => currentLang(), onRead: () => useGame.getState().markWatsonRead() };
+    const deps = { getState: () => useGame.getState().state!, getEpisode: () => useGame.getState().episode!, dispatch: (c: Parameters<ReturnType<typeof useGame.getState>['dispatch']>[1]) => useGame.getState().dispatch('watson', c), setBusy: (s: string | null) => useGame.getState().setWatsonBusy(s), lang: () => currentLang(), onRead: () => useGame.getState().markWatsonRead(), pushTicker: (t: { text: string; placeId?: string; targetId?: string }) => useGame.getState().pushTicker(t) };
     const tools = watsonTools(deps);
     // Test bridge (opt-in, ?bridge=1): exposes the SAME tool objects to page JS so a browser-automation playtester can act as Watson
     // through evaluate(). Nothing extra is exposed — the truth still never leaves the kernel.

@@ -1,0 +1,71 @@
+/* Stage motion & close-up chrome (P3 — interaction pass).
+   Owned by the interaction stream; imported from SceneStage / EvidenceCloseup / WatsonTicker / DialogueView.
+   Nothing here belongs in theme.css: these are effects, not the base skin. */
+
+/* — room transition: outgoing pushes past the camera, incoming settles in — */
+.stage-art.fx-out { animation: bakerRoomOut 500ms ease forwards; z-index: 0; pointer-events: none; }
+.stage-art.fx-in { animation: bakerRoomIn 500ms ease; z-index: 1; }
+@keyframes bakerRoomOut { from { opacity: 1; transform: scale(1); } to { opacity: 0; transform: scale(1.06); } }
+@keyframes bakerRoomIn { from { opacity: 0; transform: scale(.97); } to { opacity: 1; transform: scale(1.06); } }
+.stage.fx-transition .hot, .stage.fx-transition .exit, .stage.fx-transition .stage-caption, .stage.fx-transition .stage-placeholder { animation: bakerFxFade 500ms ease; }
+@keyframes bakerFxFade { from { opacity: 0; } to { opacity: 1; } }
+
+/* — hover glint: a soft brightness pulse. Applied to the hotspot button so the evidence ring keeps its own pulse. — */
+.stage .hot { transition: filter .18s ease; }
+.stage .hot:hover { animation: bakerGlint 1.3s ease-in-out infinite; }
+@keyframes bakerGlint { 0%, 100% { filter: brightness(1); } 45% { filter: brightness(1.55) drop-shadow(0 0 7px rgba(255,214,140,.5)); } }
+
+/* — Watson is looking at this: a two-second ring on the hotspot his ticker line named — */
+.stage .hot.watson-eye { animation: bakerWatsonEye 700ms ease-in-out 3; }
+@keyframes bakerWatsonEye { 0%, 100% { filter: none; } 50% { filter: drop-shadow(0 0 10px var(--watson)) brightness(1.4); } }
+
+/* — evidence close-up — */
+.stage.closeup-on .hot, .stage.closeup-on .exit, .stage.closeup-on .talk-rail { opacity: 0; pointer-events: none; transition: opacity .2s ease; }
+.closeup { position: absolute; left: 50%; bottom: 34px; transform: translateX(-50%); width: min(560px, 86%); background: rgba(8,10,13,.94); border: 1px solid var(--warn); border-radius: 8px; padding: 14px 16px; box-shadow: 0 10px 44px rgba(0,0,0,.75); z-index: 6; animation: bakerCloseupIn 320ms ease; }
+@keyframes bakerCloseupIn { from { opacity: 0; transform: translateX(-50%) translateY(12px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+.closeup .cu-name { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--warn); margin-bottom: 6px; }
+.closeup .cu-body { font-size: 15px; line-height: 1.5; }
+.closeup .cu-pin { display: flex; gap: 6px; margin-top: 10px; }
+.closeup .cu-pin input { flex: 1; }
+.closeup .cu-acts { display: flex; gap: 6px; margin-top: 12px; }
+.closeup .cu-acts .cu-back { margin-left: auto; border-color: var(--warn); color: var(--warn); }
+.closeup .cu-flash { position: absolute; right: 16px; top: -26px; font-size: 12px; color: var(--ok); }
+
+/* — Watson ticker: one live line over the stage, the ones before it fading out behind — */
+.watson-ticker { position: absolute; left: 50%; transform: translateX(-50%); bottom: 74px; z-index: 4; display: flex; flex-direction: column; align-items: center; gap: 2px; pointer-events: none; max-width: 76%; }
+.watson-ticker .wt-line { font-size: 12px; letter-spacing: .02em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; color: var(--watson); opacity: .28; padding: 2px 10px; border-radius: 999px; background: rgba(0,0,0,.4); }
+.watson-ticker .wt-line.now { opacity: 1; background: rgba(0,0,0,.62); border: 1px solid rgba(255,166,64,.5); box-shadow: 0 0 14px rgba(255,166,64,.22); animation: bakerTickerIn 260ms ease; }
+.watson-ticker .wt-caret { animation: bakerCaret 1s step-end infinite; margin-left: 2px; }
+@keyframes bakerTickerIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes bakerCaret { 50% { opacity: 0; } }
+
+/* — minimap: Watson's token walking to the room he just entered — */
+.minimap .room.watson-dest { animation: bakerRoomPing 600ms ease; }
+@keyframes bakerRoomPing { 0% { box-shadow: inset 0 0 0 1px var(--watson); } 60% { box-shadow: inset 0 0 0 2px var(--watson), 0 0 14px var(--glow); } 100% { box-shadow: none; } }
+.minimap .tok.watson.walking { animation: bakerTokenWalk 600ms ease; display: inline-block; }
+@keyframes bakerTokenWalk { from { transform: translateX(-14px) scale(.7); opacity: .2; } to { transform: translateX(0) scale(1); opacity: 1; } }
+
+/* — dialogue view (placeholder skin; Stream A's version replaces this component) — */
+.dialogue { position: absolute; left: 50%; bottom: 34px; transform: translateX(-50%); width: min(640px, 88%); display: flex; gap: 12px; align-items: flex-start; background: rgba(8,10,13,.94); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; box-shadow: 0 10px 44px rgba(0,0,0,.75); z-index: 6; animation: bakerCloseupIn 260ms ease; }
+.dialogue .dlg-face { position: relative; width: 56px; height: 56px; flex: none; border-radius: 50%; overflow: hidden; border: 2px solid rgba(255,255,255,.5); background: #1a2229; display: flex; align-items: center; justify-content: center; }
+.dialogue .dlg-face img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.dialogue .dlg-face .emoji { font-size: 26px; }
+.dialogue .dlg-body { flex: 1; min-width: 0; }
+.dialogue .dlg-who { font-size: 12px; color: var(--muted); margin-bottom: 5px; }
+.dialogue .dlg-who b { color: var(--ink); }
+.dialogue .dlg-topic { color: var(--holmes); }
+.dialogue .dlg-text { font-size: 15px; line-height: 1.5; }
+.dialogue .dlg-close { align-self: flex-start; }
+
+/* — topic fold — */
+.talk-rail .chip.more { border-color: var(--muted); color: var(--muted); }
+.talk-rail .chip.more:hover { border-color: var(--ink); color: var(--ink); }
+
+@media (prefers-reduced-motion: reduce) {
+  .stage-art.fx-out { display: none; }
+  .stage-art.fx-in, .stage.fx-transition .hot, .stage.fx-transition .exit, .stage.fx-transition .stage-caption, .stage.fx-transition .stage-placeholder,
+  .stage .hot:hover, .stage .hot.watson-eye, .closeup, .dialogue, .watson-ticker .wt-line.now, .watson-ticker .wt-caret,
+  .minimap .room.watson-dest, .minimap .tok.watson.walking { animation: none; }
+  .stage .hot:hover { filter: brightness(1.35); }
+  .stage-art { transition: none !important; }
+}
