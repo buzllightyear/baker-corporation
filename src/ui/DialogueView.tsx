@@ -52,10 +52,8 @@ export function DialogueView({ person, topicLabel, text, onClose }: DialogueView
   return (
     <div
       className="nv-dialogue"
-      role="dialog"
-      aria-label={pick(person.name, lang)}
       onClick={() => (done ? onClose() : complete())}
-      role="button"
+      role="dialog"
       tabIndex={0}
       aria-label={pick(person.name, lang)}
       onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); done ? onClose() : complete(); } }}
