@@ -83,7 +83,7 @@ void main() {
   vec2 zc = (uZoomCenter - 0.5) * cover + 0.5;
   vec2 uv = zc + (base - zc) / uZoom;
   float d = uHasDepth > 0.5 ? texture2D(uDepth, clamp(uv, 0.0, 1.0)).r : 0.5;
-  vec2 delta = uMouse * uStrength * d * cover / uZoom;
+  vec2 delta = vec2(uMouse.x, -uMouse.y) * uStrength * d * cover / uZoom;   // mouse y is top-down (DOM); UV y is bottom-up — keeps CPU hotspotOffset and the picture in step
   vec2 warped = clamp(uv + delta, MARGIN_C, 1.0 - MARGIN_C);
   gl_FragColor = texture2D(uImage, warped);
 }
@@ -284,7 +284,7 @@ export function StageArt3D({ image, depth, parallax, zoom, className }: StageArt
         const { parallax: p, zoom: z } = targetRef.current;
 
         (u.uMouse.value as Vector2).lerp(engine.makeVec2(p.x, p.y), PARALLAX_LERP);
-        (u.uZoomCenter.value as Vector2).lerp(engine.makeVec2(z ? z.x : 0.5, z ? z.y : 0.5), ZOOM_LERP);
+        (u.uZoomCenter.value as Vector2).lerp(engine.makeVec2(z ? z.x : 0.5, z ? 1 - z.y : 0.5), ZOOM_LERP);   // zoom.y is top-down (DOM); UV y is bottom-up
         u.uZoom.value += ((z ? Math.max(1, z.scale) : 1) - (u.uZoom.value as number)) * ZOOM_LERP;
 
         // Rooms without a depth map get a slow Ken Burns push so the frame is never dead still.
