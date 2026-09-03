@@ -27,6 +27,11 @@ const IR_SECONDS = 2.2;
 const IR_DECAY = 3.4;
 /** How much of the reverb return reaches the master. Deliberately meagre. */
 const REVERB_RETURN = 0.5;
+/** Output trim above the user slider. Playtest 2026-09-04: the whole mix sat
+ *  ~30% too quiet against the ChatGPT embed's own chrome, so the slider's
+ *  0..1 range maps onto 0..TRIM at the master. Sources are all sub-unity, so
+ *  the sum stays clear of the destination clip at full slider. */
+const OUTPUT_TRIM = 1.3;
 
 const clamp01 = (n: number): number => (Number.isFinite(n) ? Math.min(1, Math.max(0, n)) : 0);
 
@@ -90,7 +95,7 @@ export function context(): AudioContext | null {
   try {
     ctx = new C();
     masterGain = ctx.createGain();
-    masterGain.gain.value = settings.muted ? 0 : settings.volume;
+    masterGain.gain.value = settings.muted ? 0 : settings.volume * OUTPUT_TRIM;
     masterGain.connect(ctx.destination);
 
     dryBus = ctx.createGain();
@@ -192,8 +197,8 @@ function applyGain(): void {
     const t = ctx.currentTime;
     g.gain.cancelScheduledValues(t);
     g.gain.setValueAtTime(g.gain.value, t);
-    g.gain.linearRampToValueAtTime(settings.muted ? 0 : settings.volume, t + 0.05);
-  } catch { try { g.gain.value = settings.muted ? 0 : settings.volume; } catch { /* ignore */ } }
+    g.gain.linearRampToValueAtTime(settings.muted ? 0 : settings.volume * OUTPUT_TRIM, t + 0.05);
+  } catch { try { g.gain.value = settings.muted ? 0 : settings.volume * OUTPUT_TRIM; } catch { /* ignore */ } }
 }
 
 export function setMuted(m: boolean): void {
