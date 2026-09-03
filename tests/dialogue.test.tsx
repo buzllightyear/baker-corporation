@@ -21,17 +21,17 @@ describe('dialogue view', () => {
     expect(screen.getByText('Last night')).toBeTruthy();
     expect(line()).not.toContain('engine room');          // still typing
 
-    fireEvent.click(screen.getByRole('button', { name: 'Ada' }));
+    fireEvent.click(screen.getByRole('dialog', { name: 'Ada' }));
     expect(line()).toContain(LINE);                        // click completes
     expect(onClose).not.toHaveBeenCalled();
 
-    fireEvent.click(screen.getByRole('button', { name: 'Ada' }));
+    fireEvent.click(screen.getByRole('dialog', { name: 'Ada' }));
     expect(onClose).toHaveBeenCalledTimes(1);              // click after completion closes
   });
 
   it('restarts the typewriter when the line changes', () => {
     const { container, rerender } = render(createElement(DialogueView, { person: ADA, text: LINE, onClose: () => {} }));
-    fireEvent.click(screen.getByRole('button', { name: 'Ada' }));
+    fireEvent.click(screen.getByRole('dialog', { name: 'Ada' }));
     expect(container.querySelector('.nv-dialogue-line')!.textContent).toContain(LINE);
     rerender(createElement(DialogueView, { person: ADA, text: 'Never touched it.', onClose: () => {} }));
     expect(container.querySelector('.nv-dialogue-line')!.textContent).not.toContain('Never touched it.');
