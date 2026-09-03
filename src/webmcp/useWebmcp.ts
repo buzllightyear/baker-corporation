@@ -10,7 +10,7 @@ export function useWebmcpRoot() {
   React.useEffect(() => {
     if (!ref.current) ref.current = new Registry(setToolCount, (m) => log({ actor: 'sys', verb: 'webmcp', ok: true, detail: m }));
     if (!episodeId) { void ref.current.apply('none', []); return; }
-    const deps = { getState: () => useGame.getState().state!, getEpisode: () => useGame.getState().episode!, dispatch: (c: Parameters<ReturnType<typeof useGame.getState>['dispatch']>[1]) => useGame.getState().dispatch('watson', c), setBusy: (s: string | null) => useGame.getState().setWatsonBusy(s), lang: () => currentLang() };
+    const deps = { getState: () => useGame.getState().state!, getEpisode: () => useGame.getState().episode!, dispatch: (c: Parameters<ReturnType<typeof useGame.getState>['dispatch']>[1]) => useGame.getState().dispatch('watson', c), setBusy: (s: string | null) => useGame.getState().setWatsonBusy(s), lang: () => currentLang(), onRead: () => useGame.getState().markWatsonRead() };
     void ref.current.apply(`play:${episodeId}`, watsonTools(deps));
   }, [episodeId, setToolCount, log]);
   return { available: ref.current?.available() ?? typeof (document as unknown as { modelContext?: { registerTool?: unknown } }).modelContext?.registerTool === 'function' };

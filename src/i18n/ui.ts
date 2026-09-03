@@ -8,4 +8,7 @@ export const T = {
   watsonIdle: { en: 'Watson: awaiting orders', ko: '왓슨: 지시 대기' }, sayToWatson: { en: 'Say to Watson', ko: '왓슨에게 이렇게 말해보세요' }, copied: { en: 'Copied', ko: '복사됨' },
   foundBy: { en: 'found by', ko: '발견' }, holmes: { en: 'you', ko: '당신' }, watson: { en: 'Watson', ko: '왓슨' }, closedBanner: { en: 'Docked. Investigation closed — only the accusation remains.', ko: '정박. 수사 종료 — 기소만 남았습니다.' },
   play: { en: 'Play', ko: '시작' }, episode: { en: 'Episode', ko: '에피소드' }, siteTools: { en: 'site tools', ko: '사이트 도구' },
+  tutGo: { en: 'Tutorial: go to', ko: '튜토리얼: 이동할 곳 —' }, tutTalk: { en: 'Tutorial: talk to', ko: '튜토리얼: 대화 —' }, tutExamine: { en: 'Tutorial: examine', ko: '튜토리얼: 조사 —' },
+  tutWatson: { en: "Tutorial: Watson's turn — paste the sentence into the chat.", ko: '튜토리얼: 왓슨 차례입니다. 문장을 채팅에 붙여넣으세요.' }, tutAccuse: { en: 'Tutorial: press Accuse.', ko: '튜토리얼: 기소 버튼을 누르세요.' },
+  tutLocked: { en: 'Finish the tutorial episode first.', ko: '튜토리얼 에피소드를 먼저 끝내세요.' }, tutDone: { en: 'Tutorial complete.', ko: '튜토리얼 완료.' },
 } as const;

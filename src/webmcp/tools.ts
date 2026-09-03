@@ -5,7 +5,7 @@ import { parseArgs, toolResult } from './normalize';
 import { WATSON_VOICE } from './voice';
 import { scene } from '../kernel/kernel';
 import { routeTo } from '../kernel/path';
-export interface Deps { getState: () => RunState; getEpisode: () => Episode; dispatch: (cmd: Cmd) => KernelResult; setBusy: (s: string | null) => void; lang: () => 'en' | 'ko' }
+export interface Deps { getState: () => RunState; getEpisode: () => Episode; dispatch: (cmd: Cmd) => KernelResult; setBusy: (s: string | null) => void; lang: () => 'en' | 'ko'; onRead?: () => void }
 const isText = (v: unknown): v is Text => !!v && typeof v === 'object' && !Array.isArray(v) && 'en' in (v as object) && 'ko' in (v as object) && typeof (v as Text).en === 'string';
 /** Walks a tool response and replaces every {en,ko} with the current language's string — cards never leak as language objects. */
 export function project(v: unknown, lang: 'en' | 'ko'): unknown {
@@ -29,7 +29,7 @@ export function watsonTools(deps: Deps): ToolDef[] {
   const ro = { readOnlyHint: true };
   return [
     { name: 'get_case', description: 'Read-only. Call this FIRST every turn. Returns the case brief, the ship clock and minutes left before docking, where the investigator and you (Watson) are, everything on the shared notebook (cards with who found them and when), pinned notes, accusations left, the scene where you stand (people present with their topics, evidence in reach), the map, the list of people and methods, and your standing orders (voice). Nothing here reveals the truth; the page holds it.', inputSchema: S({}, []), annotations: ro,
-      execute: async () => { const ep = deps.getEpisode(), s = deps.getState(), lang = deps.lang();
+      execute: async () => { const ep = deps.getEpisode(), s = deps.getState(), lang = deps.lang(); deps.onRead?.();
         return toolResult(project({ ok: true, episode: { id: ep.id, title: ep.title, series: ep.series, brief: ep.brief }, clock: ep.clockLabel(s.clock), minutesLeft: Math.max(0, ep.budgetMinutes - s.clock), closed: s.clock >= ep.budgetMinutes, verdict: s.verdict,
           positions: s.pos, accusationsLeft: s.accusationsLeft, watsonCalls: s.watsonCalls, cards: s.cards, pins: s.pins, here: scene(ep, s, s.pos.watson),
           map: ep.places.map((p) => ({ id: p.id, name: p.name, adjacent: p.adjacent })), people: ep.people.map((p) => ({ id: p.id, name: p.name, role: p.role })), methods: ep.methods, voice: WATSON_VOICE }, lang) as Record<string, unknown>); } },

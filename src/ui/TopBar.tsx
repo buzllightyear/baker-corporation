@@ -1,9 +1,11 @@
 import { useGame } from '../state/store';
 import { useLang, T, pick } from '../i18n/lang';
 import { useWebmcpStatus } from '../webmcp/useWebmcp';
+import { guide, tutorialDone } from './tutorial';
 export function TopBar({ onAccuse }: { onAccuse: () => void }) {
   const ep = useGame((s) => s.episode)!; const st = useGame((s) => s.state)!;
   const { lang, set } = useLang(); const { available, count } = useWebmcpStatus();
+  const reads = useGame((s) => s.watsonReads); const g = ep.tutorial && !tutorialDone() ? guide(ep, st, reads) : null; const accuseLocked = !!g && !g.complete && g.goal?.kind !== 'accused';
   const nbOpen = useGame((s) => s.notebookOpen); const toggleNb = useGame((s) => s.toggleNotebook); const nCards = st.cards.filter((c) => c.kind !== 'place').length;
   const left = Math.max(0, ep.budgetMinutes - st.clock);
   const closed = st.clock >= ep.budgetMinutes;
@@ -17,7 +19,7 @@ export function TopBar({ onAccuse }: { onAccuse: () => void }) {
         <div className="spacer" />
         <button className={'nb-toggle' + (nbOpen ? ' on' : '')} onClick={toggleNb} aria-label="notebook">{nbOpen ? '▸' : '◂'} {T.notebook[lang]} · {nCards}</button>
         <button onClick={() => set(lang === 'en' ? 'ko' : 'en')} aria-label="language">{lang === 'en' ? '한국어' : 'English'}</button>
-        <button className="accuse" onClick={onAccuse} disabled={st.verdict !== null}>{T.accuse[lang]}</button>
+        <button className="accuse" onClick={onAccuse} disabled={st.verdict !== null || accuseLocked} title={accuseLocked ? T.tutAccuse[lang] : undefined}>{T.accuse[lang]}</button>
       </header>
       {closed && st.verdict === null && <div className="banner closed">{T.closedBanner[lang]}</div>}
     </>

@@ -32,4 +32,4 @@ export interface Episode {
   tutorial?: TutorialStep[];
 }
 export interface TutorialStep { id: string; when: TutorialTrigger; say: Text; chip?: Text }
-export type TutorialTrigger = { kind: 'start' } | { kind: 'card', cardId: string } | { kind: 'moved', placeId: string } | { kind: 'theory' } | { kind: 'accused' };
+export type TutorialTrigger = { kind: 'start' } | { kind: 'watson_read' } | { kind: 'card', cardId: string } | { kind: 'moved', placeId: string } | { kind: 'theory' } | { kind: 'accused' };

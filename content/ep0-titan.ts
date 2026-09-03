@@ -288,6 +288,14 @@ export const EP0: Episode = {
       chip: t('Watson, read the case and tell me where to start.', '왓슨, 사건을 읽고 어디서 시작할지 말해줘.'),
     },
     {
+      id: 'tut_greeted',
+      when: { kind: 'watson_read' },
+      say: t(
+        'Watson has read the case. Now walk to the medbay: click the arrow at the door, or the room on the deck plan.',
+        '왓슨이 사건을 읽었습니다. 이제 의무실로 가세요. 문 쪽 화살표나 평면도의 방을 누르면 됩니다.',
+      ),
+    },
+    {
       id: 'tut_medbay',
       when: { kind: 'moved', placeId: 'medbay' },
       say: t(
@@ -299,8 +307,8 @@ export const EP0: Episode = {
       id: 'tut_first_card',
       when: { kind: 'card', cardId: 's_okafor_safe' },
       say: t(
-        'That statement is on the board now. Keep walking, and send Watson into the ship\'s logs.',
-        '그 진술이 수첩에 들어갔습니다. 당신은 계속 걷고, 문서는 왓슨에게 맡기세요.',
+        'That statement is on the board now. Send Watson into the ship\'s logs while you wait.',
+        '그 진술이 수첩에 들어갔습니다. 문서는 왓슨에게 맡기세요.',
       ),
       chip: t('Watson, search the door logs for the medbay.', '왓슨, 의무실 도어 로그를 찾아줘.'),
     },
@@ -308,8 +316,8 @@ export const EP0: Episode = {
       id: 'tut_records',
       when: { kind: 'card', cardId: 'r_door' },
       say: t(
-        'Watson reports what the records say and nothing more. Let him take the galley while you take the corridor.',
-        '왓슨은 기록에 있는 것만 말합니다. 복도는 당신이, 주방은 왓슨이 맡으세요.',
+        'Watson reports what the records say and nothing more. Now let him take the galley.',
+        '왓슨은 기록에 있는 것만 말합니다. 이제 주방은 왓슨에게 맡기세요.',
       ),
       chip: t('Watson, go to the galley and hear everything Reyes has to say.', '왓슨, 주방에 가서 레이예스 얘기를 다 들어줘.'),
     },
@@ -317,8 +325,8 @@ export const EP0: Episode = {
       id: 'tut_conflict',
       when: { kind: 'card', cardId: 's_reyes_night' },
       say: t(
-        'Two cards now put Lind in two places. Have Watson lay them side by side.',
-        '이제 카드 두 장이 린드를 서로 다른 곳에 놓습니다. 왓슨에게 나란히 놓아보라고 하세요.',
+        'Two cards now put Lind in two places. Have Watson lay them side by side — and you, walk to the crew bunks and open Lind\'s locker.',
+        '이제 카드 두 장이 린드를 서로 다른 곳에 놓습니다. 왓슨에게 나란히 놓아보라고 하세요. 그리고 당신은 승무원 침상으로 가 린드의 사물함을 조사하세요.',
       ),
       chip: t(
         'Watson, ask Lind where he was last night, then rebuild his timeline and cross-check him.',
