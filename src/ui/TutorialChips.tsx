@@ -2,6 +2,7 @@ import React from 'react';
 import { useGame } from '../state/store';
 import { useLang, T, pick } from '../i18n/lang';
 import { guide, markTutorialDone, tutorialDone } from './tutorial';
+import { Tag, serialOf } from './chrome/Frame';
 export function TutorialChips() {
   const ep = useGame((s) => s.episode)!; const st = useGame((s) => s.state)!; const reads = useGame((s) => s.watsonReads); const lang = useLang((s) => s.lang); const nbOpen = useGame((s) => s.notebookOpen);
   const [copied, setCopied] = React.useState(false);
@@ -13,9 +14,12 @@ export function TutorialChips() {
   const copy = async () => { if (!step.chip) return; try { await navigator.clipboard.writeText(pick(step.chip, lang)); setCopied(true); setTimeout(() => setCopied(false), 1500); } catch {} };
   return (
     <div className="tut" style={nbOpen ? undefined : { right: 14 }}>
-      <div className="label">Tutorial · {g.index + 1}/{g.total}</div>
-      <p className="say">{pick(step.say, lang)}</p>
-      {step.chip && <div className="chipline"><span className="label">{T.sayToWatson[lang]}</span><button onClick={copy} title="copy">{copied ? T.copied[lang] : pick(step.chip, lang)}</button></div>}
+      <Tag unit="Baker Corp · Field Induction" serial={serialOf(ep.id + ':tut:' + g.index, 'TUT')} />
+      <div className="tut-body">
+        <div className="label">Tutorial · {g.index + 1}/{g.total}</div>
+        <p className="say">{pick(step.say, lang)}</p>
+        {step.chip && <div className="chipline"><span className="label">{T.sayToWatson[lang]}</span><button onClick={copy} title="copy">{copied ? T.copied[lang] : pick(step.chip, lang)}</button></div>}
+      </div>
     </div>
   );
 }
