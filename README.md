@@ -6,14 +6,20 @@
 
 A detective game built on [WebMCP](https://github.com/webmachinelearning/webmcp). You are the investigator. **Watson** — a service unit built by The Baker Corporation — is the agent you already use (ChatGPT's built-in browser today). Open the page inside ChatGPT and Watson gets ten tools. None of them can reach the truth. The page holds it, and grades every theory Watson submits.
 
+## What it looks like
+
+First-person painted rooms (image-model concept art, one per compartment) with clickable people, evidence and hatches; a depth-map parallax in three.js when WebGL is available; a Baker Corp "issued equipment" terminal chrome; a cold-open briefing with the crew manifest; a crew dossier; a preliminary-hearing panel that grades Watson's theory on screen; and a Watson ticker so the agent's actions are visible on the deck plan. Procedural audio (Web Audio, no files) is in progress.
+
 ## How to play (2 minutes)
 
 1. Open https://baker-corporation.vercel.app inside ChatGPT (it reads the page and gets the tools).
-2. Start **Episode 0 — "Titan, I Perceive"**. It is the tutorial: four rooms, three people, one theft, docking in two hours.
+2. Start **Episode 0 — "Titan, I Perceive"**. It is the guided tutorial: four rooms, three people, one theft. A briefing (title card, incident, crew manifest, your posting) plays first.
 3. Click rooms to move, people to hear their topics, evidence to examine. Everything you find lands on the shared notebook.
 4. When the page shows *"Say to Watson"*, copy the sentence into the chat. Watson walks the same ship, on the same clock, and writes to the same notebook.
 5. Ask Watson for a **preliminary hearing** (`submit_theory`): the page stamps each claim *proven / unsupported / contradicted* without revealing who did it.
 6. Press **Accuse** — who, how, decisive evidence. Two tries. Only you have that button; Watson has no tool for it.
+
+Walking is free; conversations, examinations and Watson's records searches cost ship time, which is part of your score. There is no deadline in this build.
 
 ## What the agent can and cannot do
 

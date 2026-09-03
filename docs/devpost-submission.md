@@ -12,6 +12,10 @@ You are the investigator. You click; Watson calls tools; both of you write to on
 
 Three layers: the **facts** are authored and deterministic; the **path** is emergent (same start, different story every run, because a living world meets free choices); the **words** are generated — Watson narrates, voices the crew from the cards it was handed, and writes the closing summation that the page then puts on trial.
 
+## What you see
+
+Painted first-person rooms aboard the freighter *Marlow* — every compartment is image-model concept art with real depth (a depth map drives a three.js parallax, hotspots ride with it). The interface is Baker Corp issued equipment: stencil headers, riveted panels with serial tags, a paper case ledger for the notebook, a teal console skin for Watson. Each episode opens with a briefing — title card, the incident, the crew manifest with portraits — and a crew dossier is one tap away during play. When Watson acts, a ticker and the deck plan show where he went; when he submits a theory, the hearing panel stamps every claim on screen.
+
 ## How it uses WebMCP
 
 - One kernel function serves the human's click and the agent's tool call; the registry simply never registers `accuse`.
@@ -38,4 +42,4 @@ Three layers: the **facts** are authored and deterministic; the **path** is emer
 
 ## Built with
 
-TypeScript · React 19 · Vite 8 · zustand · vitest · WebMCP (`navigator.modelContext.registerTool`) · Vercel. No server, no API keys, no model in the judging loop.
+TypeScript · React 19 · Vite 8 · zustand · vitest · three.js + postprocessing (depth parallax) · Depth-Anything-V2 (offline depth maps) · WebMCP (`navigator.modelContext.registerTool`) · Vercel. Concept art and UI plates generated with an image model from a single style sheet. No server, no API keys, no model in the judging loop.
