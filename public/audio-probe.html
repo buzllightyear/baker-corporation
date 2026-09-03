@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Baker audio probe</title>
+<style>body{margin:0;background:#0b0e11;color:#e8e4d8;font:16px/1.5 system-ui;padding:24px}button{font:inherit;padding:12px 18px;border:1px solid #ffa640;background:#12171c;color:#ffa640;border-radius:6px;cursor:pointer;margin:6px 6px 6px 0}pre{background:#12171c;padding:12px;border-radius:6px;white-space:pre-wrap;font:13px/1.5 ui-monospace,monospace}</style></head>
+<body>
+<h2>Audio probe</h2>
+<p>1) Press <b>Tone</b>. You should hear a 2-second beep. 2) Press <b>Ambience</b> for a 4-second synthesized drone. 3) Copy the log below.</p>
+<button id="tone">Tone</button><button id="amb">Ambience</button><button id="copy">Copy log</button>
+<pre id="log"></pre>
+<script>
+const L = document.getElementById('log'); const out = (m) => { L.textContent += new Date().toISOString().slice(11,19) + ' ' + m + '\n'; };
+out('ua: ' + navigator.userAgent);
+out('AudioContext: ' + (typeof (window.AudioContext || window.webkitAudioContext)));
+out('in iframe: ' + (window.top !== window.self));
+let ctx = null;
+function get() { if (!ctx) { const AC = window.AudioContext || window.webkitAudioContext; ctx = new AC(); out('created, state=' + ctx.state + ' rate=' + ctx.sampleRate); ctx.onstatechange = () => out('statechange → ' + ctx.state); } return ctx; }
+try { const pre = get(); out('autoplay probe (no gesture): state=' + pre.state); } catch (e) { out('create failed: ' + e); }
+document.getElementById('tone').onclick = async () => {
+  try { const c = get(); await c.resume(); out('after resume: ' + c.state);
+    const o = c.createOscillator(), g = c.createGain(); o.type = 'sine'; o.frequency.value = 440; g.gain.value = 0.0001; o.connect(g).connect(c.destination);
+    const t = c.currentTime; g.gain.exponentialRampToValueAtTime(0.2, t + 0.05); g.gain.exponentialRampToValueAtTime(0.0001, t + 2); o.start(t); o.stop(t + 2.1);
+    out('tone scheduled 440Hz 2s, currentTime=' + t.toFixed(2)); setTimeout(() => out('after 2.5s: state=' + c.state + ' currentTime=' + c.currentTime.toFixed(2) + (c.currentTime > t + 2 ? ' (clock advanced: audio thread running)' : ' (clock stalled!)')), 2500);
+  } catch (e) { out('tone error: ' + e); }
+};
+document.getElementById('amb').onclick = async () => {
+  try { const c = get(); await c.resume(); const t = c.currentTime; const master = c.createGain(); master.gain.value = 0.25; master.connect(c.destination);
+    for (const [f, d] of [[55, 0], [55.4, 0.5], [110.3, 0.2]]) { const o = c.createOscillator(); o.type = 'triangle'; o.frequency.value = f; o.detune.value = d; const g = c.createGain(); g.gain.value = 0.18; o.connect(g).connect(master); o.start(t); o.stop(t + 4); }
+    const buf = c.createBuffer(1, c.sampleRate * 4, c.sampleRate); const ch = buf.getChannelData(0); for (let i = 0; i < ch.length; i++) ch[i] = (Math.random() * 2 - 1) * 0.3;
+    const n = c.createBufferSource(); n.buffer = buf; const lp = c.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 220; lp.Q.value = 0.7; const ng = c.createGain(); ng.gain.value = 0.5; n.connect(lp).connect(ng).connect(master); n.start(t); n.stop(t + 4);
+    out('ambience 4s scheduled (drone 55Hz + filtered noise)'); } catch (e) { out('ambience error: ' + e); }
+};
+document.getElementById('copy').onclick = async () => { try { await navigator.clipboard.writeText(L.textContent); out('copied'); } catch (e) { out('clipboard blocked: ' + e); } };
+</script></body></html>
