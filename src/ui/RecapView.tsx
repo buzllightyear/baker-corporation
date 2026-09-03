@@ -19,7 +19,7 @@ export function RecapView({ code }: { code: string }) {
         <div className="pad">
           <div><span className={'stamp ' + stamp}>{r.verdict === 'solved' ? T.solved[lang] : r.verdict === 'failed' ? T.failed[lang] : '—'}</span></div>
           <div className="nums">
-            <div><b>{Math.floor(r.timeLeft / 60)}h {String(r.timeLeft % 60).padStart(2, '0')}m</b><span>{T.timeLeft[lang]}</span></div>
+            <div><b>{Math.floor(r.timeUsed / 60)}h {String(r.timeUsed % 60).padStart(2, '0')}m</b><span>{T.timeUsed[lang]}</span></div>
             <div><b>{r.watsonCalls}</b><span>{T.watsonCalls[lang]}</span></div>
             <div><b>{r.accusations}</b><span>{T.accusations[lang]}</span></div>
           </div>

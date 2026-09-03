@@ -122,11 +122,11 @@ export const EP0: Episode = {
   },
 
   presence: [
-    { personId: 'okafor', placeId: 'medbay', from: 0, to: 120 },
-    { personId: 'reyes', placeId: 'galley', from: 0, to: 120 },
+    { personId: 'okafor', placeId: 'medbay', from: 0, to: Infinity },
+    { personId: 'reyes', placeId: 'galley', from: 0, to: Infinity },
     { personId: 'lind', placeId: 'bunks', from: 0, to: 40 },
     { personId: 'lind', placeId: 'corridor', from: 40, to: 70 },
-    { personId: 'lind', placeId: 'galley', from: 70, to: 120 },
+    { personId: 'lind', placeId: 'galley', from: 70, to: Infinity },
   ],
 
   topics: [

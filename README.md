@@ -19,7 +19,7 @@ First-person painted rooms (image-model concept art, one per compartment) with c
 5. Ask Watson for a **preliminary hearing** (`submit_theory`): the page stamps each claim *proven / unsupported / contradicted* without revealing who did it.
 6. Press **Accuse** — who, how, decisive evidence. Two tries. Only you have that button; Watson has no tool for it.
 
-Walking is free; conversations, examinations and Watson's records searches cost ship time, which is part of your score. There is no deadline in this build.
+Walking is free; conversations, examinations and Watson's records searches cost ship time. There is no deadline and no penalty; the time you took is shown on the recap.
 
 ## What the agent can and cannot do
 

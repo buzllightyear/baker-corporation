@@ -8,7 +8,7 @@ export function VerdictView() {
   const ep = useGame((s) => s.episode)!; const st = useGame((s) => s.state)!; const lang = useLang((s) => s.lang);
   if (!st.verdict) return null;
   const solved = st.verdict === 'solved';
-  const goRecap = () => { const r = recapOf(ep, st); location.hash = `#/recap/${encodeRecap({ episodeId: ep.id, timeLeft: r.timeLeft, watsonCalls: r.watsonCalls, accusations: r.accusations, verdict: r.verdict, visited: r.visited, unvisited: r.unvisited, order: r.order })}`; };
+  const goRecap = () => { const r = recapOf(ep, st); location.hash = `#/recap/${encodeRecap({ episodeId: ep.id, timeUsed: r.timeUsed, watsonCalls: r.watsonCalls, accusations: r.accusations, verdict: r.verdict, visited: r.visited, unvisited: r.unvisited, order: r.order })}`; };
   return (
     <div className="dialog-bg">
       <div className={'dialog frame ' + (solved ? 'verdict-solved' : 'verdict-failed')}>

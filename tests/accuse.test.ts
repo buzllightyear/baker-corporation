@@ -33,7 +33,7 @@ describe('recap', () => {
     const b = invoke(ep, a.state, 'watson', { kind: 'move', placeId: 'engine' }); if (!b.ok) throw new Error();
     const c = invoke(ep, b.state, 'holmes', { kind: 'accuse', who: 'ada', how: 'm_took', evidence: 'e_print' }); if (!c.ok) throw new Error();
     const rc = recapOf(ep, c.state);
-    expect(rc).toMatchObject({ timeLeft: 120, timeUsed: 0, watsonCalls: 1, accusations: 1, visited: ['hall', 'galley', 'engine'], unvisited: [] });
+    expect(rc).toMatchObject({ timeUsed: 0, watsonCalls: 1, accusations: 1, visited: ['hall', 'galley', 'engine'], unvisited: [] });
     expect(rc.order.map((o) => o.cardId)).toEqual(['place:galley', 'place:engine']);
   });
 });

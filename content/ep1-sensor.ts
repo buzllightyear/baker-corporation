@@ -4,7 +4,8 @@
 // found. Minute 0 = 23:30, minute 450 = 07:00 (docking). Anything that happened
 // on the night of the death therefore sits at a NEGATIVE minute: 22:00 = -90,
 // 22:38 = -52, 22:40 = -50, 23:05 = -25, 23:10 = -20. `presence` (where a living
-// crew member can be found and talked to) stays inside [0, 450]; `asserts`
+// crew member can be found and talked to) starts at 0 and each last window is open-ended —
+// the crew stay where they are after docking, nobody vanishes at 07:00; `asserts`
 // (claims about where somebody was) reach back before 0.
 import type { Episode } from './types';
 
@@ -188,14 +189,14 @@ export const EP1: Episode = {
   presence: [
     { personId: 'sato', placeId: 'bridge', from: 0, to: 60 },
     { personId: 'sato', placeId: 'quarters', from: 60, to: 150 },
-    { personId: 'sato', placeId: 'bridge', from: 150, to: 450 },
+    { personId: 'sato', placeId: 'bridge', from: 150, to: Infinity },
     { personId: 'lind', placeId: 'engine', from: 0, to: 200 },
-    { personId: 'lind', placeId: 'galley', from: 200, to: 450 },
-    { personId: 'okafor', placeId: 'medbay', from: 0, to: 450 },
+    { personId: 'lind', placeId: 'galley', from: 200, to: Infinity },
+    { personId: 'okafor', placeId: 'medbay', from: 0, to: Infinity },
     { personId: 'vance', placeId: 'bridge', from: 0, to: 120 },
-    { personId: 'vance', placeId: 'quarters', from: 120, to: 450 },
+    { personId: 'vance', placeId: 'quarters', from: 120, to: Infinity },
     { personId: 'reyes', placeId: 'galley', from: 0, to: 300 },
-    { personId: 'reyes', placeId: 'quarters', from: 300, to: 450 },
+    { personId: 'reyes', placeId: 'quarters', from: 300, to: Infinity },
   ],
 
   topics: [

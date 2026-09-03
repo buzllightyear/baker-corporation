@@ -14,7 +14,7 @@ export function Home() {
       {running && <button className="epcard" onClick={() => { location.hash = '#/play'; }}><span className="k">{lang === 'en' ? 'Continue' : '이어하기'}</span><span className="t">{pick(useGame.getState().episode!.title, lang)}</span></button>}
       {eps.map((e, i) => { const locked = !e.tutorial && !tutorialDone(); return (
         <button key={e.id} className={'epcard' + (locked ? ' locked' : '')} disabled={locked} title={locked ? T.tutLocked[lang] : undefined} onClick={() => { start(e.id); location.hash = '#/play'; }}>
-          <span className="k">{T.episode[lang]} {i} · {e.places.length} rooms · {e.people.length} people · {Math.floor(e.budgetMinutes / 60)}h</span>
+          <span className="k">{T.episode[lang]} {i} · {e.places.length} rooms · {e.people.length} people</span>
           <span className="t">{pick(e.title, lang)}</span>
           <span>{pick(e.brief, lang)}</span>
           <span className="k">{locked ? '🔒 ' + T.tutLocked[lang] : T.play[lang] + ' →'}</span>
