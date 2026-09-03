@@ -5,7 +5,8 @@ export function Home() {
   const lang = useLang((s) => s.lang); const { set } = useLang(); const start = useGame((s) => s.startEpisode); const running = useGame((s) => s.state);
   const eps = listEpisodes();
   return (
-    <div className="center">
+    <div className="center home">
+      <div className="home-hero" style={{ backgroundImage: "url(/art/ui/hero-ship.jpg)" }} />
       <div className="row" style={{ justifyContent: 'flex-end' }}><button onClick={() => set(lang === 'en' ? 'ko' : 'en')}>{lang === 'en' ? '한국어' : 'English'}</button></div>
       <div className="hero"><div><h1>The Baker Corporation</h1>
       <p className="thesis">{lang === 'en' ? 'The agent writes the story. The website puts it on trial.' : '에이전트는 이야기를 쓰고, 웹사이트는 그 이야기를 재판한다.'}</p>

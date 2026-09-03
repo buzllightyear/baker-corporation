@@ -32,7 +32,7 @@
 .closeup .cu-flash { position: absolute; right: 16px; top: -26px; font-size: 12px; color: var(--ok); }
 
 /* — Watson ticker: one live line over the stage, the ones before it fading out behind — */
-.watson-ticker { position: absolute; left: 50%; transform: translateX(-50%); top: 40px; z-index: 4; display: flex; flex-direction: column; align-items: center; gap: 2px; pointer-events: none; max-width: 60%; }
+.watson-ticker { position: absolute; left: 50%; transform: translateX(-50%); top: 40px; z-index: 4; display: flex; flex-direction: column; align-items: center; gap: 2px; pointer-events: none; max-width: 34%; }
 .watson-ticker .wt-line { font-size: 12px; letter-spacing: .02em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; color: var(--watson); opacity: .28; padding: 2px 10px; border-radius: 999px; background: rgba(0,0,0,.4); }
 .watson-ticker .wt-line.now { opacity: 1; background: rgba(0,0,0,.62); border: 1px solid rgba(255,166,64,.5); box-shadow: 0 0 14px rgba(255,166,64,.22); animation: bakerTickerIn 260ms ease; }
 .watson-ticker .wt-caret { animation: bakerCaret 1s step-end infinite; margin-left: 2px; }
