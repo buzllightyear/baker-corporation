@@ -31,12 +31,14 @@ export function StageMotion({ image, tense }: { image: string | null; tense?: bo
       if (!alive) return;
       raf = requestAnimationFrame(frame);
       if (document.hidden) return;
-      const dt = Math.min(0.05, (t - last) / 1000 || 0.016); if (t - last < 50) return; last = t;
+      const dt = Math.min(0.05, (t - last) / 1000 || 0.016); if (t - last < 50) return; last = t; const t0 = performance.now();
       ctx.clearRect(0, 0, w, h);
       for (const m of motes) { m.ph += dt * 1.3; m.x += (m.vx + Math.sin(m.ph) * 4) * dt; m.y += m.vy * dt;
         if (m.y < -4) { m.y = h + 4; m.x = Math.random() * w; } if (m.x < -4) m.x = w + 4; if (m.x > w + 4) m.x = -4;
         const a = m.a * (0.6 + 0.4 * Math.sin(m.ph * 0.7));
         ctx.fillStyle = `rgba(${key},${a})`; ctx.beginPath(); ctx.arc(m.x, m.y, m.r, 0, 6.28); ctx.fill(); }
+      // test bridge: CPU cost of this layer per painted frame (ms), independent of vsync throttling
+      const st = (window as unknown as { __bakerMotion?: { frames: number; ms: number } }).__bakerMotion; if (st) { st.frames++; st.ms += performance.now() - t0; }
     };
     raf = requestAnimationFrame(frame);
     return () => { alive = false; cancelAnimationFrame(raf); ro.disconnect(); };
