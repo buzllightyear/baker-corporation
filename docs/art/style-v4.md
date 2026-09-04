@@ -32,3 +32,9 @@ bridge blue-white/amber · fwd corridor grey-blue · medbay white-green #bfe9d0 
 6. UI mockups: "painted key-visual of a screen", labels in quotes, same STYLE block.
 7. Class as height and light; two-character scenes staged by body angle, not expression.
 8. Typography: flared engraved display face for names, hard geometric sans for UI.
+
+## STYLE v5 (2026-09-04, after "why does it look like 2D oil illustration?")
+
+Diagnosis: v4 weighted eight painterly tokens against one "sculpted 3D" clause and banned the very tokens (CG shading, render) that give solidity, so the model produced flat oil illustration. v5 declares the medium as a 3D animated film frame first, fixes lighting/camera/materials as 3D, and confines brushwork to surface texture.
+
+STYLE (fixed): A single frame from a stylized 3D animated feature film — sculpted characters and sets with clean solid geometry, correct perspective and real volume. Form shading is fully 3D: one directional key light with cast shadows and contact shadows, ambient occlusion in the folds, subtle subsurface scattering on skin, one hard coloured rim light for separation, volumetric haze and light shafts, a cinematic 35mm lens with shallow depth of field. Surfaces carry HAND-PAINTED TEXTURES: visible brush marks, dry-brush wear, grime and chipped paint live inside the texture maps — the strokes follow the surface, they never replace the form. Faces are sculpted and readable: sharp planes, defined jaw, slightly enlarged eyes with a wet specular; hair is modelled as chunky sculpted clumps with painted strands. No ink outlines. Palette muted with a few saturated accents; two-tone lighting (indigo/gold or teal/amber). Painterly 3D look, like a prestige animated series that paints over its CG. Avoid: flat 2D illustration, oil painting on canvas, canvas grain, watercolour, sketch, photorealism, live-action, anime, cel-shading, lineart, extra text.
