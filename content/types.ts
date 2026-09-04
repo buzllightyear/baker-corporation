@@ -3,7 +3,7 @@ export type Minute = number;                       // 판 시작 기준 경과 �
 
 export interface Place { id: string; name: Text; description: Text; adjacent: string[] }
 export interface Presence { personId: string; placeId: string; from: Minute; to: Minute }   // [from, to) 동안 그 장소
-export interface Person { id: string; name: Text; role: Text; portrait: string /* 이모지 한 글자 */; truthful: boolean; blurb?: Text /* 명부 한 줄. 공개, 스포일러 없음 */ }
+export interface Person { id: string; name: Text; role: Text; portrait: string /* 이모지 한 글자 */; truthful: boolean; blurb?: Text /* 명부 한 줄. 공개, 스포일러 없음 */; manner?: Text /* 말투 지침. 왓슨이 이 사람을 연기할 때의 어조·문장 길이·버릇. 사실은 카드가, 말은 에이전트가 */ }
 export interface Topic { id: string; label: Text; keywords: string[] }                      // keywords는 영어 소문자
 export interface Statement {
   id: string; personId: string; topicId: string;

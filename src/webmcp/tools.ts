@@ -26,10 +26,8 @@ function run<T>(deps: Deps, raw: unknown, busy: string, toCmd: (a: T) => Cmd, ti
   deps.setBusy(busy);
   tick?.(args);
   const r = deps.dispatch(toCmd(args));
-  const ep = deps.getEpisode(); const s = deps.getState();
-  const clock = { clock: ep.clockLabel(s.clock), minutesElapsed: s.clock };
-  if (!r.ok) return Promise.resolve(toolResult({ ok: false, code: r.code, message: r.message, ...clock }));
-  return Promise.resolve(toolResult({ ok: true, ...(project(r.result, deps.lang()) as Record<string, unknown>), ...clock }));
+  if (!r.ok) return Promise.resolve(toolResult({ ok: false, code: r.code, message: r.message }));
+  return Promise.resolve(toolResult({ ok: true, ...(project(r.result, deps.lang()) as Record<string, unknown>) }));
 }
 const S = (props: Record<string, unknown>, required: string[]) => ({ type: 'object', properties: props, required, additionalProperties: false });
 export function watsonTools(deps: Deps): ToolDef[] {
@@ -45,13 +43,13 @@ export function watsonTools(deps: Deps): ToolDef[] {
   const tick = (text: string, at: { placeId?: string; targetId?: string } = {}) => deps.pushTicker?.({ text, ...at });
   const act = (verb: string, detail?: string, at: { placeId?: string; targetId?: string } = {}) => tick(`${who()} \u00b7 ${verb}${detail ? ` ${detail}` : ''}`, at);
   return [
-    { name: 'get_case', description: 'Read-only. Call this FIRST every turn. Returns the case brief, the ship clock and minutes elapsed (there is no deadline and no penalty; the time taken is simply shown on the recap), where the investigator and you (Watson) are, everything on the shared notebook (cards with who found them and when), pinned notes, accusations left, `leads` (per person: topics unheard, whether cross-checked, where they are now; per room: unvisited, items unexamined, topics unheard — counts only, so you can answer "where should I look?" with a place), `coverage` (how many provable propositions the notebook already covers) and `status` (`more_to_fetch` | `nothing_left_to_fetch`), the scene where you stand (people present with their topics, evidence in reach), the map, the list of people and methods, and your standing orders (voice). Nothing here reveals the truth; the page holds it.', inputSchema: S({}, []), annotations: ro,
+    { name: 'get_case', description: 'Read-only. Call this FIRST every turn. Returns the case brief, `shipTime` (for your own orientation only — there is no deadline and no penalty; do not report the time or minutes spent unless asked), where the investigator and you (Watson) are, everything on the shared notebook (cards with who found them and when), pinned notes, accusations left, `leads` (per person: topics unheard, whether cross-checked, where they are now; per room: unvisited, items unexamined, topics unheard — counts only, so you can answer "where should I look?" with a place), `coverage` (how many provable propositions the notebook already covers) and `status` (`more_to_fetch` | `nothing_left_to_fetch`), the scene where you stand (people present with their topics, evidence in reach), the map, the list of people and methods, and your standing orders (voice). Nothing here reveals the truth; the page holds it.', inputSchema: S({}, []), annotations: ro,
       execute: async () => { const ep = deps.getEpisode(), s = deps.getState(), lang = deps.lang(); deps.onRead?.();
         act(T.wtReading[lang], undefined, { placeId: s.pos.watson });
-        return toolResult(project({ ok: true, episode: { id: ep.id, title: ep.title, series: ep.series, brief: ep.brief }, clock: ep.clockLabel(s.clock), minutesElapsed: s.clock, verdict: s.verdict,
+        return toolResult(project({ ok: true, episode: { id: ep.id, title: ep.title, series: ep.series, brief: ep.brief }, shipTime: ep.clockLabel(s.clock), verdict: s.verdict,
           positions: s.pos, accusationsLeft: s.accusationsLeft, watsonCalls: s.watsonCalls, cards: s.cards, pins: s.pins, here: scene(ep, s, s.pos.watson),
           leads: leads(ep, s), coverage: coverage(ep, s), status: fetchStatus(ep, s),
-          map: ep.places.map((p) => ({ id: p.id, name: p.name, adjacent: p.adjacent })), people: ep.people.map((p) => ({ id: p.id, name: p.name, role: p.role })), methods: ep.methods, voice: WATSON_VOICE }, lang) as Record<string, unknown>); } },
+          map: ep.places.map((p) => ({ id: p.id, name: p.name, adjacent: p.adjacent })), people: ep.people.map((p) => ({ id: p.id, name: p.name, role: p.role, manner: p.manner })), methods: ep.methods, voice: WATSON_VOICE }, lang) as Record<string, unknown>); } },
     { name: 'move', description: 'Walk to any room (free — walking costs no ship time; a distant room is reached through the connecting corridors automatically). Returns the scene there: people present and their topics, evidence in reach, plus the route taken.', inputSchema: S({ place_id: { type: 'string' } }, ['place_id']),
       execute: async (raw) => {
         let args: { place_id: string }; try { args = parseArgs<{ place_id: string }>(raw); } catch { return toolResult({ ok: false, code: 'INVALID_ARGS', message: 'arguments must be a JSON object' }); }
@@ -62,9 +60,8 @@ export function watsonTools(deps: Deps): ToolDef[] {
         tick(`${who()} \u2192 ${path.map(placeName).join(' \u2192 ')}`, { placeId: args.place_id });
         let last: KernelResult | null = null;
         for (const step of path) { last = deps.dispatch({ kind: 'move', placeId: step }); if (!last.ok) break; }
-        const s = deps.getState(); const clock = { clock: ep.clockLabel(s.clock), minutesElapsed: s.clock };
-        if (!last || !last.ok) return toolResult({ ok: false, code: last ? last.code : 'INVALID_ARGS', message: last ? last.message : 'no move', ...clock });
-        return toolResult({ ok: true, ...(project(last.result, deps.lang()) as Record<string, unknown>), route: path, ...clock });
+        if (!last || !last.ok) return toolResult({ ok: false, code: last ? last.code : 'INVALID_ARGS', message: last ? last.message : 'no move' });
+        return toolResult({ ok: true, ...(project(last.result, deps.lang()) as Record<string, unknown>), route: path });
       } },
     { name: 'talk', description: 'Ask a person in your room about one of their listed topics (5 min). Returns their statement as a notebook card. Relay it in their voice; the card is all they said.', inputSchema: S({ person_id: { type: 'string' }, topic_id: { type: 'string' } }, ['person_id', 'topic_id']),
       execute: (raw) => run<{ person_id: string; topic_id: string }>(deps, raw, 'talking', (a) => ({ kind: 'talk', personId: a.person_id, topicId: a.topic_id }),

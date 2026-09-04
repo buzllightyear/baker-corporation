@@ -63,6 +63,7 @@ export const EP0: Episode = {
   people: [
     {
       id: 'okafor', name: t('Okafor', '오카포'), role: t('Ship\'s medic', '선의'), portrait: '🩺', truthful: false,
+      manner: t('calm, clinical, precise; tired at the end of a night watch', '차분하고 임상적이며 정확하다. 야간 당직 끝이라 지쳐 있다'),
       blurb: t(
         'Keeps the medbay, the drug safe, and the only key that is supposed to open it.',
         '의무실과 약품 금고, 그리고 그 금고를 열 수 있어야 할 유일한 열쇠를 관리한다.',
@@ -70,6 +71,7 @@ export const EP0: Episode = {
     },
     {
       id: 'reyes', name: t('Reyes', '레이예스'), role: t('Cook', '요리사'), portrait: '🍳', truthful: true,
+      manner: t('warm, plain-spoken, remembers who came in when; scolds gently', '따뜻하고 꾸밈없다. 누가 언제 들어왔는지 기억하고 부드럽게 나무란다'),
       blurb: t(
         'Feeds the watch, empties the galley bin, and notices who comes past the door.',
         '당직조를 먹이고 주방 쓰레기통을 비우면서, 문 앞을 지나가는 사람을 눈여겨본다.',
@@ -77,6 +79,7 @@ export const EP0: Episode = {
     },
     {
       id: 'lind', name: t('Lind', '린드'), role: t('Apprentice engineer', '견습 기관사'), portrait: '🔧', truthful: false,
+      manner: t('eager, over-explains, a little too quick to say he was asleep', '열심이고 과잉 설명한다. 자고 있었다는 말이 조금 너무 빨리 나온다'),
       blurb: t(
         'Youngest aboard, three months on the line, still sleeps in the bunk nearest the hatch.',
         '배에서 가장 어리고, 이 항로에 오른 지 석 달째이며, 아직 해치에서 가장 가까운 침상을 쓴다.',

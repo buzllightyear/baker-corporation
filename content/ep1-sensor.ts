@@ -114,6 +114,7 @@ export const EP1: Episode = {
   people: [
     {
       id: 'vance', name: t('Captain Iris Vance', '아이리스 밴스 선장'), role: t('Master of the Marlow', '말로우 선장'), portrait: '🎖️', truthful: false,
+      manner: t('clipped, formal, commands not sentences; never explains herself twice; calls the investigator \'inspector\'', '짧고 격식 있게, 문장이 아니라 명령조로. 같은 말을 두 번 설명하지 않는다. 조사관을 \'조사관\'이라 부른다'),
       blurb: t(
         'Twenty years on the Ceres run, and signs every manifest that leaves this ship.',
         '세레스 항로 이십 년, 이 배에서 나가는 모든 화물 명세에 서명한다.',
@@ -121,6 +122,7 @@ export const EP1: Episode = {
     },
     {
       id: 'okafor', name: t('Dr. Ada Okafor', '아다 오카포 선의'), role: t('Ship’s doctor', '선의'), portrait: '⚕️', truthful: false,
+      manner: t('calm, clinical, precise about times and bodies; pauses before anything personal; soft voice, hard edges', '차분하고 임상적, 시각과 시신에 대해 정확하다. 개인적인 말 앞에서는 잠시 멈춘다. 목소리는 낮고 끝은 단호하다'),
       blurb: t(
         'Runs the medbay alone, and wrote the only account of the body anyone will read.',
         '의무실을 혼자 맡고, 누구든 읽게 될 시신에 관한 유일한 기록을 썼다.',
@@ -128,6 +130,7 @@ export const EP1: Episode = {
     },
     {
       id: 'lind', name: t('Teo Lind', '테오 린드'), role: t('Engineer', '기관사'), portrait: '🔧', truthful: false,
+      manner: t('rambles, jokes when cornered, over-explains, circles back to how tidy his engine room is; fills silences', '말이 길고 궁지에 몰리면 농담을 한다. 과잉 설명하고 자꾸 기관실이 얼마나 깔끔한지로 돌아온다. 침묵을 못 견딘다'),
       blurb: t(
         'Holds the maintenance codes for every sensor and hatch between the bridge and bay 3.',
         '함교에서 화물칸 3까지, 모든 센서와 해치의 정비 코드를 쥐고 있다.',
@@ -135,6 +138,7 @@ export const EP1: Episode = {
     },
     {
       id: 'sato', name: t('Kei Sato', '케이 사토'), role: t('Navigator', '항해사'), portrait: '🧭', truthful: false,
+      manner: t('composed, economical, answers exactly the question asked and nothing more; polite to the point of distance', '정돈되고 경제적이다. 물은 것에만 정확히 답하고 더 말하지 않는다. 거리감이 느껴질 만큼 정중하다'),
       blurb: t(
         'Plots the course, keeps the bridge log, and has been off the watch rotation for a week.',
         '항로를 짜고 함교 일지를 쓰며, 일주일째 당직 순번에서 빠져 있다.',
@@ -142,6 +146,7 @@ export const EP1: Episode = {
     },
     {
       id: 'reyes', name: t('Mara Reyes', '마라 레예스'), role: t('Cook', '요리사'), portrait: '🍲', truthful: true,
+      manner: t('warm, plain-spoken, remembers everyone\'s habits; scolds gently; speaks in kitchen time (bells, pots, who came in when)', '따뜻하고 꾸밈없다. 사람들의 습관을 다 기억하고 부드럽게 나무란다. 주방의 시간(종, 냄비, 누가 언제 들어왔나)으로 말한다'),
       blurb: t(
         'Found the body at 23:10, on her way to lock the galley down for the night.',
         '밤에 주방을 잠그러 가던 23시 10분, 시신을 발견했다.',
