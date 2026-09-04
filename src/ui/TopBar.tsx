@@ -23,7 +23,7 @@ export function TopBar({ onAccuse, onCaseFile, onCrew }: { onAccuse: () => void;
         <button className={'nb-toggle' + (nbOpen ? ' on' : '')} onClick={toggleNb} aria-label="notebook">{nbOpen ? '▸' : '◂'} {T.notebook[lang]} · {nCards}</button>
         <AudioControls />
         <button onClick={() => set(lang === 'en' ? 'ko' : 'en')} aria-label="language">{lang === 'en' ? '한국어' : 'English'}</button>
-        <button className={'accuse' + (ready && !accuseLocked && st.verdict === null ? ' ready' : '')} onClick={onAccuse} disabled={st.verdict !== null || accuseLocked} title={accuseLocked ? T.tutAccuse[lang] : undefined}>{T.accuse[lang]}</button>
+        <button className={'accuse' + (ready && !accuseLocked && st.verdict === null ? ' ready' : '')} onClick={onAccuse} disabled={st.verdict !== null || accuseLocked} title={accuseLocked ? T.tutAccuse[lang] : undefined} data-label={T.accuse[lang]} aria-label={T.accuse[lang]}>{T.accuse[lang]}</button>
       </header>
     </>
   );
