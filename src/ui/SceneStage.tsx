@@ -9,6 +9,7 @@ import { useToast } from './useToast';
 import { useGuard } from './useGuard';
 import { goalTargets } from './tutorial';
 import { StageArt3D } from './StageArt3D';
+import { StageStrip } from './StageStrip';
 import { hasWebGL } from './webgl';
 import { loadDepth, hotspotOffset, flatSampler, PARALLAX_STRENGTH, type DepthSampler } from './depth';
 const depthUrl = (image: string) => image.replace(/\.jpg$/, '.depth.png');
@@ -126,6 +127,7 @@ export function SceneStage() {
         ? <StageArt3D key={st.pos.holmes} image={art.image} depth={depthUrl(art.image)} parallax={par} zoom={closeup ? { x: closeup.at.x / 100, y: closeup.at.y / 100, scale: zoomFor(closeup.at) } : null} onFailure={() => setGlFailed(true)} />
         : <div key={st.pos.holmes} className={'stage-art' + (leaving !== null ? ' fx-in' : '')} style={artStyle} />}
       {img !== 'ok' && <div className="stage-placeholder"><div className="ph-name">{pick(sc.place.name, lang)}</div><div className="ph-desc">{pick(sc.place.description, lang)}</div></div>}
+      <StageStrip />
       <div className="stage-caption"><b>{pick(sc.place.name, lang)}</b> {img === 'ok' && <span>{pick(sc.place.description, lang)}</span>}</div>
       {sc.evidence.map((e) => { const h = art?.evidence?.[e.id] ?? { x: 50, y: 80 }; return (
         <button key={e.id} className={'hot evidence' + (goal.evidence === e.id ? ' goal' : '') + (eye === e.id ? ' watson-eye' : '')} style={hotStyle(h.x, h.y)} aria-label={pick(e.name, lang)} title={pick(e.name, lang)}

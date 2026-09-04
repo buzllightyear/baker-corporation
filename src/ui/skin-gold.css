@@ -1,0 +1,174 @@
+/* ==========================================================================
+   BAKER CORP — "Gold hairline" skin (P8, 2026-09-04)
+   The language of the approved UI mockups (public/art/concept/ui-v5):
+   black glass, 1px gold hairlines, generous margins, an engraved serif for
+   headings, a hard geometric sans for UI, mono for data. Teal belongs to
+   Watson only. No rivets, no hazard stripes, no stencil.
+   Loaded last; `html` prefix outranks theme.css / chrome.css without edits.
+   ========================================================================== */
+:root {
+  --gold: #d9b56a; --gold-2: #f0d9a0; --hair: rgba(217, 181, 106, .55); --hair-soft: rgba(217, 181, 106, .28);
+  --glass: rgba(7, 9, 13, .64); --glass-2: rgba(7, 9, 13, .82); --ink: #e9e4d6; --muted: #8f8b80;
+  --teal: #5fd1c8; --console: #5fd1c8; --watson: #5fd1c8; --glow-console: rgba(95, 209, 200, .4);
+  --amber: var(--gold); --hazard: var(--gold-2); --holmes: var(--gold); --warn: var(--gold-2); --glow: rgba(217, 181, 106, .4);
+  --steel: rgba(217, 181, 106, .35); --steel-lit: var(--gold); --line: rgba(217, 181, 106, .22);
+  --font-display: 'Cormorant Garamond', 'Noto Serif KR', 'Apple SD Gothic Neo', serif;
+  --font-ui: 'Rajdhani', 'Noto Sans KR', 'Apple SD Gothic Neo', system-ui, sans-serif;
+  --font-stencil: var(--font-display);
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+html body { font-family: var(--font-ui); font-size: 15px; background: #07090d radial-gradient(ellipse 120% 80% at 50% -10%, #171a2b 0%, #07090d 60%); color: var(--ink); }
+html h1, html h2, html h3 { font-family: var(--font-display); font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--gold-2); }
+html .mm-title, html .notebook h2, html .hearing-head .k, html .tut .label, html .epcard .k, html .look .t, html .card-sec, html .talk-rail .who, html .exit .lbl, html .tag .who {
+  font-family: var(--font-ui); font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); font-size: 11px;
+}
+
+/* --- glass panels: replace every steel frame ------------------------------- */
+html .frame, html .minimap, html .tut, html .dialog, html .look, html .talk-rail, html .hearing, html .notebook, html .nv-dossier, html .dialogue, html .nv-dialogue, html .epcard, html .closeup, html .recap-panel {
+  background: var(--glass); backdrop-filter: blur(14px) saturate(1.1); -webkit-backdrop-filter: blur(14px) saturate(1.1);
+  border: 1px solid var(--hair); border-radius: 2px; box-shadow: 0 0 0 1px rgba(0, 0, 0, .5), 0 18px 50px rgba(0, 0, 0, .55);
+  background-image: none; animation: none;
+}
+html .frame::before, html .frame::after, html .minimap::before, html .minimap::after, html .tut::before, html .tut::after, html .dialog::before, html .dialog::after,
+html .look::before, html .look::after, html .hearing::before, html .hearing::after, html .epcard::before, html .epcard::after, html .stage::after { content: none; }
+html .hazard-strip, html .hazard-strip.thin { display: none; }
+html .tag { background: none; border: 0; border-bottom: 1px solid var(--hair-soft); padding: 6px 12px; }
+html .tag .sn { color: var(--muted); }
+html .logo-mark, html .logo-fallback { filter: sepia(1) saturate(1.6) hue-rotate(5deg) brightness(1.1); }
+
+/* --- top bar --------------------------------------------------------------- */
+html .topbar { background: var(--glass-2); border-bottom: 1px solid var(--hair); box-shadow: none; padding: 8px 22px; gap: 16px; min-height: 48px; }
+html .topbar .title { font-family: var(--font-display); font-size: 17px; letter-spacing: .2em; text-transform: uppercase; color: var(--gold-2); font-weight: 600; }
+html .topbar .title small { font-family: var(--font-ui); letter-spacing: .08em; text-transform: none; color: var(--muted); margin-left: 10px; font-size: 13px; }
+html .topbar .clock, html .topbar .badge { font-family: var(--font-mono); font-size: 11px; letter-spacing: .06em; color: var(--muted); border: 0; padding: 0; background: none; }
+html .topbar .badge.on { color: var(--teal); }
+html .banner { background: rgba(217, 181, 106, .06); border-bottom: 1px solid var(--hair-soft); color: var(--muted); font-family: var(--font-ui); }
+html .banner::before, html .banner.closed::before { content: none; }
+html .banner .mono.k { color: var(--gold); }
+
+/* --- buttons and chips: hairline pills ------------------------------------- */
+html button {
+  font-family: var(--font-ui); font-weight: 600; letter-spacing: .14em; text-transform: uppercase; font-size: 12px;
+  color: var(--gold-2); background: rgba(217, 181, 106, .04); border: 1px solid var(--hair); border-radius: 2px; padding: 5px 14px;
+  transition: background-color .15s, border-color .15s, box-shadow .15s, color .15s;
+}
+html button:hover:not(:disabled) { background: rgba(217, 181, 106, .12); border-color: var(--gold); box-shadow: 0 0 14px rgba(217, 181, 106, .18); color: #fff3d6; }
+html button:disabled { opacity: .35; }
+html .topbar .accuse { color: #ffb08a; border-color: rgba(255, 120, 90, .6); }
+html .topbar .accuse:hover:not(:disabled) { background: rgba(255, 120, 90, .12); box-shadow: 0 0 16px rgba(255, 120, 90, .3); }
+html .topbar .accuse.ready { animation: bakerAccuseReady 1.8s ease-in-out infinite; border-color: var(--gold); color: var(--gold-2); }
+html .topbar .nb-toggle.on { border-color: var(--gold); color: var(--gold-2); }
+html .chip { border: 1px solid var(--hair-soft); border-radius: 999px; padding: 4px 14px; background: rgba(7, 9, 13, .5); }
+html .chip.topic { color: var(--ink); font-family: var(--font-ui); letter-spacing: .04em; text-transform: none; font-size: 14px; font-weight: 500; }
+html .chip.topic:hover { border-color: var(--gold); background: rgba(217, 181, 106, .1); }
+html .talk-rail .chip.more { color: var(--gold); }
+
+/* --- stage: hotspots, doors, faces ----------------------------------------- */
+html .hot.evidence .ring { border: 1px solid var(--gold); box-shadow: 0 0 0 4px rgba(217, 181, 106, .12), 0 0 16px rgba(217, 181, 106, .35); background: rgba(217, 181, 106, .08); }
+html .hot .lbl { font-family: var(--font-ui); letter-spacing: .12em; text-transform: uppercase; font-size: 10px; color: var(--gold-2); background: var(--glass-2); border: 1px solid var(--hair-soft); padding: 3px 8px; }
+html .hot.person .face { border-radius: 2px; border: 1px solid var(--hair); box-shadow: 0 0 0 3px rgba(7, 9, 13, .6), 0 10px 24px rgba(0, 0, 0, .6); width: 66px; height: 66px; }
+html .hot.person .face img { border-radius: 1px; }
+html .hot.person.on .face { border-color: var(--gold-2); box-shadow: 0 0 0 3px rgba(7, 9, 13, .6), 0 0 22px rgba(217, 181, 106, .5); }
+html .hot.person .lbl small { color: var(--muted); }
+html .hot.watson-eye .ring, html .hot.watson-eye .face { border-color: var(--teal); box-shadow: 0 0 18px var(--glow-console); }
+html .exit { border: 1px solid var(--hair); background: var(--glass); backdrop-filter: blur(8px); border-radius: 2px; padding: 6px 14px; gap: 8px; }
+html .exit:hover { border-color: var(--gold); background: rgba(217, 181, 106, .12); }
+html .exit .arrow { color: var(--gold); text-shadow: none; font-size: 13px; }
+html .exit .lbl { font-size: 10px; color: var(--gold-2); }
+html .exit.goal { border-color: var(--gold-2); box-shadow: 0 0 18px rgba(217, 181, 106, .45); }
+html .stage-caption { font-family: var(--font-ui); background: linear-gradient(180deg, rgba(7, 9, 13, .7), transparent); }
+html .stage-caption b { font-family: var(--font-display); letter-spacing: .18em; text-transform: uppercase; color: var(--gold-2); font-size: 15px; }
+html .stage-caption span { color: rgba(233, 228, 214, .8); }
+
+/* --- deck plan (minimap) ----------------------------------------------------- */
+html .minimap { width: 312px; left: 14px; bottom: 14px; }
+html .room { border: 1px solid var(--hair-soft); border-radius: 2px; background: rgba(7, 9, 13, .35); font-family: var(--font-ui); }
+html .room .name { color: var(--ink); letter-spacing: .06em; font-size: 10px; }
+html .room.here { border-color: var(--gold-2); box-shadow: inset 0 0 0 1px var(--gold-2), 0 0 10px rgba(217, 181, 106, .25); }
+html .room.adjacent { border-style: dashed; border-color: var(--hair); }
+html .room.visited { background: rgba(217, 181, 106, .08); }
+html .room.lead::after, html .room .lead-dot { border-color: var(--gold); box-shadow: 0 0 6px rgba(217, 181, 106, .5); }
+html .tok.holmes { color: var(--gold-2); }
+html .tok.watson { color: var(--teal); }
+html .watson-status { border-left: 2px solid var(--teal); background: linear-gradient(90deg, rgba(95, 209, 200, .12), transparent); color: var(--teal); text-shadow: none; font-family: var(--font-mono); }
+html .watson-status.done { color: var(--gold-2); border-left-color: var(--gold); background: linear-gradient(90deg, rgba(217, 181, 106, .12), transparent); }
+
+/* --- Watson's ticker and tutorial ------------------------------------------- */
+html .watson-ticker { top: 46px; }
+html .watson-ticker .wt-line { color: var(--teal); font-family: var(--font-mono); }
+html .watson-ticker .wt-line.now { background: var(--glass-2); border: 1px solid rgba(95, 209, 200, .5); box-shadow: 0 0 14px var(--glow-console); border-radius: 999px; padding: 4px 14px; }
+html .tut { border-color: var(--gold); box-shadow: 0 0 0 1px rgba(0, 0, 0, .5), 0 0 28px rgba(217, 181, 106, .25), 0 18px 50px rgba(0, 0, 0, .6); }
+html .tut .say { font-family: var(--font-ui); font-size: 15px; }
+html .tut .chipline .label { color: var(--teal); }
+html .tut .chipline button { text-transform: none; letter-spacing: .02em; font-weight: 500; border-color: rgba(95, 209, 200, .5); color: var(--ink); }
+
+/* --- stage strip: the four stages of a case ---------------------------------- */
+html .stage-strip { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); z-index: 4; display: flex; gap: 22px; align-items: center; pointer-events: none;
+  font-family: var(--font-ui); font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: rgba(233, 228, 214, .45); }
+html .stage-strip span { position: relative; padding-bottom: 4px; }
+html .stage-strip span::before { content: '·'; position: absolute; left: -14px; color: var(--hair); }
+html .stage-strip span:first-child::before { content: none; }
+html .stage-strip span.on { color: var(--gold-2); text-shadow: 0 0 10px rgba(217, 181, 106, .5); }
+html .stage-strip span.on::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--gold); box-shadow: 0 0 8px var(--gold); }
+html .stage-strip span.done { color: rgba(217, 181, 106, .7); }
+
+/* --- close-up, dialogue, look ------------------------------------------------ */
+html .closeup { border-color: var(--hair); border-radius: 2px; padding: 16px 20px; }
+html .closeup .cu-name { color: var(--gold); font-family: var(--font-ui); letter-spacing: .2em; }
+html .closeup .cu-body { font-family: var(--font-ui); font-size: 15px; color: var(--ink); }
+html .look { border-color: var(--hair); box-shadow: 0 0 0 1px rgba(0, 0, 0, .5), 0 0 26px rgba(217, 181, 106, .15), 0 14px 50px rgba(0, 0, 0, .7); }
+html .dialogue .dlg-face, html .nv-dialogue .nv-portrait.lg { border: 1px solid var(--hair); border-radius: 2px; }
+html .dialogue .dlg-who b, html .nv-dialogue-who b { font-family: var(--font-display); letter-spacing: .14em; text-transform: uppercase; color: var(--gold-2); font-size: 16px; }
+html .dialogue .dlg-topic, html .nv-dialogue-topic { color: var(--muted); font-family: var(--font-ui); letter-spacing: .12em; text-transform: uppercase; font-size: 11px; }
+html .dialogue .dlg-text, html .nv-dialogue-line { font-family: var(--font-ui); font-size: 16px; line-height: 1.6; }
+html .nv-portrait { border: 1px solid var(--hair); border-radius: 2px; }
+
+/* --- notebook and cards: glass ledger --------------------------------------- */
+html .notebook { border: 0; border-left: 1px solid var(--hair); background: var(--glass-2); backdrop-filter: blur(14px); box-shadow: none; border-radius: 0; }
+html .card { background: rgba(217, 181, 106, .035); border: 1px solid var(--hair-soft); border-left: 2px solid var(--hair); border-radius: 2px; box-shadow: none; padding: 10px 12px; }
+html .card:hover { border-left-color: var(--gold-2); background: rgba(217, 181, 106, .07); }
+html .card .t { font-family: var(--font-display); font-size: 16px; letter-spacing: .04em; color: var(--gold-2); font-weight: 600; text-transform: none; }
+html .card .b { font-family: var(--font-ui); color: var(--ink); }
+html .card .meta, html .card .meta .cid { color: var(--muted); font-family: var(--font-mono); font-size: 10px; }
+html .card .meta .by.holmes { color: var(--gold); } html .card .meta .by.watson { color: var(--teal); }
+html .card form input { border: 1px solid var(--hair-soft); background: rgba(7, 9, 13, .6); color: var(--ink); font-family: var(--font-ui); }
+html .empty { color: var(--muted); font-family: var(--font-display); font-style: italic; letter-spacing: .04em; text-transform: none; }
+
+/* --- hearing, stamps ---------------------------------------------------------- */
+html .hearing { border-color: var(--hair-soft); }
+html .stamp, html .verdict .st { font-family: var(--font-display); letter-spacing: .16em; border: 1px solid currentColor; border-radius: 2px; padding: 2px 8px; transform: none; background: none; }
+html .stamp.ok { color: var(--gold-2); } html .stamp.bad { color: #ff8a70; } html .stamp.amber { color: var(--gold); } html .stamp.sealed { color: var(--muted); }
+html .verdict .cl { font-family: var(--font-ui); }
+html .verdict .miss { color: var(--muted); }
+
+/* --- dialogs: accuse, verdict --------------------------------------------------- */
+html .dialog-bg { background: rgba(4, 5, 8, .72); backdrop-filter: blur(6px); }
+html .dialog { padding: 0; }
+html .dialog-body { padding: 22px 26px 24px; }
+html .dialog h2 { font-size: 22px; }
+html .dialog h2 .cnt { font-family: var(--font-mono); font-size: 11px; letter-spacing: .1em; color: var(--muted); text-transform: none; margin-left: 12px; }
+html .dialog label { font-family: var(--font-ui); letter-spacing: .14em; text-transform: uppercase; font-size: 11px; color: var(--gold); }
+html select, html input, html textarea { background: rgba(7, 9, 13, .7); border: 1px solid var(--hair-soft); color: var(--ink); font-family: var(--font-ui); border-radius: 2px; padding: 7px 10px; }
+html select:focus, html input:focus { border-color: var(--gold); outline: none; box-shadow: 0 0 0 3px rgba(217, 181, 106, .12); }
+html .dialog .wrong { color: #ffb08a; font-family: var(--font-ui); border-top: 1px solid var(--hair-soft); padding-top: 10px; margin-top: 8px; }
+html .dialog.verdict-solved, html .dialog.verdict-failed { border-color: var(--gold); }
+html .verdict-body .reveal { font-family: var(--font-display); font-size: 20px; line-height: 1.5; color: var(--ink); text-transform: none; letter-spacing: .01em; }
+html .verdict-body .motive { color: var(--muted); font-family: var(--font-ui); }
+html .verdict-body .hook { color: var(--gold-2); font-family: var(--font-display); font-style: italic; text-transform: none; letter-spacing: .02em; }
+
+/* --- home ----------------------------------------------------------------------- */
+html .home .hero h1 { font-size: 40px; letter-spacing: .28em; font-weight: 500; }
+html .thesis { color: var(--gold); font-family: var(--font-display); font-style: italic; font-size: 18px; letter-spacing: .02em; }
+html .epcard { padding: 18px 22px; display: flex; flex-direction: column; gap: 6px; text-align: left; text-transform: none; letter-spacing: 0; }
+html .epcard .t { font-family: var(--font-display); font-size: 26px; letter-spacing: .16em; text-transform: uppercase; color: var(--gold-2); font-weight: 500; }
+html .epcard:hover:not(:disabled) { border-color: var(--gold); background: rgba(217, 181, 106, .08); }
+html .home-hero { filter: saturate(1.05); }
+html .home-hero::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 40%, #07090d 100%); }
+
+/* --- recap ------------------------------------------------------------------------ */
+html .recap-panel .nums b { font-family: var(--font-display); font-size: 30px; color: var(--gold-2); font-weight: 500; }
+html .recap-panel .nums span { color: var(--muted); font-family: var(--font-ui); letter-spacing: .14em; text-transform: uppercase; font-size: 10px; }
+html .recap-panel .map .room { font-family: var(--font-ui); }
+html .toast { background: var(--glass-2); border: 1px solid var(--hair); color: var(--ink); font-family: var(--font-ui); border-radius: 2px; }
+
+@media (prefers-reduced-motion: reduce) { html .topbar .accuse.ready { animation: none; } }
