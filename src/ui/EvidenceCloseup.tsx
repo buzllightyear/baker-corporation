@@ -11,6 +11,8 @@ export interface EvidenceCloseupProps {
   cardId?: string;
   onPin: (note: string) => void;
   onBack: () => void;
+  /** The prop sits low in the frame: dock the panel at the top so the zoom stays visible. */
+  low?: boolean;
 }
 
 async function copy(text: string): Promise<boolean> {
@@ -18,7 +20,7 @@ async function copy(text: string): Promise<boolean> {
 }
 
 /** The Room-style close-up: the stage art has zoomed into the hotspot, this panel carries what was found and what to do with it. */
-export function EvidenceCloseup({ name, body, cardId, onPin, onBack }: EvidenceCloseupProps) {
+export function EvidenceCloseup({ name, body, cardId, onPin, onBack, low }: EvidenceCloseupProps) {
   const lang = useLang((s) => s.lang);
   const [pinning, setPinning] = React.useState(false);
   const [note, setNote] = React.useState('');
@@ -27,7 +29,7 @@ export function EvidenceCloseup({ name, body, cardId, onPin, onBack }: EvidenceC
   const askLine = T.askWatsonLook[lang].replace('{name}', name);
   const say = (m: string) => { setFlash(m); setTimeout(() => setFlash(null), 1400); };
   return (
-    <div className="closeup" role="dialog" aria-label={name}>
+    <div className={'closeup' + (low ? ' low' : '')} role="dialog" aria-label={name}>
       <div className="cu-name">{name}</div>
       <div className="cu-body">{body}</div>
       {pinning && cardId && (

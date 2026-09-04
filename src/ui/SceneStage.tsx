@@ -150,7 +150,7 @@ export function SceneStage() {
         </div>
       ); })()}
       {dialogue && sel && <DialogueView person={{ id: sel.id, name: sel.name, role: sel.role, portrait: sel.portrait }} topicLabel={dialogue.topicLabel} text={dialogue.text} onClose={() => setDialogue(null)} />}
-      {closeup && <EvidenceCloseup name={closeup.name} body={closeup.body} cardId={closeup.cardId}
+      {closeup && <EvidenceCloseup low={closeup.at.y > 76} name={closeup.name} body={closeup.body} cardId={closeup.cardId}
         onPin={(note) => { const r = dispatch({ kind: 'pin', cardId: closeup.cardId, note }); if (!r.ok) show(r.message); }}
         onBack={() => setCloseup(null)} />}
       <WatsonTicker />
