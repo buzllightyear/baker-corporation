@@ -106,7 +106,7 @@ html .exit {
 }
 html .exit .arrow { display: none; }
 html .exit .lbl { color: #1b2126; text-shadow: 0 1px 0 rgba(255, 255, 255, .25); font-weight: 700; font-size: 11px; white-space: nowrap; }
-html .exit.left { transform: translateY(-50%) scaleX(-1); }
+html .exit.left .arrow { display: none; }
 html .exit.left .lbl { transform: scaleX(-1); display: inline-block; }
 html .exit.ahead, html .exit.back {
   border-width: 9px; border-image: var(--ux-plate) 100 fill / 9px / 0 round; padding: 0 8px; min-width: 0;
