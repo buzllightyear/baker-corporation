@@ -76,7 +76,8 @@ html .exit:hover { border-color: var(--gold); background: rgba(217, 181, 106, .1
 html .exit .arrow { color: var(--gold); text-shadow: none; font-size: 13px; }
 html .exit .lbl { font-size: 10px; color: var(--gold-2); }
 html .exit.goal { border-color: var(--gold-2); box-shadow: 0 0 18px rgba(217, 181, 106, .45); }
-html .stage-caption { font-family: var(--font-ui); background: linear-gradient(180deg, rgba(7, 9, 13, .7), transparent); }
+html .stage-caption { font-family: var(--font-ui); background: linear-gradient(180deg, rgba(7, 9, 13, .7), transparent); max-width: calc(100% - 24px); white-space: normal; line-height: 1.35; }
+@media (max-width: 1100px) { html .stage-strip { gap: 10px; font-size: 10px; padding: 4px 10px; } }
 html .stage-caption b { font-family: var(--font-display); letter-spacing: .18em; text-transform: uppercase; color: var(--gold-2); font-size: 15px; }
 html .stage-caption span { color: rgba(233, 228, 214, .8); }
 
@@ -94,7 +95,7 @@ html .watson-status { border-left: 2px solid var(--teal); background: linear-gra
 html .watson-status.done { color: var(--gold-2); border-left-color: var(--gold); background: linear-gradient(90deg, rgba(217, 181, 106, .12), transparent); }
 
 /* --- Watson's ticker and tutorial ------------------------------------------- */
-html .watson-ticker { top: 46px; }
+html .watson-ticker { top: 52px; }
 html .watson-ticker .wt-line { color: var(--teal); font-family: var(--font-mono); }
 html .watson-ticker .wt-line.now { background: var(--glass-2); border: 1px solid rgba(95, 209, 200, .5); box-shadow: 0 0 14px var(--glow-console); border-radius: 999px; padding: 4px 14px; }
 html .tut { border-color: var(--gold); box-shadow: 0 0 0 1px rgba(0, 0, 0, .5), 0 0 28px rgba(217, 181, 106, .25), 0 18px 50px rgba(0, 0, 0, .6); }
@@ -103,7 +104,7 @@ html .tut .chipline .label { color: var(--teal); }
 html .tut .chipline button { text-transform: none; letter-spacing: .02em; font-weight: 500; border-color: rgba(95, 209, 200, .5); color: var(--ink); }
 
 /* --- stage strip: the four stages of a case ---------------------------------- */
-html .stage-strip { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); z-index: 4; display: flex; gap: 22px; align-items: center; pointer-events: none;
+html .stage-strip { position: absolute; top: auto; bottom: 14px; right: 16px; left: auto; transform: none; z-index: 4; display: flex; gap: 18px; align-items: center; pointer-events: none; background: var(--glass-2); border: 1px solid var(--hair-soft); padding: 5px 14px; border-radius: 999px;
   font-family: var(--font-ui); font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: rgba(233, 228, 214, .45); }
 html .stage-strip span { position: relative; padding-bottom: 4px; }
 html .stage-strip span::before { content: '·'; position: absolute; left: -14px; color: var(--hair); }
