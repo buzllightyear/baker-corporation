@@ -10,6 +10,7 @@ import { useGuard } from './useGuard';
 import { goalTargets } from './tutorial';
 import { StageArt3D } from './StageArt3D';
 import { StageStrip } from './StageStrip';
+import { StageMotion } from './StageMotion';
 import { hasWebGL } from './webgl';
 import { loadDepth, hotspotOffset, flatSampler, PARALLAX_STRENGTH, type DepthSampler } from './depth';
 const depthUrl = (image: string) => image.replace(/\.jpg$/, '.depth.png');
@@ -45,6 +46,8 @@ export function SceneStage() {
   const [expanded, setExpanded] = React.useState<Record<string, boolean>>({});
   const [par, setPar] = React.useState({ x: 0, y: 0 });
   const [glFailed, setGlFailed] = React.useState(false);
+  const lastHearing = useGame((x) => x.lastHearing); const [tense, setTense] = React.useState(false);
+  React.useEffect(() => { if (!lastHearing) return; setTense(true); const t = setTimeout(() => setTense(false), 25000); return () => clearTimeout(t); }, [lastHearing]);
   const gl = React.useMemo(() => hasWebGL(), []) && !glFailed;
   const stageRef = React.useRef<HTMLDivElement>(null);
   const [dep, setDep] = React.useState<DepthSampler>(flatSampler);
@@ -127,6 +130,7 @@ export function SceneStage() {
         ? <StageArt3D key={st.pos.holmes} image={art.image} depth={depthUrl(art.image)} parallax={par} zoom={closeup ? { x: closeup.at.x / 100, y: closeup.at.y / 100, scale: zoomFor(closeup.at) } : null} onFailure={() => setGlFailed(true)} />
         : <div key={st.pos.holmes} className={'stage-art' + (leaving !== null ? ' fx-in' : '')} style={artStyle} />}
       {img !== 'ok' && <div className="stage-placeholder"><div className="ph-name">{pick(sc.place.name, lang)}</div><div className="ph-desc">{pick(sc.place.description, lang)}</div></div>}
+      {img === 'ok' && art && <StageMotion image={art.image} tense={tense} />}
       <StageStrip />
       <div className="stage-caption"><b>{pick(sc.place.name, lang)}</b> {img === 'ok' && <span>{pick(sc.place.description, lang)}</span>}</div>
       {sc.evidence.map((e) => { const h = art?.evidence?.[e.id] ?? { x: 50, y: 80 }; return (

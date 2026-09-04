@@ -172,3 +172,27 @@ html .recap-panel .map .room { font-family: var(--font-ui); }
 html .toast { background: var(--glass-2); border: 1px solid var(--hair); color: var(--ink); font-family: var(--font-ui); border-radius: 2px; }
 
 @media (prefers-reduced-motion: reduce) { html .topbar .accuse.ready { animation: none; } }
+
+/* --- tokens: no emoji. Holmes is a gold dot, Watson and the crew are portrait thumbnails ------ */
+html .room .tokens { display: flex; gap: 3px; align-items: center; margin-top: 2px; }
+html .tok { display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; text-shadow: none; }
+html .tok.holmes i { display: block; width: 8px; height: 8px; border-radius: 50%; background: var(--gold-2); box-shadow: 0 0 0 2px rgba(7, 9, 13, .8), 0 0 8px var(--gold); }
+html .tok img { width: 16px; height: 16px; object-fit: cover; border-radius: 2px; border: 1px solid var(--hair-soft); display: block; }
+html .tok.watson img { border-color: var(--teal); box-shadow: 0 0 6px var(--glow-console); }
+html .tok.crew b { font-family: var(--font-display); font-size: 11px; color: var(--gold-2); }
+html .tok.watson.walking { animation: bakerTokenWalk 600ms ease; }
+html .card .meta .by::before { content: none; }
+html .card .pins .pin-glyph, html .card .meta .kind { color: var(--gold); }
+html .audio-ctl .snd { font-size: 15px; color: var(--gold-2); line-height: 1; }
+html .audio-ctl .snd.off { opacity: .35; text-decoration: line-through; }
+html .recap-panel .by.holmes, html .recap-panel .by.watson { font-family: var(--font-mono); }
+
+/* --- P9 motion canvas: dust and haze over the plate, under the UI ------------------------- */
+html .stage-motion { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 2; mix-blend-mode: screen; }
+html .stage.closeup-on .stage-motion { opacity: .35; }
+/* haze: two huge soft discs drifting across the plate on the compositor (transform only) */
+html .stage-haze { position: absolute; top: 20%; left: -30%; width: 70%; height: 70%; border-radius: 50%; pointer-events: none; z-index: 2; mix-blend-mode: screen; opacity: .9;
+  background: radial-gradient(circle, rgba(var(--key), .07) 0%, rgba(var(--key), 0) 65%); will-change: transform; animation: bakerHazeDrift 70s linear infinite; }
+html .stage-haze.b { top: 45%; width: 60%; height: 60%; animation-duration: 95s; animation-delay: -40s; }
+@keyframes bakerHazeDrift { from { transform: translateX(0); } to { transform: translateX(230%); } }
+@media (prefers-reduced-motion: reduce) { html .stage-haze { animation: none; } }

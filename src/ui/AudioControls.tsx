@@ -18,7 +18,7 @@ export function AudioControls() {
         aria-pressed={s.muted}
         title={s.muted ? T.soundOff[lang] : T.soundOn[lang]}
         onClick={() => { unlock(); setMuted(!s.muted); apply(); if (s.muted) playSfx('chip'); }}
-      >{s.muted ? '🔇' : '🔊'}</button>
+      ><span className={'snd' + (s.muted ? ' off' : '')}>♪</span></button>
       <input
         className="audio-vol"
         type="range"

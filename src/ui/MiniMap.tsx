@@ -2,6 +2,7 @@ import React from 'react';
 import { useGame } from '../state/store';
 import { whoIsHere } from '../kernel/kernel';
 import { leads, fetchStatus } from '../kernel/leads';
+import { PORTRAIT } from '../../content/art';
 import { routeTo } from '../kernel/path';
 import { useLang, T, pick } from '../i18n/lang';
 import { useToast } from './useToast';
@@ -36,7 +37,7 @@ export function MiniMap() {
         {ep.places.map((p) => { const people = whoIsHere(ep, st, p.id); const cls = ['room', p.id === here.id ? 'here' : '', here.adjacent.includes(p.id) ? 'adjacent' : '', visited.has(p.id) || p.id === ep.startPlaceId ? 'visited' : '', goal.room === p.id ? 'goal' : '', walking && p.id === watsonAt ? 'watson-dest' : '', roomLead(p.id) ? 'lead' : ''].join(' ');
           return <button key={p.id} className={cls} aria-label={pick(p.name, lang)} onClick={() => { if (p.id === here.id) return; const path = routeTo(ep, here.id, p.id); if (!path) { show('No route.'); return; } for (const step of path) { const r = dispatch({ kind: 'move', placeId: step }); if (!r.ok) { show(r.message); return; } } }}>
             <span className="name">{pick(p.name, lang)}</span>{roomLead(p.id) && <span className="lead-dot" title={T.moreHere[lang]} aria-label={T.moreHere[lang]}>◦</span>}
-            <span className="tokens">{st.pos.holmes === p.id && <span className="tok holmes">●</span>}{st.pos.watson === p.id && <span className={'tok watson' + (walking ? ' walking' : '')}>▲</span>}{people.map((x) => <span key={x.id} className="tok">{x.portrait}</span>)}</span>
+            <span className="tokens">{st.pos.holmes === p.id && <span className="tok holmes" title="Holmes" aria-label="Holmes"><i /></span>}{st.pos.watson === p.id && <span className={'tok watson' + (walking ? ' walking' : '')} title="Watson" aria-label="Watson"><img src={PORTRAIT.watson} alt="" /></span>}{people.map((x) => <span key={x.id} className="tok crew" title={pick(x.name, lang)}>{PORTRAIT[x.id] ? <img src={PORTRAIT[x.id]} alt="" /> : <b>{pick(x.name, lang).slice(0, 1)}</b>}</span>)}</span>
           </button>; })}
       </div>
       <div className={'watson-status' + (done ? ' done' : '')}>▲ {busy ? `${T.watson[lang]}: ${BUSY[busy]?.[lang] ?? busy}` : done ? `${T.watson[lang]}: ${T.nothingLeftShort[lang]}` : T.watsonIdle[lang]}</div>
