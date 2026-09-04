@@ -162,7 +162,8 @@ html .thesis { color: var(--gold); font-family: var(--font-display); font-style:
 html .epcard { padding: 18px 22px; display: flex; flex-direction: column; gap: 6px; text-align: left; text-transform: none; letter-spacing: 0; }
 html .epcard .t { font-family: var(--font-display); font-size: 26px; letter-spacing: .16em; text-transform: uppercase; color: var(--gold-2); font-weight: 500; }
 html .epcard:hover:not(:disabled) { border-color: var(--gold); background: rgba(217, 181, 106, .08); }
-html .home-hero { filter: saturate(1.05); }
+html .home-hero { filter: saturate(1.05); background-size: 128% auto; background-position: 62% 0%; height: 56vh; min-height: 380px; }
+@media (max-width: 900px) { html .home-hero { background-size: cover; background-position: 40% 0%; } }
 html .home-hero::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 40%, #07090d 100%); }
 
 /* --- recap ------------------------------------------------------------------------ */
