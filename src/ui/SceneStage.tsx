@@ -18,7 +18,7 @@ import { WatsonTicker } from './WatsonTicker';
 import './stage-fx.css';
 import { playSfx } from '../audio/sfx';
 const EXIT_POS: Record<'left' | 'right' | 'ahead' | 'back', React.CSSProperties> = {
-  left: { left: 12, top: '50%', transform: 'translateY(-50%) scaleX(-1)' }, right: { right: 12, top: '50%', transform: 'translateY(-50%)' },
+  left: { left: 12, top: '50%', transform: 'translateY(-50%)' }, right: { right: 12, top: '50%', transform: 'translateY(-50%)' },
   ahead: { left: '50%', top: '34%', transform: 'translateX(-50%)' }, back: { left: '50%', bottom: 14, transform: 'translateX(-50%)' },
 };
 const ARROW = { left: '◀', right: '▶', ahead: '▲', back: '▼' } as const;
