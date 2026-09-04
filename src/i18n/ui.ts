@@ -2,7 +2,7 @@ export const T = {
   accuse: { en: 'Accuse', ko: '기소' }, accusationsLeft: { en: 'accusations left', ko: '남은 기소' }, clock: { en: 'Ship time', ko: '선내 시각' }, docking: { en: 'Docking in', ko: '정박까지' }, elapsed: { en: 'elapsed', ko: '경과' },
   notebook: { en: 'Notebook', ko: '수첩' }, map: { en: 'Deck plan', ko: '선내 평면도' }, scene: { en: 'Here', ko: '현재 위치' }, people: { en: 'People', ko: '인물' }, evidence: { en: 'Evidence', ko: '물증' }, topics: { en: 'Ask about', ko: '화제' },
   who: { en: 'Who', ko: '누가' }, how: { en: 'How', ko: '어떻게' }, decisive: { en: 'Decisive evidence', ko: '결정적 물증' }, submit: { en: 'Submit', ko: '제출' }, cancel: { en: 'Cancel', ko: '취소' },
-  solved: { en: 'Case closed.', ko: '사건 종결.' }, failed: { en: 'The truth stays sealed.', ko: '진실은 봉인됐다.' }, wrongSlots: { en: 'Wrong:', ko: '틀린 칸:' },
+  solved: { en: 'Case closed.', ko: '사건 종결.' }, failed: { en: 'The truth stays sealed.', ko: '진실은 봉인됐다.' }, accuseClose: { en: '{n} of the three parts contradict the scene. The record does not say which.', ko: '세 부분 중 {n}개가 현장과 어긋납니다. 어느 부분인지는 기록이 말해주지 않습니다.' },
   recap: { en: 'Recap', ko: '회고' }, timeUsed: { en: 'Time taken', ko: '걸린 시간' }, watsonCalls: { en: 'Watson calls', ko: '왓슨 호출' }, accusations: { en: 'Accusations', ko: '기소 횟수' }, share: { en: 'Copy share link', ko: '공유 링크 복사' }, unvisited: { en: 'Never visited', ko: '가지 않은 곳' },
   noAgent: { en: 'This ship\'s robot only wakes inside ChatGPT. You can still investigate by hand.', ko: '이 배의 로봇은 ChatGPT에서 열어야 깨어납니다. 직접 수사는 가능합니다.' },
   watsonIdle: { en: 'Watson: awaiting orders', ko: '왓슨: 지시 대기' }, sayToWatson: { en: 'Say to Watson', ko: '왓슨에게 이렇게 말해보세요' }, copied: { en: 'Copied', ko: '복사됨' },
@@ -15,7 +15,7 @@ export const T = {
   caseFile: { en: 'Case file', ko: '사건 파일' }, crew: { en: 'Crew', ko: '승무원' }, crewManifest: { en: 'Crew manifest', ko: '승무원 명부' },
   next: { en: 'Next', ko: '다음' }, skip: { en: 'Skip', ko: '건너뛰기' }, startCase: { en: 'Start', ko: '시작' }, close: { en: 'Close', ko: '닫기' },
   lastSeen: { en: 'last seen', ko: '마지막 목격' }, notLogged: { en: 'not logged', ko: '기록 없음' },
-  statementsOn: { en: 'statements on the notebook', ko: '수첩의 진술' }, noStatements: { en: 'No statements collected yet.', ko: '아직 수집한 진술이 없습니다.' },
+  statementsOn: { en: 'statements on the notebook', ko: '수첩의 진술' }, unheard: { en: 'topics unheard', ko: '안 들은 화제' }, crossed: { en: 'cross-checked', ko: '대조함' }, uncrossed: { en: 'not cross-checked', ko: '대조 전' }, moreHere: { en: 'More to see here', ko: '더 볼 것이 있다' }, nothingLeftShort: { en: 'nothing left to fetch — the rest is yours', ko: '더 가져올 것 없음 — 나머지는 조사관 몫' }, nothingLeft: { en: '◆ Watson: I have nothing left to fetch. The rest is yours, investigator.', ko: '◆ 왓슨: 제가 더 가져올 것은 없습니다. 나머지는 조사관님 몫입니다.' }, noStatements: { en: 'No statements collected yet.', ko: '아직 수집한 진술이 없습니다.' },
   briefing: { en: 'Briefing', ko: '브리핑' },
   // — evidence close-up (P3)
   pinNote: { en: 'Pin note', ko: '메모 남기기' }, askWatson: { en: 'Ask Watson', ko: '왓슨에게 묻기' }, back: { en: 'Back', ko: '뒤로' }, save: { en: 'Save', ko: '저장' },

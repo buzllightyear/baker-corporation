@@ -9,9 +9,9 @@ describe('accuse', () => {
     const r = invoke(ep, s0(), 'holmes', { kind: 'accuse', who: 'ada', how: 'm_took', evidence: 'e_print' });
     expect(r.ok && r.state.verdict).toBe('solved'); expect(r.ok && (r.result as any).reveal.en).toBe('Ada took it.');
   });
-  it('reports only which slots were wrong, keeps the truth sealed, decrements', () => {
+  it('reports only how many parts miss — never which — keeps the truth sealed, decrements', () => {
     const r = invoke(ep, s0(), 'holmes', { kind: 'accuse', who: 'ada', how: 'm_sold', evidence: 'e_print' });
-    expect(r.ok && (r.result as any).result).toEqual({ who: true, how: false, evidence: true }); expect(r.ok && r.state.accusationsLeft).toBe(1);
+    expect(r.ok && (r.result as any).mismatches).toBe(1); expect(r.ok && (r.result as any).result).toBeUndefined(); expect(r.ok && r.state.accusations[0].result).toEqual({ who: true, how: false, evidence: true }); expect(r.ok && r.state.accusationsLeft).toBe(1);
     expect(r.ok && r.state.verdict).toBe(null); expect(JSON.stringify(r)).not.toMatch(/reveal|culprit/);
   });
   it('second failure ends the case as failed; third attempt rejected', () => {

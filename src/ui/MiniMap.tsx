@@ -1,6 +1,7 @@
 import React from 'react';
 import { useGame } from '../state/store';
 import { whoIsHere } from '../kernel/kernel';
+import { leads, fetchStatus } from '../kernel/leads';
 import { routeTo } from '../kernel/path';
 import { useLang, T, pick } from '../i18n/lang';
 import { useToast } from './useToast';
@@ -14,6 +15,9 @@ export function MiniMap() {
   const here = ep.places.find((p) => p.id === st.pos.holmes)!;
   const reads = useGame((s) => s.watsonReads); const goal = goalTargets(ep, st, reads);
   const visited = new Set(st.cards.filter((c) => c.kind === 'place').map((c) => c.placeId));
+  const L = leads(ep, st);
+  const done = fetchStatus(ep, st) === 'nothing_left_to_fetch';
+  const roomLead = (id: string) => { const r = L.rooms.find((x) => x.placeId === id); return !!r && (r.unvisited || r.unexamined > 0 || r.unheard > 0); };
   // Watson walked: ping the room he arrived in and slide his token into it, so his moves are visible even when nobody is reading the log.
   const watsonAt = st.pos.watson;
   const [walking, setWalking] = React.useState(false);
@@ -28,13 +32,13 @@ export function MiniMap() {
     <div className="minimap">
       <div className="mm-title">{T.map[lang]}</div>
       <div className="mm-grid">
-        {ep.places.map((p) => { const people = whoIsHere(ep, st, p.id); const cls = ['room', p.id === here.id ? 'here' : '', here.adjacent.includes(p.id) ? 'adjacent' : '', visited.has(p.id) || p.id === ep.startPlaceId ? 'visited' : '', goal.room === p.id ? 'goal' : '', walking && p.id === watsonAt ? 'watson-dest' : ''].join(' ');
+        {ep.places.map((p) => { const people = whoIsHere(ep, st, p.id); const cls = ['room', p.id === here.id ? 'here' : '', here.adjacent.includes(p.id) ? 'adjacent' : '', visited.has(p.id) || p.id === ep.startPlaceId ? 'visited' : '', goal.room === p.id ? 'goal' : '', walking && p.id === watsonAt ? 'watson-dest' : '', roomLead(p.id) ? 'lead' : ''].join(' ');
           return <button key={p.id} className={cls} aria-label={pick(p.name, lang)} onClick={() => { if (p.id === here.id) return; const path = routeTo(ep, here.id, p.id); if (!path) { show('No route.'); return; } for (const step of path) { const r = dispatch({ kind: 'move', placeId: step }); if (!r.ok) { show(r.message); return; } } }}>
-            <span className="name">{pick(p.name, lang)}</span>
+            <span className="name">{pick(p.name, lang)}</span>{roomLead(p.id) && <span className="lead-dot" title={T.moreHere[lang]} aria-label={T.moreHere[lang]}>◦</span>}
             <span className="tokens">{st.pos.holmes === p.id && <span className="tok holmes">●</span>}{st.pos.watson === p.id && <span className={'tok watson' + (walking ? ' walking' : '')}>▲</span>}{people.map((x) => <span key={x.id} className="tok">{x.portrait}</span>)}</span>
           </button>; })}
       </div>
-      <div className="watson-status">▲ {busy ? `${T.watson[lang]}: ${busy}` : T.watsonIdle[lang]}</div>
+      <div className={'watson-status' + (done ? ' done' : '')}>▲ {busy ? `${T.watson[lang]}: ${busy}` : done ? `${T.watson[lang]}: ${T.nothingLeftShort[lang]}` : T.watsonIdle[lang]}</div>
       {toast && <div className="toast">{toast}</div>}
     </div>
   );

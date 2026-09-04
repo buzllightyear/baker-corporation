@@ -10,5 +10,8 @@ export function runAccuse(ep: Episode, s: RunState, cmd: Extract<Cmd, { kind: 'a
   const left = s.accusationsLeft - 1;
   const state: RunState = { ...s, accusationsLeft: left, accusations: [...s.accusations, { ...cmd, at: s.clock, result }], verdict: solved ? 'solved' : left === 0 ? 'failed' : null,
     log: [...s.log, { actor: 'holmes', verb: 'accuse', at: s.clock, target: cmd.who }] };
-  return { ok: true, state, result: solved ? { result, verdict: 'solved', reveal: ep.truth.reveal, motive: ep.truth.motive, hook: ep.truth.hook } : { result, verdict: state.verdict, accusationsLeft: left } };
+  // The failed branch says only HOW MANY parts contradict the scene, never which (Golden Idol's coarse tier):
+  // with two tries a per-slot verdict is a brute-force oracle. Per-slot truth stays in state for the recap.
+  const mismatches = [result.who, result.how, result.evidence].filter((x) => !x).length;
+  return { ok: true, state, result: solved ? { verdict: 'solved', reveal: ep.truth.reveal, motive: ep.truth.motive, hook: ep.truth.hook } : { verdict: state.verdict, mismatches, accusationsLeft: left } };
 }

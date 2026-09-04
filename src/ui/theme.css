@@ -238,6 +238,11 @@ h1, h2 { font-family: var(--font-stencil); letter-spacing: .05em; text-transform
 .room.here { border-color: var(--amber); box-shadow: inset 0 0 0 1px var(--amber), 0 0 10px rgba(255, 166, 64, .2); }
 .room.adjacent { border-style: dashed; border-color: #40595c; }
 .room.visited { background: rgba(93, 148, 152, .14); }
+/* Outer Wilds' "more to explore here": a room still holding an open lead carries a small amber ring. Says where, never what. */
+.room { position: relative; }
+.room .lead-dot { position: absolute; top: 3px; right: 4px; width: 7px; height: 7px; border-radius: 50%; border: 1.5px solid var(--amber); font-size: 0; opacity: .9; box-shadow: 0 0 6px rgba(255, 166, 64, .35); }
+.nv-lead { color: var(--amber); }
+.minimap .watson-status.done { color: var(--amber); }
 .room .name { font-size: 10px; color: #c8d0d5; line-height: 1.2; letter-spacing: .03em; }
 .room .tokens { display: flex; gap: 3px; flex-wrap: wrap; font-size: 11px; }
 .tok.holmes { color: var(--amber); font-weight: 700; text-shadow: 0 0 8px var(--glow); }

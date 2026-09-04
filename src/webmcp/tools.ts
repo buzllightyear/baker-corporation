@@ -1,3 +1,4 @@
+import { leads, coverage, fetchStatus } from '../kernel/leads';
 import type { Episode, Text } from '../../content/types';
 import type { Cmd, KernelResult, RunState } from '../kernel/model';
 import type { ToolDef } from './registry';
@@ -44,11 +45,12 @@ export function watsonTools(deps: Deps): ToolDef[] {
   const tick = (text: string, at: { placeId?: string; targetId?: string } = {}) => deps.pushTicker?.({ text, ...at });
   const act = (verb: string, detail?: string, at: { placeId?: string; targetId?: string } = {}) => tick(`${who()} \u00b7 ${verb}${detail ? ` ${detail}` : ''}`, at);
   return [
-    { name: 'get_case', description: 'Read-only. Call this FIRST every turn. Returns the case brief, the ship clock and minutes elapsed (there is no deadline and no penalty; the time taken is simply shown on the recap), where the investigator and you (Watson) are, everything on the shared notebook (cards with who found them and when), pinned notes, accusations left, the scene where you stand (people present with their topics, evidence in reach), the map, the list of people and methods, and your standing orders (voice). Nothing here reveals the truth; the page holds it.', inputSchema: S({}, []), annotations: ro,
+    { name: 'get_case', description: 'Read-only. Call this FIRST every turn. Returns the case brief, the ship clock and minutes elapsed (there is no deadline and no penalty; the time taken is simply shown on the recap), where the investigator and you (Watson) are, everything on the shared notebook (cards with who found them and when), pinned notes, accusations left, `leads` (per person: topics unheard, whether cross-checked, where they are now; per room: unvisited, items unexamined, topics unheard — counts only, so you can answer "where should I look?" with a place), `coverage` (how many provable propositions the notebook already covers) and `status` (`more_to_fetch` | `nothing_left_to_fetch`), the scene where you stand (people present with their topics, evidence in reach), the map, the list of people and methods, and your standing orders (voice). Nothing here reveals the truth; the page holds it.', inputSchema: S({}, []), annotations: ro,
       execute: async () => { const ep = deps.getEpisode(), s = deps.getState(), lang = deps.lang(); deps.onRead?.();
         act(T.wtReading[lang], undefined, { placeId: s.pos.watson });
         return toolResult(project({ ok: true, episode: { id: ep.id, title: ep.title, series: ep.series, brief: ep.brief }, clock: ep.clockLabel(s.clock), minutesElapsed: s.clock, verdict: s.verdict,
           positions: s.pos, accusationsLeft: s.accusationsLeft, watsonCalls: s.watsonCalls, cards: s.cards, pins: s.pins, here: scene(ep, s, s.pos.watson),
+          leads: leads(ep, s), coverage: coverage(ep, s), status: fetchStatus(ep, s),
           map: ep.places.map((p) => ({ id: p.id, name: p.name, adjacent: p.adjacent })), people: ep.people.map((p) => ({ id: p.id, name: p.name, role: p.role })), methods: ep.methods, voice: WATSON_VOICE }, lang) as Record<string, unknown>); } },
     { name: 'move', description: 'Walk to any room (free — walking costs no ship time; a distant room is reached through the connecting corridors automatically). Returns the scene there: people present and their topics, evidence in reach, plus the route taken.', inputSchema: S({ place_id: { type: 'string' } }, ['place_id']),
       execute: async (raw) => {

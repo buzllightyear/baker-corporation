@@ -1,3 +1,4 @@
+import { leads } from '../kernel/leads';
 import React from 'react';
 import type { Episode, Place } from '../../content/types';
 import { useGame } from '../state/store';
@@ -28,6 +29,7 @@ export function Dossier({ onClose }: { onClose: () => void }) {
 
   if (!ep || !st) return null;
 
+  const L = leads(ep, st);
   return (
     <aside className="nv-dossier" role="dialog" aria-modal="false" aria-label={T.crew[lang]}>
       <header className="nv-dossier-head">
@@ -38,6 +40,7 @@ export function Dossier({ onClose }: { onClose: () => void }) {
         {ep.people.map((p) => {
           const place = lastSeenPlace(ep, st.clock, p.id);
           const said = st.cards.filter((c) => c.kind === 'statement' && c.personId === p.id);
+          const lead = L.people.find((x) => x.personId === p.id);
           const isOpen = open === p.id;
           return (
             <li key={p.id} className={'nv-dossier-row' + (isOpen ? ' on' : '')}>
@@ -49,6 +52,8 @@ export function Dossier({ onClose }: { onClose: () => void }) {
                   <div className="nv-dossier-meta">
                     <span>{`${T.lastSeen[lang]}: ${place ? pick(place.name, lang) : T.notLogged[lang]}`}</span>
                     <span>{`${said.length} ${T.statementsOn[lang]}`}</span>
+                    {lead && lead.unheard > 0 && <span className="nv-lead">{`${T.unheard[lang]} ${lead.unheard}`}</span>}
+                    {said.length > 0 && <span className={lead?.crossed ? 'nv-dim' : 'nv-lead'}>{lead?.crossed ? T.crossed[lang] : T.uncrossed[lang]}</span>}
                   </div>
                 </div>
               </button>
