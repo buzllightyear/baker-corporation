@@ -1,0 +1,66 @@
+# 06b — Arcane (Fortiche/Riot) as a visual design system
+
+Purpose: extract the *rules* behind Arcane's look so an original space-opera detective game can inherit the grammar without the IP. Sources are cited inline; where a claim rests on technique write-ups rather than a Fortiche/Riot quote, it is marked (secondary). Nothing here licenses copying characters, costumes, crests or named substances — see §7.
+
+## 1. Colour encoding
+
+- **Two-colour heraldry per faction, third colour for the volatile agent.** Piltover reads gold + sky-blue (+ silver/white marble); Zaun reads green + purple/magenta on grey-brown rust. Fans and Riot's own "colors of Piltover vs Zaun" post converge on this ([tumblr thread](https://phoenixlionme.tumblr.com/post/759609899091214336), [Riot on X](https://x.com/arcaneshow/status/1585300226247647232)). Hextech blue = sanctioned power, Shimmer magenta = illicit power, Firelight green = grassroots hope; one essay frames purple and green as both "containing" Piltover's blue because both factions are downstream of it ([tumblr theory](https://www.tumblr.com/butterfliestothemoon/687059156768800768/an-arcane-theory-about-the-firelights-hextec-and)).
+- **Colour is authored per scene, not per location.** Riot: colour scripts exist "to get a sense of the visual flow of the episode and how scenes feel next to each other" and to catch scenes that "overlap too much in terms of vibe" ([Arcane Wikipedia/Riot](https://en.wikipedia.org/wiki/Arcane_(TV_series)); colourscript artists Anne-Laure To, Aymeric Kevin, Kevin Le Moigne — [art-of-arcane](https://art-of-arcane.tumblr.com/post/682369614674542592/arcane-episode-5-color-scripts-to-anne-laure), [Le Moigne](https://x.com/KevinLM_art/status/1491119601853218817)). Faustine Dumontier won an Emmy for colourscript/colour keys on S2 ([Television Academy](https://www.televisionacademy.com/shows/arcane)).
+- **Hue count per frame is low: one dominant, one accent, neutrals.** Georgel: palettes and lighting are "based on intuition and visual references selected with directors from the mood board phase," alternating "darker moments with high-contrast sequences" ([VFX Voice](https://vfxvoice.com/riot-games-and-fortiche-get-revolutionary-with-arcane-season-2/)). Council chambers = gold/marble; Vander's bar = copper/wood/dented metal; Zaun street = neon on grey ([Flickle](https://www.flickle.co/analysis/tv/arcane-2021)).
+- **Danger/memory shifts are style shifts, not just hue shifts.** S2 memories and breakdowns use charcoal, watercolour and music-video styles inside the painterly base ([AWN S2](https://www.awn.com/animationworld/riot-games-and-fortiche-push-every-possible-boundary-arcane-season-2), [Hypercritic](https://hypercritic.org/exhibition/arcane-analysis-video-game-league-legends-tv-show)). A rival power (Noxus) is introduced as "dark grey and red" precisely so it "feels like a clash" with both existing palettes (Baudry, AWN S2).
+
+**Transferable rule:** give each faction a two-colour coat of arms plus one "substance" accent (sanctioned / illicit / hope); paint each scene from a colour key with one dominant hue and one accent, and mark memory or psychosis by changing *medium*, not just tint.
+
+## 2. Composition and cinematography
+
+- **Camera as a physical live-action camera.** Charrue: "We also created a 'bible' of rules for camera work" to "mimic live-action's imperfections, like the feel of a handheld camera"; deliberate "accidents — like crossing the line or abrupt cuts — added a sense of realism" ([AWN Charrue/Wanneroy](https://www.awn.com/animationworld/unveiling-arcane-conversation-pascal-charrue-and-alexis-wanneroy)). Quiet dialogue gets slight handheld drift; action gets naturalistic zooms and shake (secondary: [RedShark](https://www.redsharknews.com/why-netflixs-arcane-looks-so-good-how-fortiche-ramped-up-the-animation-pipeline)). No source states focal lengths; the practice is "photographic" DOF with painted backgrounds projected on simple geometry for parallax (RedShark).
+- **Storyboard decides the frame; layout matches 1:1.** Wanneroy: boards "gave us good acting choices," letting animators spend time on performance rather than re-inventing shots ([SyncSketch](https://blog.syncsketch.com/creator-stories/arcane-fortiche/)).
+- **Verticality is blocking.** Privileged characters are staged above, looking down from balconies/bridges; the lower you go the less stable the frame ([Flickle](https://www.flickle.co/analysis/tv/arcane-2021), [Fantasy/Animation](https://www.fantasy-animation.org/current-posts/how-arcane-riot-games-fortiche-production-2021-visualizes-class-conflict-through-its-fantasy-world)). The bridge confrontation lights one side fully and leaves the other "partially hidden" — silhouette against light as a class statement (Fantasy/Animation).
+- **Big curves and landmarks anchor geography.** Twelve named landmarks (bridge, square, cable car, clock tower) "prevent audience disorientation"; the city is built "like a theatre set," with towers over-scaled for impact rather than logic (Baudry, AWN S2). Tight workshops force two characters into one frame so ideological tension is "tangible" (Flickle).
+- **Two-character staging leans on body angle, not face.** Wanneroy: animators use "the angles of the head or the body without necessarily pushing an expression" (SyncSketch).
+
+**Transferable rule:** write a one-page camera bible (handheld drift on dialogue, allowed "accidents", DOF policy), block class as height and light, and anchor every district with 3–5 over-scaled landmarks that appear in the background of establishing shots.
+
+## 3. Character design rules
+
+- **Faction = shape family.** Piltover characters are clean, symmetrical, controlled in movement; Zaun characters are rougher, asymmetric, faster and "react to the world rather than control it" (Fantasy/Animation). The same split is built into costume geometry: Art Deco angles vs Art Nouveau curves ([Fizzy Mag](https://fizzymag.com/articles/how-art-nouveau-and-art-deco-styles-shaped-the-costumes-in-arcane)).
+- **Bodies are built for the story, not the gaze.** Vi was made "shorter, buffer, and less traditionally feminine," face "dirtier and more refined" to match a prison upbringing ([TheGamer](https://www.thegamer.com/arcane-vi-design-bridging-the-rift-arcane/)). Game designs read top-down at distance; for cinema Riot had to keep them "recognizable while working well for animation and storytelling" (Jason Chan, [AWN S2](https://www.awn.com/animationworld/riot-games-and-fortiche-push-every-possible-boundary-arcane-season-2)).
+- **Hair and clothing carry the arc.** Chan: hair changes track emotion — a cut breaks a cycle, black dye marks the darkest chapter and fades with recovery, ponytail styles track a slide into authoritarianism; silhouettes escalate (dress → tactical → cape) then return to civilian (AWN S2). Costume upgrade on class ascent: loose olive/wine work clothes → light fabrics with geometric vertical stripes (Fizzy Mag).
+- **Faces stay readable under paint** because lighting is *painted into the texture* rather than computed, with rim-lit edges on hair and metal, and character animation runs at 24 fps while hand-drawn FX run at 12 (secondary: RedShark, [Lemon8 explainer](https://www.lemon8-app.com/discover/arcane%20art%20style?region=us)). Acting is toned down: "I was pushing a little bit too far when it came to expressions… I had to tone that down" (Wanneroy, SyncSketch). Props get animator "toys" — flaps, steam, moving parts (Chan, AWN S2).
+
+**Transferable rule:** assign each faction a shape family (angular/symmetric vs organic/asymmetric), let hair and silhouette change with the character's arc, paint light into faces so brushwork never crosses the eyes or mouth, and under-act.
+
+## 4. Environment design
+
+- **Upper city = Art Deco (geometry, symmetry, "mechanical beauty").** Riot rebuilt Piltover after "Get Jinxed" to be "more grounded, weathered, and with some Art Deco elements" so it feels lived-in ([80.lv Baudry](https://80.lv/articles/riot-games-on-designing-arcane-s-piltover-zaun)); inspiration is New York Deco (VFX Voice). Deco shows up in lamps, tiles, council chairs, even shower fixtures; rigid angles stand for "the rigid hierarchy" ([tumblr Art Deco essay](https://www.tumblr.com/froggydafroggy/676992462053588992/artistic-movements-in-arcane-art-deco)).
+- **Lower city = its "dark mirror": Victorian + industrial + Art Nouveau asymmetry from "handcrafted upcycled pieces"** to bring "organic beauty to the poor and toxic undercity" (80.lv). Materials: brass, glass, marble, blue energy above; rust, exposed copper pipe, stained wood, neon below (80.lv, Flickle).
+- **The city changes with the plot.** "Some buildings are being built, and some streets are completely transformed during the first half of the show" to show Hextech and the crime lord's rise (80.lv).
+- **Depth is layered matte painting.** Background painters (Thoorens, Muir, Bailly, Couchinho) build alleys of stacked neon, pipe and towers ([ArtStation Thoorens](https://www.artstation.com/artwork/5BvDRW), [Muir](https://parkurtommo.artstation.com/projects/DAvXvO), [Bailly](https://www.artstation.com/artwork/bgbGQv), [Couchinho](https://www.artstation.com/artwork/DAvWmE)); 2D mattes on simple geometry give parallax (RedShark). Fog/smoke is always a 2D layer, never volumetric (Georgel, VFX Voice).
+- **Interiors foreshadow.** The shared lab is a "vault" with fake daylight and vent systems, its split spaces prefiguring each scientist's fate (Baudry, AWN S2).
+
+**Transferable rule:** pick one ornamental vocabulary per stratum (geometric-symmetric on top, organic-asymmetric-upcycled below), fix a 3-material palette each, treat atmosphere as painted 2D layers, and let districts visibly change between acts.
+
+## 5. Lighting per emotional beat
+
+- Warm sunset grades for the council's airships mirror their will to ignore what's below; daylight on the upper bridges gives "vibrant visual clarity"; the undercity is neon and toxic green (Flickle).
+- Dark/bright alternation is a deliberate pacing device across episodes (Georgel, VFX Voice); painted-in highlights allow "precise mood control" per shot (RedShark).
+- Cosmic/transcendent states use constellation-like geometric lines fused with organic spiral fractals (AWN S2). Reviewers note the cost: over-dark tavern fights can turn action "blurry instead of properly legible" (Flickle).
+
+**Transferable rule:** decide per scene one key light colour and whether it is "seen" or "hidden" light; keep action beats brighter than mood beats, and reserve a non-diegetic light language for the supernatural.
+
+## 6. Graphic and typographic language
+
+- **Wordmark:** custom, hand-tooled display capitals with tapered/flared strokes and light ornament — "closer to engraved signage or an etched brass plate" than a typed font; the closest public stand-ins are *Arcane Nine* (title) and a modified *Sharp Sans ExtraBold* (subtitles) ([Made Good Designs](https://madegooddesigns.com/arcane-font/), [FontMeme](https://fontmeme.com/arcane-tv-series-font/)). Pairing = ornate flared serif for the name, hard geometric sans for everything else.
+- **Titles:** S1 shows characters as sculpted statues with per-character hue assignment and deliberate frame distortion ([Gamerant](https://gamerant.com/arcane-season-2-opening-credits-easter-eggs-clues/), [Slideshare analysis](https://www.slideshare.net/slideshow/arcane-intro-analysispptx/266044537)); S2 strips costumes to minimal muted cloth under soft sunset light "more like a theatre play," shifting from setting to emotion ([ONE Esports](https://www.oneesports.gg/league-of-legends/arcane-season-2-opening/)).
+- **Posters:** official French posters used grunge/graffiti treatment, distressed text ("PAINT THE TOWN BLUE"), an X over a face, pink/grey textured grounds ([Creative Bloq](https://www.creativebloq.com/design/poster-design/im-fascinated-by-the-original-sketches-for-netflixs-arcane-posters)). The art book carries the same scrapbook/graffiti layout with acetate jacket, fold-outs, in-world blueprint and letter ([Halcyon Realms](https://halcyonrealms.com/books/the-art-and-making-of-arcane-book-review/), [Parka Blogs](https://www.parkablogs.com/content/art-making-arcane-book-review)).
+
+**Transferable rule:** one engraved-feel display face for names, one geometric sans for UI; treat titles as sculpture/stage rather than motion graphics; use in-world paper (blueprints, letters, graffiti) as the graphic system for menus and evidence.
+
+## 7. Do not copy
+
+- Any named character, likeness, or pose (Jinx, Vi, Caitlyn, Jayce, Viktor, Silco, Mel, Ekko); Jinx's blue braids/tattoos, Vi's pink hair and gauntlets, Caitlyn's rifle/hat, Viktor's cane/brace.
+- "Hextech", hex crystals/gemstones and their blue glyph glow; "Shimmer" as a pink/magenta drug and its body mutations; the Hexcore/Anomaly fractal.
+- Piltover/Zaun names, crests, the Council chamber, the Progress Bridge, the "Firelights" and their mask/hoverboard motif; the Arcane wordmark and "Enemy" statue title device; the Kiramman/Medarda/Talis houses; Noxus grey-and-red warship.
+- Reuse instead: a two-colour-plus-substance faction system, Deco-vs-Nouveau strata, painted-in light, the camera bible.
+
+**Transferable rule:** keep the grammar (encoding, staging, materials), invent every noun.

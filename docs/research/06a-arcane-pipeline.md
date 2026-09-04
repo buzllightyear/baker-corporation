@@ -1,0 +1,58 @@
+# 06a. How Fortiche builds the ARCANE look (S1–S2) — pipeline notes for prompt descriptors
+
+Purpose: craft-level notes on Fortiche Production's "painted 3D" pipeline so we can write precise image-generation style descriptors. No IP/characters are reused; only technique. Sources are primary-ish (Fortiche staff talks/interviews) unless marked *(secondary)*.
+
+**Framing quote.** Fortiche's 2D environment supervisor Martin Bailly: "It's not a matter of thinking about Fortiche as a 3D studio. We think of ourselves as a **2D animation studio with live-action cameras and 3D sets**." Co-founder Pascal Charrue: the goal is "**animated concepts in every frame**" — "3D renders can appear sleek and overly polished; our goal is visuals that feel hand-shaped with the natural imperfections that bring them to life." (Foundry talk "Arcane S2 texturing", https://www.youtube.com/watch?v=gCJIJG6Lz84 ; ImagineFX/Creative Bloq, https://www.creativebloq.com/art/2d-animation/how-the-creative-team-behind-netflixs-arcane-pushed-the-animation-even-further-for-the-second-season)
+
+**Software stack (confirmed).** Maya (model/rig/anim, real-time rigs), Photoshop + Mari 3.3 (paint + camera projection), Guerilla Render (lookdev/lighting/render, AOVs per material: skin, metal, clothing, hair), Nuke (comp), TVPaint + Adobe integrated via custom CEP tools for 2D FX, Houdini for the 3D FX share, Golaem/Yeti/Apex for S2 crowds. (Foundry talk above; Autodesk blog https://blogs.autodesk.com/media-and-entertainment/2025/03/26/crafting-crowds-fortiche-golaem-and-the-magic-of-arcane-season-2/ ; VFX Voice https://vfxvoice.com/the-return-of-hand-drawn-and-stylized-effects-animation/)
+
+---
+
+## 1. Texture painting
+
+- Bailly's rule: "**If we want you to feel that it's painted, we just paint it. There's no shortcuts — from the sky to the background to the vegetation in the front. Everything is painted from the camera point of view.**" They explicitly rejected building "shaders that are going to feel painted" as too slow for a TV schedule. (Foundry talk)
+- Texture and matte-painting artists are illustrators/concept artists, not technical texturers; the same Photoshop brush packs are imported into Mari, painting happens in the viewport or on UVs, and Mari's colour-jitter is used for stroke variation. Characters get their own painting style from the character texturing team (supervisor Candice Theuillon — Vi, Caitlyn, Silco; Gilles Roman — Firelight leader, Scar, Singed; Thibaut Granet — Jinx), environments from the matte-painting team. (Foundry talk; 80.lv https://80.lv/articles/a-closer-look-at-texturing-in-arcane/ and https://80.lv/articles/a-closer-look-at-texturing-in-arcane-part-2/)
+- The base map is deliberately "**albedo-ish**" but with painted form: shadow occlusion, worn edges, scratches and colour temperature shifts are brushed into the map, and where an asset lives in one lighting context "**if the shadows need to be baked into the matte painting, you bake them into the matte painting**." Not PBR: no roughness/metalness-driven speculars carrying the look; the paint carries the material read. Maunoury: the character "texture is crafted to get that graphical look that fits with the environment" (Mashable via https://wherecreativityworks.com/arcane-the-blurring-of-2d-and-3d/ *(secondary)*).
+- Detail budget is camera-driven: paint hard where the shot looks, leave the rest soft; the Jinx airship was 37 UDIMs at 8K, with comp adjusting level of detail per shot in Nuke. Wanneroy: "scratchy textures and hand-painted details taken from the 2D art make the visuals timeless." (Foundry talk; AWN https://www.awn.com/animationworld/unveiling-arcane-conversation-pascal-charrue-and-alexis-wanneroy)
+- **As a prompt descriptor:** "hand-painted textures with visible brush strokes and scratchy dry-brush edge wear, shading and grime painted into the surface, gouache/oil-on-canvas material read, no glossy PBR speculars."
+
+## 2. Lighting and shading
+
+- Rendering is Guerilla Render with material-split AOVs; the 3D light is a base, then "**the team positioned lights in 3D scenes but adjusted them during compositing for a flatter, graphic style, prioritising strong silhouettes and specific colour tones over photo-realism**" *(secondary: https://www.redsharknews.com/why-netflixs-arcane-looks-so-good-how-fortiche-ramped-up-the-animation-pipeline)*.
+- Matte painters deliver technical passes alongside the painting: **full shadow pass, full light pass, masks/IDs**, so lighting/comp can "recompose everything with their own shadows" when the baked shadow doesn't match the shot. Shadows are therefore shaped by hand (painted or comp-graded), not purely cast. (Foundry talk)
+- Art director Julien Georgel (S2): palette and lighting are chosen per sequence from mood-board references, deliberately "alternating darker moments with high-contrast sequences"; story elements (Hexcore, the Anomaly) drive the palette. Maunoury: "nothing is left to chance — the time of day, the weather, the colour of the building." (VFX Voice https://vfxvoice.com/riot-games-and-fortiche-get-revolutionary-with-arcane-season-2/ ; Cartoon Brew https://www.cartoonbrew.com/streaming/series-craft-director-barth-maunoury-breaks-down-an-emotional-arcane-sequence-244539.html)
+- Observed (not stated by Fortiche): characters read against backgrounds through a coloured rim/kicker (often complementary to the key) rather than via outlines; atmosphere is painted/comp'd haze and light shafts, not volumetric sims. Smoke is "painted and moved on a card." (Foundry talk)
+- **As a prompt descriptor:** "single dramatic key with a coloured rim light separating figure from background, shadows as broad painted shapes, warm/cool colour-temperature split, painted haze and light shafts instead of photoreal volumetrics."
+
+## 3. 2D FX and 2D overlays
+
+- Maunoury: characters are 3D rigs, "**with 2D animation used to add texture and effects like smoke, water, fire, dust**"; backgrounds are 2D paint; comp unifies. Georgel (S2): smoke and fire are "treated as 2D elements rather than 3D simulations." (Animation Magazine https://www.animationmagazine.net/2022/01/legendary-artistry-how-arcane-became-a-runaway-hit/ ; VFX Voice S2)
+- Wanneroy: "2D animators did them on top of the 3D animation after the 3D animation was done" — scratches, textures and painted marks laid over the CG plate; 2D FX are drawn **on twos** by a small team of 4–5 artists in painting software. (SyncSketch https://blog.syncsketch.com/creator-stories/arcane-fortiche/ ; iAnimate https://ianimate.net/animationpodcast/arcane-magic-secrets-fortiche-lead-alexis-wanneroy-podcast)
+- Alternate media are made literally: "**if we want you to feel that it's made with charcoal, we just make it with charcoal** — scan the charcoal papers and integrate them in comp." Painted-over frames: Maunoury re-drew a close-up and "added doodles" as a memory overlay during compositing. (Foundry talk; Cartoon Brew)
+- **As a prompt descriptor:** "hand-drawn 2D smoke, sparks and fire with flat cel-shaded shapes and stepped edges, drawn over a painted 3D scene; sketchy pencil/scribble overlays and paper-texture marks."
+
+## 4. Faces and animation
+
+- Faces are 3D: rigs with "hundreds of blendshapes for facial animation per character," real-time in Maya; some characters carry dual facial rigs (adult/child). Everything is keyframed ("Keyframe, keyframe, keyframe. No mocap"), targeting "the right balance between realistic animation and cartoon animation" with weight and subtle acting; Jinx borrows anime smears and multiple limbs. (Autodesk blog; wherecreativityworks *(secondary)*; SyncSketch; Animation Magazine)
+- The 2D signature on faces comes from paint, not toon shading: skin maps carry painted planes, freckles, under-eye shadow and lip/nose accents; "**cel-shading for character expressions**" and painted eye highlights are reported *(secondary: Redshark)*. Wanneroy on posing: extensive "before and after" expression sheets to keep faces appealing and on-model.
+- **As a prompt descriptor:** "semi-realistic proportions with painterly skin: planes of the face blocked in with visible strokes, sharp painted eye highlights, subtle painted blush and under-eye shadow; expressive but not cartoon-exaggerated."
+
+## 5. Backgrounds
+
+- "**Create a 3D set and then add textures via matte painting, projecting paint onto 3D assets**" — camera mapping "everywhere, from design to the end of the department phases"; Photoshop layers and Maya cameras go into Mari as projectors. If an object appears in one shot, "just paint it" instead of modelling it. S2: ~4,000 matte paintings for ~7,000 shots. (80.lv https://80.lv/articles/arcane-artists-show-how-they-combine-traditional-art-3d-for-backgrounds ; Foundry talk)
+- The "Scooby-Doo effect" is the enemy: props and backgrounds must be indistinguishable, so props characters touch are textured in the same painted language. Lines are freehanded "a little shaky to get this hand-drawn feel," and areas are selectively softened while contact zones are sharpened. (Foundry talk; 80.lv backgrounds)
+- Depth is layered cards + painted atmosphere; the city was built "like a theatre set" where the silhouette matters more than scale accuracy. (AWN https://www.awn.com/animationworld/riot-games-and-fortiche-push-every-possible-boundary-arcane-season-2)
+- **As a prompt descriptor:** "matte-painting background with layered depth planes, foreground sharp and detailed, distance dissolving into soft painted fog, slightly wobbly hand-drawn architectural lines, Art Deco/Art Nouveau silhouettes."
+
+## 6. Compositing
+
+- Nuke assembles material AOVs, matte-painting passes (light/shadow/ID), 2D FX layers and scanned media; comp "adjusts the level of detail" and regrades shadows. Maunoury credits the compositing team for making the mix seamless. (Foundry talk; Animation Magazine)
+- The "no outlines but crisp edges" quality (observed) comes from painted texture contrast + rim light + comp masks, not line render passes; Maunoury calls the house style "an overlay of painterly strokes meant to embrace imperfections." Subtle grain, glows and texture overlays unify passes *(secondary: Redshark)*.
+- **As a prompt descriptor:** "no ink outlines; crisp silhouette edges from value contrast and rim light, fine film grain, soft glow on light sources, slight painterly texture overlay across the whole frame."
+
+## 7. Season 1 → Season 2
+
+- Core process unchanged ("we didn't have the time to change processes"); tools evolved, render throughput improved (secondary claim: ~50 → ~31 min/frame, https://9meters.com/entertainment/shows/arcanes-future-after-season-2-where-the-league-of-legends-universe-goes-next — unverified). (Foundry talk; Gobelins https://alumni.gobelins.fr/en/news/meet-pascal-charrue-and-barthelemy-maunoury-co-directors-of-arcane-498)
+- More VFX and "a more hybrid technique for FX combining 2D and 3D" (3DVF https://3dvf.com/en/fortiche-production-shares-the-secrets-behind-arcane-season-2-at-view-conference/); Charrue: 3D FX became so seamless "certain passages appeared to be hand-drawn."
+- Per-episode alternate media in musical/intro sequences: charcoal with selective colour (Ep1 funeral), watercolour (Ep6, with Éléa Gobbé-Mévellec), comic-book, vintage poster, B&W punk photography; darker, higher-contrast lighting; crowd system (Golaem) and mocap for crowds only. (Creative Bloq; VFX Voice S2; Autodesk blog)
+- **As a prompt descriptor:** S1 baseline = "oil/gouache painted 3D"; S2 variants = "charcoal sketch with one selective colour" / "loose wet watercolour with bleeding edges" / "high-contrast comic-book inking."
