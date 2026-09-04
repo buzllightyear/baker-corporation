@@ -46,3 +46,9 @@ STYLE (fixed): A single frame from a stylized 3D animated feature film — sculp
 - Leak test passed: `canon/test-keyart.png` (both anchors, new composition/lighting) and `canon/test-holmes-neutral.png` keep identity AND the 3D finish.
 
 Anchor rules learned today: an anchor must be **born text-only** (a 2D-finished reference drags every later image toward 2D regardless of the prompt), have a plain background, show every identity token, and be cropped to face/shoulders. One fixed file per character; never re-anchor on a descendant.
+
+## Portrait shot recipe (house standard, director's pick 2026-09-04)
+
+"CHARACTER BUST, three-quarter view from slightly below, plain dark grey studio background, a single amber key from the left and a cool rim, one telling expression." — chosen over the neutral-grey (a) and frontal-indigo (b) recipes for every crew member. Use it for all future busts and portraits.
+
+Crew anchors: `canon/{vance,okafor,lind,sato,reyes}-anchor.png` (centre crops of the `-c` shots).
