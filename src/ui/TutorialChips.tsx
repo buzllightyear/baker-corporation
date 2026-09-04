@@ -16,7 +16,7 @@ export function TutorialChips() {
     <div className="tut" style={nbOpen ? undefined : { right: 14 }}>
       <Tag unit="Baker Corp · Field Induction" serial={serialOf(ep.id + ':tut:' + g.index, 'TUT')} />
       <div className="tut-body">
-        <div className="label">Tutorial · {g.index + 1}/{g.total}</div>
+        <div className="label">{T.tutorial[lang]} · {g.index + 1}/{g.total}</div>
         <p className="say">{pick(step.say, lang)}</p>
         {step.chip && <div className="chipline"><span className="label">{T.sayToWatson[lang]}</span><button onClick={copy} title="copy">{copied ? T.copied[lang] : pick(step.chip, lang)}</button></div>}
       </div>

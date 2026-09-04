@@ -12,11 +12,11 @@
 // `refutedBy` are never read, so no count leaks who is lying or who did it.
 import type { Episode } from '../../content/types';
 import type { RunState } from './model';
-import { whatIsHere, whoIsHere } from './kernel';
+import { whatIsHere, whoIsHere, proofEligible } from './kernel';
 
 export interface PersonLead { personId: string; unheard: number; crossed: boolean; placeId: string | null }
 export interface RoomLead { placeId: string; unvisited: boolean; unexamined: number; unheard: number }
-export interface Leads { people: PersonLead[]; rooms: RoomLead[]; open: number }
+export interface Leads { people: PersonLead[]; rooms: RoomLead[]; open: number; openLater: number }
 export interface Coverage { covered: number; provable: number; complete: boolean }
 export type FetchStatus = 'more_to_fetch' | 'nothing_left_to_fetch';
 
@@ -39,12 +39,14 @@ export function leads(ep: Episode, s: RunState): Leads {
   const rooms: RoomLead[] = ep.places.map((pl) => ({
     placeId: pl.id,
     unvisited: pl.id !== ep.startPlaceId && !has(s, `place:${pl.id}`),
-    unexamined: whatIsHere(ep, s, pl.id).filter((e) => !has(s, e.id)).length,
+    unexamined: whatIsHere(ep, s, pl.id).filter((e) => !proofEligible(s, e.id)).length,   // a locked partial card is still a lead
     unheard: whoIsHere(ep, s, pl.id).reduce((n, p) => n + unheardOf(ep, s, p.id), 0),
   }));
   const open = rooms.reduce((n, r) => n + r.unexamined + r.unheard + (r.unvisited ? 1 : 0), 0)
     + people.filter((p) => !p.crossed && s.cards.some((c) => c.kind === 'statement' && c.personId === p.personId)).length;
-  return { people, rooms, open };
+  // statements that will open later (availableFrom in the future) are not fetchable now, but they mean the ship is not done
+  const openLater = ep.statements.filter((st) => st.availableFrom !== undefined && s.clock < st.availableFrom && !has(s, st.id)).length;
+  return { people, rooms, open, openLater };
 }
 
 /** Coverage fires at a share of provable propositions, not all of them (Her Story prompts on "enough" key clips):
@@ -53,12 +55,13 @@ export const COVERAGE_SHARE = 0.75;
 /** How many provable propositions already have a full proving set on the notebook. */
 export function coverage(ep: Episode, s: RunState): Coverage {
   const provable = ep.propositions.filter((p) => p.provedBy.length > 0);
-  const covered = provable.filter((p) => p.provedBy.some((set) => set.every((id) => has(s, id)))).length;
+  const covered = provable.filter((p) => p.provedBy.some((set) => set.every((id) => proofEligible(s, id)))).length;
   return { covered, provable: provable.length, complete: provable.length > 0 && covered >= Math.ceil(provable.length * COVERAGE_SHARE) };
 }
 
-/** Watson's one structural line is earned when the notebook covers every provable
- *  proposition, or when the ship has nothing left to give. Says nothing about who. */
+/** Watson's structural prompt (Her Story's "do you think you understand?") is earned when the notebook covers
+ *  enough provable propositions, or when the ship truly has nothing left to give — now or later. Says nothing about who. */
 export function fetchStatus(ep: Episode, s: RunState): FetchStatus {
-  return coverage(ep, s).complete || leads(ep, s).open === 0 ? 'nothing_left_to_fetch' : 'more_to_fetch';
+  const l = leads(ep, s);
+  return coverage(ep, s).complete || (l.open === 0 && l.openLater === 0) ? 'nothing_left_to_fetch' : 'more_to_fetch';
 }

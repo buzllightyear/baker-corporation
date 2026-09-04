@@ -38,6 +38,8 @@ export interface StageZoom {
 export interface StageArt3DProps {
   /** Room painting, e.g. `/art/rooms/bridge.jpg`. */
   image: string;
+  /** Called when the WebGL renderer cannot be created after the probe passed; the parent should fall back to the CSS stage. */
+  onFailure?: () => void;
   /** Greyscale depth map, e.g. `/art/rooms/bridge.depth.png`. Omit for flat parallax + Ken Burns. */
   depth?: string;
   /** Pointer offset from stage centre, -0.5..0.5 on both axes. */
@@ -165,7 +167,7 @@ function applyTextures(engine: Engine, src: Sources, prepare: (t: Texture, srgb:
   );
 }
 
-export function StageArt3D({ image, depth, parallax, zoom, className }: StageArt3DProps) {
+export function StageArt3D({ image, depth, parallax, zoom, className, onFailure }: StageArt3DProps) {
   const hostRef = React.useRef<HTMLDivElement | null>(null);
   const engineRef = React.useRef<Engine | null>(null);
   const prepareRef = React.useRef<((t: Texture, srgb: boolean) => Texture) | null>(null);
@@ -192,7 +194,7 @@ export function StageArt3D({ image, depth, parallax, zoom, className }: StageArt
       try {
         renderer = new THREE.WebGLRenderer({ antialias: false, alpha: false, powerPreference: 'high-performance' });
       } catch {
-        return; // context creation can still fail after the probe (blocklisted GPU, lost context)
+        onFailure?.(); return; // context creation can still fail after the probe (blocklisted GPU, lost context)
       }
       renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
       renderer.domElement.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;display:block;';

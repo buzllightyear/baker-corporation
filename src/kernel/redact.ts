@@ -8,7 +8,7 @@ export function cardFromStatement(st: Statement, ep: Episode, by: Actor, at: num
 }
 export function cardFromEvidence(ev: Evidence, ep: Episode, by: Actor, at: number, unlocked: boolean): Card {
   const body = unlocked && ev.fullDescription ? ev.fullDescription : ev.description;
-  return { id: ev.id, kind: 'evidence', title: ev.name, body, foundBy: by, foundAt: at, placeId: ev.placeId, asserts: unlocked ? ev.asserts : undefined };
+  return { id: ev.id, kind: 'evidence', title: ev.name, body, foundBy: by, foundAt: at, placeId: ev.placeId, asserts: unlocked ? ev.asserts : undefined, unlocked };
 }
 export function cardFromRecord(r: Record_, by: Actor, at: number): Card { return { id: r.id, kind: 'record', title: r.title, body: r.body, foundBy: by, foundAt: at, asserts: r.asserts }; }
 export function cardFromPlace(pl: Place, by: Actor, at: number): Card { return { id: `place:${pl.id}`, kind: 'place', title: pl.name, body: pl.description, foundBy: by, foundAt: at, placeId: pl.id }; }

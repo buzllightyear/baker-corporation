@@ -1,6 +1,6 @@
 import React from 'react';
 import { useGame, listEpisodes } from '../state/store';
-import { Registry } from './registry';
+import { Registry, getModelContext } from './registry';
 import { watsonTools } from './tools';
 import { currentLang } from '../i18n/lang';
 export function useWebmcpRoot() {
@@ -28,6 +28,6 @@ export function useWebmcpRoot() {
     }
     void ref.current.apply(`play:${episodeId}`, tools);
   }, [episodeId, setToolCount, log, bridge]);
-  return { available: ref.current?.available() ?? typeof (document as unknown as { modelContext?: { registerTool?: unknown } }).modelContext?.registerTool === 'function' };
+  return { available: ref.current?.available() ?? getModelContext() !== null };
 }
-export function useWebmcpStatus() { const count = useGame((s) => s.toolCount); const available = typeof (document as unknown as { modelContext?: { registerTool?: unknown } }).modelContext?.registerTool === 'function'; return { available, count }; }
+export function useWebmcpStatus() { const count = useGame((s) => s.toolCount); const episode = useGame((s) => s.episode?.id ?? null); const available = getModelContext() !== null; return { available, count, failed: available && !!episode && count === 0 }; }

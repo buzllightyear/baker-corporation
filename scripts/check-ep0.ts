@@ -13,12 +13,9 @@
 declare const process: { exit(code: number): never };
 
 import { EP0, EP0_GOLDEN } from '../content/ep0-titan';
+import { COST } from '../src/kernel/clock';
 import type { Episode } from '../content/types';
 
-const COST: Record<string, number> = {
-  move: 10, talk: 5, ask: 5, examine: 5, pin: 0,
-  timeline: 10, cross_check: 20, search_records: 30, submit_theory: 0,
-};
 
 const problems: string[] = [];
 const soft: string[] = [];

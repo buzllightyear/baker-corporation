@@ -9,9 +9,9 @@ describe('submit_theory', () => {
     const r = runTheory(ep, withCards('s_bo_night'), { kind: 'submit_theory', claims: [{ claim: 'p_ada_left', evidence_ids: ['s_bo_night'] }] });
     expect(r.ok && (r.result as any).verdicts[0].status).toBe('proven');
   });
-  it('unsupported when a set is only partly covered, listing what is missing', () => {
+  it('unsupported when a set is only partly covered, counting (not naming) what is still to find', () => {
     const r = runTheory(ep, withCards('e_print'), { kind: 'submit_theory', claims: [{ claim: 'p_ada_took', evidence_ids: ['e_print'] }] });
-    expect(r.ok && (r.result as any).verdicts[0]).toMatchObject({ status: 'unsupported', missing: ['s_bo_wrench'] });
+    expect(r.ok && (r.result as any).verdicts[0]).toMatchObject({ status: 'unsupported', missing: [], stillToFind: 1 });   // s_bo_wrench is not held → counted, never named
   });
   it('contradicted when a cited card refutes the proposition', () => {
     const r = runTheory(ep, withCards('r_manifest'), { kind: 'submit_theory', claims: [{ claim: 'p_bo_took', evidence_ids: ['r_manifest'] }] });

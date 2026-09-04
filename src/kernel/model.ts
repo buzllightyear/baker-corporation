@@ -5,6 +5,8 @@ export type CardKind = 'statement' | 'evidence' | 'record' | 'place';
 export interface Card {
   id: string; kind: CardKind; title: Text; body: Text; foundBy: Actor; foundAt: number;   // foundAt = 게임 분
   personId?: string; topicId?: string; placeId?: string;
+  /** false = examined before its prerequisite card: the notebook holds the locked description only. Such a card is NOT proof. */
+  unlocked?: boolean;
   asserts?: { personId: string; placeId: string; from: number; to: number }[];            // 공개: cross_check 재료
 }
 export interface Pin { cardId: string; note: string; at: number }

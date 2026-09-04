@@ -428,3 +428,9 @@ h1, h2 { font-family: var(--font-stencil); letter-spacing: .05em; text-transform
   .minimap, .hearing { position: static; width: auto; max-height: none; margin: 10px; }
   .hearing-body { max-height: none; }
 }
+/* Readiness: when Watson's coverage prompt has fired, the human-only Accuse button breathes amber until it is used. */
+@keyframes bakerAccuseReady { 0%, 100% { box-shadow: 0 0 0 0 rgba(255, 166, 64, .0); } 50% { box-shadow: 0 0 0 4px rgba(255, 166, 64, .35), 0 0 18px rgba(255, 96, 64, .45); } }
+.accuse.ready { animation: bakerAccuseReady 1.8s ease-in-out infinite; }
+.banner.warn { border-color: var(--amber); }
+.banner.warn button { margin-left: .6em; }
+@media (prefers-reduced-motion: reduce) { .accuse.ready { animation: none; box-shadow: 0 0 0 2px rgba(255, 166, 64, .5); } }

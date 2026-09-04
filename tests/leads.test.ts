@@ -55,9 +55,9 @@ describe('store announces coverage once', () => {
     const d = (a: Actor, c: Cmd) => { const r = useGame.getState().dispatch(a, c); if (!r.ok) throw new Error(r.message); };
     d('holmes', { kind: 'move', placeId: 'galley' }); d('holmes', { kind: 'talk', personId: 'bo', topicId: 'night' });
     d('watson', { kind: 'search_records', query: 'wrench' }); d('holmes', { kind: 'talk', personId: 'bo', topicId: 'wrench' });
-    expect(useGame.getState().ticker.some((l) => l.text.includes('nothing left to fetch'))).toBe(false);
+    expect(useGame.getState().ticker.some((l) => l.text.includes('shape of it'))).toBe(false);
     d('holmes', { kind: 'examine', evidenceId: 'e_print' });
-    const lines = () => useGame.getState().ticker.filter((l) => l.text.includes('nothing left to fetch'));
+    const lines = () => useGame.getState().ticker.filter((l) => l.text.includes('shape of it'));
     expect(lines()).toHaveLength(1);
     d('holmes', { kind: 'examine', evidenceId: 'e_hook' });
     expect(lines()).toHaveLength(1);

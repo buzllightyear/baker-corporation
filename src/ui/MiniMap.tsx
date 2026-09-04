@@ -9,6 +9,7 @@ import { useGuard } from './useGuard';
 import { goalTargets } from './tutorial';
 import './stage-fx.css';
 const WALK_MS = 600;
+const BUSY: Record<string, { en: string; ko: string }> = { moving: { en: 'moving', ko: '이동 중' }, talking: { en: 'talking', ko: '대화 중' }, asking: { en: 'asking', ko: '질문 중' }, examining: { en: 'examining', ko: '조사 중' }, pinning: { en: 'pinning', ko: '메모 중' }, 'rebuilding timeline': { en: 'rebuilding timeline', ko: '시간표 재구성 중' }, 'preparing the hearing': { en: 'preparing the hearing', ko: '예비 심리 준비 중' }, 'searching records': { en: 'searching records', ko: '기록 검색 중' } };
 export function MiniMap() {
   const ep = useGame((s) => s.episode)!; const st = useGame((s) => s.state)!; const dispatch = useGuard(); const busy = useGame((s) => s.watsonBusy);
   const lang = useLang((s) => s.lang); const [toast, show] = useToast();
@@ -38,7 +39,7 @@ export function MiniMap() {
             <span className="tokens">{st.pos.holmes === p.id && <span className="tok holmes">●</span>}{st.pos.watson === p.id && <span className={'tok watson' + (walking ? ' walking' : '')}>▲</span>}{people.map((x) => <span key={x.id} className="tok">{x.portrait}</span>)}</span>
           </button>; })}
       </div>
-      <div className={'watson-status' + (done ? ' done' : '')}>▲ {busy ? `${T.watson[lang]}: ${busy}` : done ? `${T.watson[lang]}: ${T.nothingLeftShort[lang]}` : T.watsonIdle[lang]}</div>
+      <div className={'watson-status' + (done ? ' done' : '')}>▲ {busy ? `${T.watson[lang]}: ${BUSY[busy]?.[lang] ?? busy}` : done ? `${T.watson[lang]}: ${T.nothingLeftShort[lang]}` : T.watsonIdle[lang]}</div>
       {toast && <div className="toast">{toast}</div>}
     </div>
   );

@@ -1,3 +1,4 @@
+import { fetchStatus } from '../kernel/leads';
 import { useGame } from '../state/store';
 import { useLang, T, pick } from '../i18n/lang';
 import { useWebmcpStatus } from '../webmcp/useWebmcp';
@@ -6,7 +7,7 @@ import { AudioControls } from './AudioControls';
 export function TopBar({ onAccuse, onCaseFile, onCrew }: { onAccuse: () => void; onCaseFile?: () => void; onCrew?: () => void }) {
   const ep = useGame((s) => s.episode)!; const st = useGame((s) => s.state)!;
   const { lang, set } = useLang(); const { available, count } = useWebmcpStatus();
-  const reads = useGame((s) => s.watsonReads); const g = ep.tutorial && !tutorialDone() ? guide(ep, st, reads) : null; const accuseLocked = !!g && !g.complete && g.goal?.kind !== 'accused';
+  const reads = useGame((s) => s.watsonReads); const g = ep.tutorial && !tutorialDone() ? guide(ep, st, reads) : null; const accuseLocked = !!g && !g.complete && g.goal?.kind !== 'accused'; const ready = fetchStatus(ep, st) === 'nothing_left_to_fetch';
   const nbOpen = useGame((s) => s.notebookOpen); const toggleNb = useGame((s) => s.toggleNotebook); const nCards = st.cards.filter((c) => c.kind !== 'place').length;
   const used = st.clock;
   return (
@@ -22,7 +23,7 @@ export function TopBar({ onAccuse, onCaseFile, onCrew }: { onAccuse: () => void;
         <button className={'nb-toggle' + (nbOpen ? ' on' : '')} onClick={toggleNb} aria-label="notebook">{nbOpen ? '▸' : '◂'} {T.notebook[lang]} · {nCards}</button>
         <AudioControls />
         <button onClick={() => set(lang === 'en' ? 'ko' : 'en')} aria-label="language">{lang === 'en' ? '한국어' : 'English'}</button>
-        <button className="accuse" onClick={onAccuse} disabled={st.verdict !== null || accuseLocked} title={accuseLocked ? T.tutAccuse[lang] : undefined}>{T.accuse[lang]}</button>
+        <button className={'accuse' + (ready && !accuseLocked && st.verdict === null ? ' ready' : '')} onClick={onAccuse} disabled={st.verdict !== null || accuseLocked} title={accuseLocked ? T.tutAccuse[lang] : undefined}>{T.accuse[lang]}</button>
       </header>
     </>
   );

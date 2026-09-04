@@ -13,7 +13,7 @@ const registry = new Map<string, Episode>(EPISODES.map((e) => [e.id, e]));
 export function registerEpisode(e: Episode) { registry.set(e.id, e); }
 export function getEpisode(id: string): Episode | undefined { return registry.get(id); }
 export function listEpisodes(): Episode[] { return [...registry.values()]; }
-export interface HearingVerdict { claim: string; propositionId: string | null; status: 'proven' | 'unsupported' | 'contradicted' | 'unmatched'; missing?: string[] }
+export interface HearingVerdict { claim: string; propositionId: string | null; status: 'proven' | 'unsupported' | 'contradicted' | 'unmatched'; missing?: string[]; stillToFind?: number }
 export interface Activity { ts: number; actor: Actor | 'sys'; verb: string; ok: boolean; code?: string; detail?: string }
 /** One line of Watson's visible presence: what he just did, where, and what he pointed at. Kept short-lived — only the last TICKER_KEEP survive. */
 export interface TickerLine { id: number; text: string; placeId?: string; targetId?: string; at: number }

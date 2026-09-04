@@ -43,7 +43,8 @@ export function SceneStage() {
   const [dialogue, setDialogue] = React.useState<{ personId: string; topicLabel: string; text: string } | null>(null);
   const [expanded, setExpanded] = React.useState<Record<string, boolean>>({});
   const [par, setPar] = React.useState({ x: 0, y: 0 });
-  const gl = React.useMemo(() => hasWebGL(), []);
+  const [glFailed, setGlFailed] = React.useState(false);
+  const gl = React.useMemo(() => hasWebGL(), []) && !glFailed;
   const stageRef = React.useRef<HTMLDivElement>(null);
   const [dep, setDep] = React.useState<DepthSampler>(flatSampler);
   const sc = scene(ep, st, st.pos.holmes);
@@ -122,7 +123,7 @@ export function SceneStage() {
     <div ref={stageRef} className={'stage' + (img === 'ok' ? ' has-art' : '') + (leaving !== null ? ' fx-transition' : '') + (closeup ? ' closeup-on' : '')} onMouseMove={onMove} onMouseLeave={() => setPar({ x: 0, y: 0 })}>
       {leaving && <div className="stage-art fx-out" style={{ backgroundImage: `url(${leaving})` }} />}
       {img === 'ok' && art && gl
-        ? <StageArt3D key={st.pos.holmes} image={art.image} depth={depthUrl(art.image)} parallax={par} zoom={closeup ? { x: closeup.at.x / 100, y: closeup.at.y / 100, scale: zoomFor(closeup.at) } : null} />
+        ? <StageArt3D key={st.pos.holmes} image={art.image} depth={depthUrl(art.image)} parallax={par} zoom={closeup ? { x: closeup.at.x / 100, y: closeup.at.y / 100, scale: zoomFor(closeup.at) } : null} onFailure={() => setGlFailed(true)} />
         : <div key={st.pos.holmes} className={'stage-art' + (leaving !== null ? ' fx-in' : '')} style={artStyle} />}
       {img !== 'ok' && <div className="stage-placeholder"><div className="ph-name">{pick(sc.place.name, lang)}</div><div className="ph-desc">{pick(sc.place.description, lang)}</div></div>}
       <div className="stage-caption"><b>{pick(sc.place.name, lang)}</b> {img === 'ok' && <span>{pick(sc.place.description, lang)}</span>}</div>

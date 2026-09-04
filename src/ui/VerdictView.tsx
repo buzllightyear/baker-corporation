@@ -23,7 +23,7 @@ export function VerdictView() {
               <div className="hook">{pick(ep.truth.hook, lang)}</div>
             </>
           ) : (
-            <div className="verdict-seal"><span className="stamp sealed">Sealed</span></div>
+            <div className="verdict-seal"><span className="stamp sealed">{T.sealed[lang]}</span></div>
           )}
           <div className="row"><button onClick={goRecap}>{T.recap[lang]} →</button></div>
         </div>

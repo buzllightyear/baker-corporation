@@ -1,10 +1,14 @@
 import type { ExecuteOptions } from './normalize';
 export interface ToolDef { name: string; description: string; inputSchema: Record<string, unknown>; annotations?: { readOnlyHint?: boolean }; execute: (raw: unknown, options?: ExecuteOptions) => Promise<unknown>; }
 type MC = { registerTool: (t: unknown, o?: { signal: AbortSignal }) => Promise<void> | void };
-function mc(): MC | null {
-  const m = (document as unknown as { modelContext?: Partial<MC> }).modelContext;
-  return m && typeof m.registerTool === 'function' ? (m as MC) : null;
+/** The one place that finds the WebMCP context: `navigator.modelContext` (current spec) first, `document.modelContext` (earlier builds) second. */
+export function getModelContext(): MC | null {
+  const n = typeof navigator !== 'undefined' ? (navigator as unknown as { modelContext?: Partial<MC> }).modelContext : undefined;
+  if (n && typeof n.registerTool === 'function') return n as MC;
+  const d = typeof document !== 'undefined' ? (document as unknown as { modelContext?: Partial<MC> }).modelContext : undefined;
+  return d && typeof d.registerTool === 'function' ? (d as MC) : null;
 }
+const mc = getModelContext;
 
 export class Registry {
   private ac: AbortController | null = null;

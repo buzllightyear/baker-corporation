@@ -17,10 +17,12 @@ export function addCard(s: RunState, card: Card): RunState {
   const i = s.cards.findIndex((c) => c.id === card.id);
   if (i < 0) return { ...s, cards: [...s.cards, card] };
   const prev = s.cards[i];
-  const next = { ...prev, body: card.body, asserts: card.asserts ?? prev.asserts };   // 업그레이드는 본문만, 발견자·시각은 최초 유지
+  const next = { ...prev, body: card.body, asserts: card.asserts ?? prev.asserts, unlocked: card.unlocked ?? prev.unlocked };   // 업그레이드는 본문·해금만, 발견자·시각은 최초 유지
   return { ...s, cards: s.cards.map((c, j) => (j === i ? next : c)) };
 }
 const hasCard = (s: RunState, id: string) => s.cards.some((c) => c.id === id);
+/** A card counts as proof only when it is on the notebook AND not a locked partial (examined before its prerequisite). */
+export const proofEligible = (s: RunState, id: string): boolean => s.cards.some((c) => c.id === id && c.unlocked !== false);
 export function scene(ep: Episode, s: RunState, placeId: string) {
   const pl = ep.places.find((p) => p.id === placeId)!;
   return { place: { id: pl.id, name: pl.name, description: pl.description, adjacent: pl.adjacent },

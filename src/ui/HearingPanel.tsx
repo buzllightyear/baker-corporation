@@ -26,7 +26,7 @@ export function HearingPanel() {
             <div key={i} className={'verdict ' + v.status}>
               <span className={'st stamp ' + STAMP[v.status]}>{LABEL[v.status][lang]}</span>
               <span className="cl">{claimText(v)}</span>
-              {v.missing && v.missing.length > 0 && <span className="miss">{T.missing[lang]}: {v.missing.map(name).join(', ')}</span>}
+              {((v.missing && v.missing.length > 0) || (v.stillToFind ?? 0) > 0) && <span className="miss">{T.missing[lang]}: {[...(v.missing ?? []).map(name), ...((v.stillToFind ?? 0) > 0 ? [T.stillToFind[lang].replace('{n}', String(v.stillToFind))] : [])].join(', ')}</span>}
             </div>
           ))}
           <div className="note">{T.hearingNote[lang]}</div>

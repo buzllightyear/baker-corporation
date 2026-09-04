@@ -16,6 +16,7 @@
 // (`npx tsx scripts/check-ep1.ts` does the same in one line if tsx is installed.)
 //
 import { EP1, EP1_GOLDEN } from '../content/ep1-sensor';
+import { COST } from '../src/kernel/clock';
 import type { Episode, Minute } from '../content/types';
 
 declare const process: { exit(code: number): never };   // avoids a dependency on @types/node
@@ -23,10 +24,6 @@ declare const process: { exit(code: number): never };   // avoids a dependency o
 type Cmd = Record<string, unknown>;
 type Actor = 'holmes' | 'watson';
 
-const COST: Record<string, number> = {
-  move: 10, talk: 5, ask: 5, examine: 5, pin: 0,
-  timeline: 10, cross_check: 20, search_records: 30, submit_theory: 0,
-};
 
 const problems: string[] = [];
 const notes: string[] = [];
